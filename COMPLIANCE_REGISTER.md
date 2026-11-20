@@ -40,7 +40,7 @@ Status legend: **V** verified against primary source by AI-PM · **AI-X** extrac
 
 ## 4. Rules
 Schema: `compliance/rules/_schema.yaml`. Rule files: `compliance/rules/*.yaml`.
-No rules are approved for live use. Count: **22 verified by AI-PM against primary text** / 0 reviewed by Tara / 0 approved.
+No rules are approved for live use. Count: **22 verified by AI-PM against primary text** / **22 reviewed by Tara (accepted, no amendments)** / 0 approved for live use (pending G3 sign-off).
 
 | Clause | Rules | Notes |
 |---|---|---|
@@ -58,3 +58,4 @@ Page references use the Code's printed page numbers (printed page = PDF page −
 | 2026-11-20 | AI-PM | Source identification; WA Code edition & adopted references | Edition verified; content AI-extracted, manual verification pending |
 | 2026-11-20 | AI-PM | §3.5, §4.2.1–4.2.3 primary text | 17 rules drafted & verified; awaiting Tara review |
 | 2026-11-20 | AI-PM | §8 primary text | 5 rules added (22 total); core set complete for Tara review |
+| 2026-11-20 | Tara (WTGTM), relayed by Owner | All 22 core rules | Accepted as written; no amendments, no additional rules proposed |

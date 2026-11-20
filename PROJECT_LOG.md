@@ -81,3 +81,11 @@ Finding: Code §4.2.1 mandates use of a Main Roads TMP template with headings re
 ## 2026-11-20 — Security incident + §8 rules
 - **Incident:** Owner pasted an Anthropic token into chat. Not used or stored by AI-PM; Owner revoked it (R-21, closed). Key to be supplied via `ANTHROPIC_API_KEY` env var in TMP-Proof-Reader environment.
 - **WS3:** 5 rules added from Code §4.2.3 and §8 → 22 rules, core set ready for Tara review (G3).
+
+## 2026-11-20 — Rule review complete
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Tara review of 22 core rules | Tara (via Owner) | User accepted — all accepted as written | — | — |
+| Reviewer accreditation details (S-07) | Owner / Tara | Awaiting input | — | Provide level, number, expiry |
+| Gate 3 sign-off | Owner | Awaiting approval | S-07 | Owner decision |
+Note: review outcome relayed verbally by Owner; completed review pack not yet on file.

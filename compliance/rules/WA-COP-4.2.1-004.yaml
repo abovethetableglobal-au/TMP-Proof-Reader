@@ -18,11 +18,14 @@ expected_result: Statement, date and photo present
 category: C
 default_severity: Major
 human_review: true
-status: verified
+status: reviewed
 verification_date: '2026-11-20'
 verified_by: AI-PM (read against primary text)
-reviewer: Tara (WTGTM) — pending
+reviewer: Tara (WTGTM) — accepted without amendment 2026-11-20 (relayed by Owner)
 change_history:
 - date: '2026-11-20'
   by: AI-PM
   change: Drafted from primary text; paraphrased, no Code text reproduced
+- date: '2026-11-20'
+  by: Tara (WTGTM) via Owner
+  change: 'Reviewed: accepted as written'
