@@ -11,7 +11,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 | Gate | Criteria | Target | Status |
 |---|---|---|---|
 | G1 Initiation | Records, scope, plan established; Owner sign-off | 2026-11-27 | **User accepted 2026-11-20** (A-13) |
-| G2 Customer requirements | ≥5 representative TMP packages + proofreader corrections received and analysed; requirements doc approved | 2026-12-18 | Blocked (WTGTM evidence) |
+| G2 Customer requirements | ≥5 representative TMP packages + proofreader corrections received and analysed; requirements doc approved | 2026-12-18 | In progress — WTGTM evidence returned 2026-11-20; awaiting transfer & confidentiality confirmation |
 | G3 Compliance framework | Initial WA rule set (target 30–60 rules) verified against primary sources and reviewed by qualified TM professional | 2027-01-29 | **User accepted 2026-11-20 — conditional** (A-17; conditions due 2026-11-27) |
 | G4 Working prototype | Representative TMP processed → report PDF + annotated PDF | 2027-02-05 | Not started |
 | G5 Benchmark | Results vs independently reviewed findings; accuracy recorded in TEST_REGISTER | 2027-02-26 | Not started |
@@ -23,7 +23,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 | WS | Workstream | Owner | Depends on | Next action | Status |
 |---|---|---|---|---|---|
 | 1 | Project management | AI-PM | — | Maintain records; manage G2 | In progress |
-| 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Owner sends request (approved A-14); AI-PM tracks responses | Awaiting input |
+| 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Evidence returned 2026-11-20; transfer to AI-PM and analyse | Awaiting input |
 | 3 | Regulatory research | AI-PM; Tara (WTGTM reviewer) | AS 1742.3 access (P-06) | Build source register → draft rules from Code §4.2 (core set per TPR-01) | In progress |
 | 4 | Product design | AI-PM | WS2 | Customer + reviewer workflow wireframes | Not started |
 | 5 | Checking engine | AI-PM | WS2, WS3, P-04 | Prompt/rule design on anonymised samples | Not started |

@@ -102,3 +102,7 @@ Note: review outcome relayed verbally by Owner; completed review pack not yet on
 Result TD-01: 3/3 missing headings found, 0 false positives (109-heading control), stale TOC ignored.
 Known limitations: very short headings (e.g. 'Roles', 'Public') could match unrelated body lines → possible missed finding; heading present but section body empty is not yet checked.
 Observation: the MRWA template itself contains a typo in a heading ('Existing Traffic and Adverting Signs'). Proofreading must not penalise text the Code requires users to retain; flag as Minor 'template-originated' at most.
+
+## 2026-11-20 — WTGTM evidence returned
+- Owner reports WTGTM returned the evidence pack today. Not yet transferred to AI-PM.
+- Before handling: confirm anonymised, or WTGTM written permission (Handover §13 Phase 1; CLAUDE.md §3). Store only in git-ignored `customer-docs/`.
