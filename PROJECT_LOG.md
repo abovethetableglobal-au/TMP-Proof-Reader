@@ -130,3 +130,9 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-20 — API key added; setup script fixed
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| `ANTHROPIC_API_KEY` env var in environment TMP-Proof-Reader | Owner | Production complete — name confirmed on environment; value not visible to this session (env vars load at session start) | — | Start a new session |
+| Setup script folder check (`tmp-proof-reader` → `TMP-Proof-Reader`; adds `anthropic`) | AI-PM | Production complete — old script never matched, so deps were missing; fixed script run manually here | — | Proven on next fresh session |
