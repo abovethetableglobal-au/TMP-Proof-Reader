@@ -138,3 +138,13 @@ Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passe
 | Portal stages S1–S7 | AI-PM | Not started | P-12, P-13 | — |
 Ten conflicts identified (plan §2): portal timing vs S-03, "Compliant" wording vs CLAUDE.md §2, purchase UI vs A-09, 5-pack vs P-05, "Completed" status vs reviewer gate (A-15), credit consumption point, savings baseline. C-6, C-7, C-10 applied as safety/record corrections; remainder raised as P-12–P-16. Risks R-23, R-24 added.
 - A-21: Owner approved local portal build S1–S4 in parallel (P-12 resolved).
+- A-22: Owner approved headline "Fast. Thorough. Evidence-based." (P-13 resolved). Starting S1.
+
+## 2026-11-20 — Portal stage S1 (shell) built
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| S1 shell: FastAPI + Jinja, 6 pages, live-data dashboard with empty states, responsive (1536/1024/390 px, no horizontal overflow), Compliance Library from 22 approved rules | AI-PM | Quality checked (15/15 tests) | — | Owner review of screenshots |
+| S2 accounts (login, roles, tenant tests, audit log) | AI-PM | Not started | — | Next build stage |
+| S3 ledger + purchase flow | AI-PM | Awaiting approval | P-14, P-15 | — |
+Applied: A-22 headline; statuses per plan C-6/C-7; 5-pack hidden (`offered: false`) pending P-14; purchase buttons = manual credit request (A-09); savings card empty until baseline (P-16 default). Banner is an SVG illustration — no licensed photo used (no spend). Upload validates type/size/signature client-side only; server upload is S4.
+Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local); "Contact us" details not yet set.

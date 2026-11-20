@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Credits &amp; Billing{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Credits &amp; Billing</h1>
+  <p>All prices {{ price_label() }}</p>
+</div>
+
+<div class="grid two">
+  <section class="card panel" aria-labelledby="sub-h">
+    <h2 id="sub-h" class="pad">Subscription</h2>
+    <div class="pad">
+      <p class="price">{{ money(cfg().subscription.price) }} <small>/ month</small>
+        {% if ctx.org.subscription_status.value == "active" %}<span class="pill ok">Active</span>{% else %}<span class="pill neutral">Not active</span>{% endif %}</p>
+      <p class="muted">{{ cfg().subscription.note }}</p>
+    </div>
+  </section>
+  <section class="card panel" aria-labelledby="bal-h">
+    <h2 id="bal-h" class="pad">Credit balance</h2>
+    <div class="pad">
+      <p class="price">{{ credits.available }} <small>credits</small></p>
+      <p class="muted">{% if credits.next_expiry %}{{ credits.expiring_qty }} expire on {{ credits.next_expiry.strftime('%-d %b %Y') }}.{% else %}Credits are valid {{ cfg().credits.validity_months }} months from purchase.{% endif %}</p>
+    </div>
+  </section>
+</div>
+
+<section class="card panel" id="buy" aria-labelledby="buy-h">
+  <h2 id="buy-h" class="pad">Buy credits</h2>
+  <div class="products">
+  {% for p in products %}
+    <div class="product">
+      <div class="p-name">{{ p.name }}</div>
+      <div class="p-price">{{ money(p.price) }}</div>
+      <div class="muted">{{ p.credits }} credit{{ 's' if p.credits > 1 }}{% if p.credits > 1 %} · {{ money(p.price / p.credits) }} each{% endif %}</div>
+      {% if cfg().payments_enabled %}
+        <button class="btn orange" type="button">Buy</button>
+      {% else %}
+        <a class="btn orange" href="/help#contact">Request {{ p.name|lower }}</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+  </div>
+  {% if not cfg().payments_enabled %}
+  <p class="note pad">{{ icon("info", "ic sm") }} Online payment is not yet available. Request credits and we will send an invoice; credits are added once payment is received.</p>
+  {% endif %}
+</section>
+
+<section class="card panel" id="history" aria-labelledby="hist-h">
+  <h2 id="hist-h" class="pad">Credit history</h2>
+  <div class="empty"><p class="empty-title">No transactions yet</p><p>Purchases, credits used and expiries will be listed here.</p></div>
+</section>
+{% endblock %}

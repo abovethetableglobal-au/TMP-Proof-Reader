@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}New Check{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>New Check</h1>
+  <p>Upload one TMP package. Supporting drawings (TGS) can be included in the same PDF.</p>
+</div>
+<div class="grid two">
+  <section class="card panel upload" aria-labelledby="up-h">
+    <header class="panel-head">
+      <div class="panel-ic navy">{{ icon("upload") }}</div>
+      <div><h2 id="up-h">Upload Your TMP</h2>
+      <p>Drag and drop your Traffic Management Plan (PDF or Word), or browse to upload.</p></div>
+    </header>
+    {% include "_dropzone.html" %}
+  </section>
+  <aside class="card panel">
+    <h2 class="pad">Before you upload</h2>
+    <ul class="ticks">
+      <li>Credits available: <strong>{{ credits.available }}</strong>{% if not credits.available %} — <a href="/billing#buy">request credits</a>{% endif %}</li>
+      <li>One credit is used for each successfully completed check.</li>
+      <li>Failed uploads or processing use no credit.</li>
+      <li>Your accredited reviewer accepts, edits or rejects every finding before the final report is issued.</li>
+      <li>TMP Check is a document quality check. It is not an approval, certification or safety declaration.</li>
+    </ul>
+  </aside>
+</div>
+{% endblock %}

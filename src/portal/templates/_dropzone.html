@@ -1,0 +1,22 @@
+{% from "_icons.html" import icon %}
+{% set up = cfg().upload %}
+<form class="dropzone" data-dropzone
+      data-max-bytes="{{ up.max_bytes }}"
+      data-allowed="{{ up.allowed_extensions|join(',') }}"
+      onsubmit="return false">
+  <label class="dz-target" for="tmp-file">
+    <span class="dz-ic">{{ icon("file-up") }}</span>
+    <span class="btn navy dz-btn">Choose Files</span>
+    <span class="dz-hint">or drop a file here</span>
+    <input id="tmp-file" name="file" type="file" accept="{{ up.allowed_extensions|join(',') }}" class="sr-only">
+  </label>
+  <p class="dz-meta">Supported formats: {{ up.allowed_extensions|map('upper')|map('replace', '.', '')|join(', ') }}
+    <span aria-hidden="true">|</span> Max size: {{ (up.max_bytes / 1048576)|round|int }}MB
+    <span aria-hidden="true">|</span> Up to {{ up.max_main_pages }} pages + {{ up.max_drawing_pages }} drawing pages</p>
+  <div class="dz-status" role="status" aria-live="polite" hidden>
+    <div class="dz-file"><span class="dz-name"></span><span class="dz-size"></span></div>
+    <div class="progress" aria-hidden="true"><span></span></div>
+    <p class="dz-msg"></p>
+  </div>
+  <p class="dz-foot">{{ icon("info", "ic sm") }} No credit is used if an upload or processing attempt fails.</p>
+</form>

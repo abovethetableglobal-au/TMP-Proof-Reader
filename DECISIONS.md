@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-22 | **Portal wording (resolves P-13):** banner headline "Professional TMP Checking. Fast. Thorough. Evidence-based." Tagline "Check • Comply • Confident" retained | Owner choice of recommended option; CLAUDE.md §2 | 2026-11-20 | Owner |
 | A-21 | **Portal sequencing (resolves P-12):** build customer portal stages S1–S4 locally now ($0, no hosting, no live customer data). G4 benchmark remains priority; S5 report screens wait for D-11/D-12. Supersedes S-03 for local build only | Owner choice of recommended option | 2026-11-20 | Owner |
 | A-20 | Customer name is **Way to Go Traffic Management** (not 'Way Too Go'). Records corrected; erratum added to PROJECT_HANDOVER.md | Owner confirmation | 2026-11-20 | Owner |
 | A-19 | REF-01 proofread report confirmed correct by WTGTM — accepted as reference findings for benchmarking (relayed by Owner) | Owner confirmation | 2026-11-20 | Owner |
@@ -33,7 +34,6 @@
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
-| P-13 | Banner "Fast. Accurate. Compliant." and tagline "Check • Comply • Confident" conflict with CLAUDE.md §2 | Headline "Fast. Thorough. Evidence-based."; tagline Owner's call (alt "Check • Cite • Confident") | Before S1 |
 | P-14 | Credit purchase UI before payments allowed (A-09). Brief lists 5-pack $745 — confirm this resolves P-05 | "Request credits" → manual invoice; admin records ledger purchase; 5-pack offered at $745 | Before S3 |
 | P-15 | Point at which a credit is consumed | On successful delivery of draft to reviewer; reversal for TMP Check error | Before S3 |
 | P-16 | Potential Savings card baseline | Hidden until Owner sets per-customer baseline; label as estimate | Before S1 card build |

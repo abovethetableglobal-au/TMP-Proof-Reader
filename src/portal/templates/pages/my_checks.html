@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}My Checks{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>My Checks</h1>
+  <p>Every check for {{ ctx.org.name }}. Reports stay as drafts until your accredited reviewer has dispositioned every finding.</p>
+</div>
+<section class="card panel recent">
+  {% include "_checks_table.html" %}
+</section>
+{% endblock %}

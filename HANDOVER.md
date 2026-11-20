@@ -30,5 +30,15 @@ Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `mai
 5. Score LLM + deterministic findings against REF-01 (~105 items); record in TEST_REGISTER and `docs/reviews/BENCH-02`.
 6. Record actual cost per check in COMMERCIAL_MODEL.md.
 
+## Portal (local, A-21)
+```
+pip install -r requirements.txt
+export TMPCHECK_ENV=local
+python -m src.portal.devseed --org "Way to Go Traffic Management" --user "Your Name"
+uvicorn src.portal.app:app --port 8000
+python -m pytest tests/portal
+```
+Stage plan: `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` §5. S1 done; next S2 (accounts). S3 needs P-14, P-15.
+
 ## Outstanding
 See DECISIONS.md (pending), RISKS.md, PROJECT_PLAN.md.

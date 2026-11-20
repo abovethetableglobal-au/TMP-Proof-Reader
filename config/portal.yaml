@@ -1,0 +1,55 @@
+# TMP Check customer portal configuration.
+# Prices and tax are configuration, never literals in code (CLAUDE.md §5).
+# Source of truth for prices: COMMERCIAL_MODEL.md / DECISIONS A-02, A-03, A-04.
+
+currency: AUD
+
+tax:
+  gst_registered: false      # A-04 — Owner advice 2026-11-20
+  gst_rate: 0.10             # applied only if gst_registered: true
+  price_display: "excl"      # never label prices "GST-inclusive" while unregistered
+
+subscription:
+  sku: SUB-MONTHLY
+  name: Monthly subscription
+  price: 49.95
+  interval: month
+  note: Platform access only. Checking credits are purchased separately.
+
+credit_products:
+  - sku: CR-1
+    name: Single TMP check
+    credits: 1
+    price: 149.00
+    offered: true
+  - sku: CR-5
+    name: Five-credit pack
+    credits: 5
+    price: 745.00
+    offered: false           # P-05 / P-14 pending Owner confirmation
+  - sku: CR-10
+    name: Ten-credit pack
+    credits: 10
+    price: 1341.00
+    offered: true
+
+credits:
+  validity_months: 12        # A-05 rule 7
+
+# Payments are not enabled before Gate 5 (A-09). Purchase buttons raise a
+# credit request; an administrator records the ledger purchase after payment.
+payments_enabled: false
+
+upload:
+  allowed_extensions: [".pdf", ".docx"]
+  max_bytes: 20971520        # 20 MB
+  max_main_pages: 80         # A-10 (provisional)
+  max_drawing_pages: 10      # A-10 (provisional)
+
+branding:
+  product: TMP Check
+  tagline: "Check • Comply • Confident"
+  headline_line1: "Professional TMP Checking."
+  headline_line2: "Fast. Thorough. Evidence-based."   # A-22
+  footer_left: "Secure. Confidential. Australian Owned."
+  footer_right: "Smarter TMP Checking for a Safer Tomorrow"

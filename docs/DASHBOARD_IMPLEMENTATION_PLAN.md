@@ -4,7 +4,7 @@
 |---|---|
 | Deliverable | D-17 |
 | Source brief | Owner "TMP Check – Dashboard UI Implementation Brief" + dashboard mock-up, received 2026-11-20 |
-| Status | Awaiting approval (P-13 – P-16); P-12 resolved by A-21 |
+| Status | Awaiting approval (P-14 – P-16); P-12, P-13 resolved by A-21, A-22 |
 | Process tier | Significant (§2A) |
 | Review | Simulated three-perspective review (§5.3) — §7 below |
 
@@ -61,7 +61,7 @@
 
 | Stage | Scope | Depends on | Done when |
 |---|---|---|---|
-| S1 Shell | Layout, nav, header, banner, footer, responsive (desktop/tablet/mobile), design tokens, all empty states | P-12, P-13 | Visual match to mock-up at 1440/1024/390 px; no illustrative data |
+| S1 Shell ✅ (D-18) | Layout, nav, header, banner, footer, responsive (desktop/tablet/mobile), design tokens, all empty states | P-12, P-13 | Visual match to mock-up at 1440/1024/390 px; no illustrative data |
 | S2 Accounts | Login, org separation, roles, audit log | S1 | Cross-tenant access tests fail closed |
 | S3 Ledger | Credit ledger, balance, expiry, history, admin "record purchase" | P-14, P-15 | Ledger unit tests: purchase/consume/reversal/expiry/oldest-first |
 | S4 Upload → check | Drag-drop, type/size validation (PDF/DOCX ≤ 20 MB, page limits A-10), progress, pipeline job, failure → no credit | S2, S3 | Corrupt/oversize/wrong-type rejected with message; failure creates no consume row |

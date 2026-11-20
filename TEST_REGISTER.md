@@ -25,3 +25,9 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | DEF-S01-1 | S-01 | PUB-01 | C | Duplicate/mis-labelled findings | Major | Substring re-search | Word-level bboxes + merge | Pass |
 | DEF-S01-2 | S-01 | PUB-01 | C | TOC leaders flagged as blanks | Major | Over-broad regex | Dots-only word rule | Pass |
 | DEF-S01-3 | S-01 | PUB-01 | Output | Annotation colour clashes with template | Minor | Highlight colour | Red outline | Pass |
+
+## PORTAL-S1 — 2026-11-20
+| Test | Result |
+|---|---|
+| `tests/portal/test_portal.py` — ledger derivation (consume, reversal, expiry), tenant scoping, final-only completion count, savings baseline gate, prices vs A-02/A-03, no GST-inclusive label, no mock-up figures or forbidden words on 6 pages, 22 rules listed | 15/15 pass |
+| Playwright render 1536/1024/390 px; horizontal overflow | 0 px all widths — `docs/reviews/screens/` |

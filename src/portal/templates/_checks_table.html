@@ -1,0 +1,26 @@
+{% from "_icons.html" import icon %}
+{% if rows %}
+<div class="table-wrap">
+<table class="checks">
+  <thead><tr><th scope="col">Date</th><th scope="col">Document</th><th scope="col">Status</th><th scope="col">Findings</th><th scope="col">Actions</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td data-label="Date">{{ r.date.strftime('%-d %b %Y') }}</td>
+      <td data-label="Document">{{ r.doc_ref }}</td>
+      <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span></td>
+      <td data-label="Findings">{{ r.findings }}</td>
+      <td data-label="Actions">{% if r.has_report %}<a class="btn small outline" href="/checks/{{ r.id }}">View Report</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty">
+  <div class="empty-ic">{{ icon("doc") }}</div>
+  <p class="empty-title">No checks yet</p>
+  <p>Upload a Traffic Management Plan to start your first check. Draft reports go to your accredited reviewer before the final is issued.</p>
+  <a class="btn navy small" href="/checks/new">Start a New Check</a>
+</div>
+{% endif %}

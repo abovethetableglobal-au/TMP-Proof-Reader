@@ -1,0 +1,64 @@
+{% from "_icons.html" import icon %}<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Dashboard{% endblock %} · {{ cfg().branding.product }}</title>
+<link rel="icon" href="/static/img/logo-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/css/portal.css">
+<script src="/static/js/portal.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <img src="/static/img/logo-mark.svg" alt="" class="brand-mark" width="104" height="56">
+      <div class="brand-name">{{ cfg().branding.product }}</div>
+      <div class="brand-tag">{{ cfg().branding.tagline }}</div>
+      <button class="nav-close" type="button" data-nav-close aria-label="Close menu">{{ icon("close") }}</button>
+    </div>
+    <nav>
+      <ul class="nav">
+      {% for key, label, href, ic in NAV %}
+        <li><a href="{{ href }}" class="{{ 'active' if active == key }}" {% if active == key %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ label }}</span></a></li>
+      {% endfor %}
+      </ul>
+    </nav>
+    <div class="side-promo">
+      <img src="/static/img/hardhat.svg" alt="" width="64" height="56">
+      <p>Powered by AI.<br>Built for Traffic Management.</p>
+      <svg class="side-road" viewBox="0 0 200 70" aria-hidden="true"><path d="M0 70 C70 50 120 30 200 8 L200 26 C130 42 80 60 40 70Z" fill="#33415c"/><path d="M60 66 L80 60 M100 54 L120 47 M140 40 L160 33" stroke="#f5b400" stroke-width="3"/></svg>
+    </div>
+  </aside>
+  <div class="scrim" data-nav-close></div>
+
+  <div class="main-col">
+    <header class="topbar">
+      <button class="nav-toggle" type="button" data-nav-open aria-label="Open menu" aria-controls="sidebar">{{ icon("menu") }}</button>
+      <a href="/" class="topbar-brand">{{ cfg().branding.product }}</a>
+      <div class="topbar-right">
+        <div class="org">{{ icon("building") }}<span>{{ ctx.org.name }}</span></div>
+        <details class="user-menu">
+          <summary><span class="avatar" aria-hidden="true">{{ (ctx.user.name.split()|map('first')|join|upper)[:2] }}</span><span class="user-name">{{ ctx.user.name }}</span>{{ icon("chevron-down", "ic sm") }}</summary>
+          <div class="menu">
+            <a href="/billing">Credits &amp; Billing</a>
+            <a href="/help">Help &amp; Support</a>
+            <span class="menu-note">Sign-in arrives in stage S2</span>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <main id="main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="foot-left">{{ icon("shield") }}<span>{{ cfg().branding.footer_left }}</span></div>
+      <div class="foot-right">{{ cfg().branding.footer_right }}</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

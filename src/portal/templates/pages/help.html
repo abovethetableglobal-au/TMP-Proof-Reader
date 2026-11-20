@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Help &amp; Support{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Help &amp; Support</h1>
+</div>
+<section class="card panel faq">
+  <h2 class="pad">Frequently asked questions</h2>
+  <details><summary>What does TMP Check do?</summary><p>TMP Check reviews a Traffic Management Plan for proofreading, consistency, completeness, TMP-to-drawing cross-checks and selected Western Australian requirements, and reports potential issues with page references and source citations.</p></details>
+  <details><summary>Is a TMP Check report an approval?</summary><p>No. TMP Check is a document quality check. It is not an approval, certification, design review or safety declaration. Your accredited reviewer remains responsible for the professional assessment of the TMP.</p></details>
+  <details><summary>Why is my report a draft?</summary><p>Every report goes to your organisation's accredited reviewer first. The final report and annotated TMP are issued only after the reviewer has accepted, edited or rejected every finding.</p></details>
+  <details><summary>When is a credit used?</summary><p>One credit is used for each successfully completed check. Failed uploads or processing use no credit, and corrections to errors made by TMP Check are free. A re-check after you change your document uses another credit.</p></details>
+  <details><summary>How long do credits last?</summary><p>Credits are valid for {{ cfg().credits.validity_months }} months from purchase.</p></details>
+  <details><summary>Does the subscription include credits?</summary><p>No. The {{ money(cfg().subscription.price) }} monthly subscription provides platform access. Credits are purchased separately.</p></details>
+</section>
+<section class="card panel" id="contact">
+  <h2 class="pad">Contact us</h2>
+  <p class="pad muted">Support contact details will be published before the pilot.</p>
+</section>
+{% endblock %}

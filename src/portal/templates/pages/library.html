@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Compliance Library{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Compliance Library</h1>
+  <p>Western Australian rules applied in each check. Each rule cites its source, edition and clause. Requirements are paraphrased; source documents are not reproduced.</p>
+</div>
+<section class="card panel">
+  {% if rules %}
+  <div class="table-wrap">
+  <table class="checks rules">
+    <thead><tr><th scope="col">Rule</th><th scope="col">Requirement</th><th scope="col">Source</th><th scope="col">Edition</th><th scope="col">Clause</th><th scope="col">Verified</th></tr></thead>
+    <tbody>
+    {% for r in rules %}
+      <tr>
+        <td data-label="Rule"><code>{{ r.rule_id }}</code></td>
+        <td data-label="Requirement">{{ r.requirement_plain }}<div class="muted small">Applies to: {{ r.applicability }}</div></td>
+        <td data-label="Source"><a href="{{ r.source_url }}" rel="noopener" target="_blank">{{ r.source_name }}</a><div class="muted small">{{ r.authority }}</div></td>
+        <td data-label="Edition">{{ r.edition }}</td>
+        <td data-label="Clause">{{ r.clause }}</td>
+        <td data-label="Verified">{{ r.verification_date }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+  <div class="empty"><p class="empty-title">No approved rules</p></div>
+  {% endif %}
+</section>
+{% endblock %}

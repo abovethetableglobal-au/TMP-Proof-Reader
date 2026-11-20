@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero-text">
+    <h1 id="hero-h">{{ cfg().branding.headline_line1 }}<br>{{ cfg().branding.headline_line2 }}</h1>
+    <span class="hero-rule" aria-hidden="true"></span>
+  </div>
+  <img class="hero-art" src="/static/img/banner.svg" alt="" aria-hidden="true">
+</section>
+
+<section class="cards" aria-label="Account summary">
+  {# 1. Credits — derived from the ledger #}
+  <article class="card stat">
+    <div class="stat-ic navy">{{ icon("doc") }}</div>
+    <div class="stat-body">
+      {% if d.credits.available %}
+        <div class="stat-num">{{ d.credits.available }}</div>
+        <div class="stat-label">Credits Available</div>
+        <div class="stat-sub">{{ d.credits.expiring_qty }} expire {{ d.credits.next_expiry.strftime('%-d %b %Y') }}</div>
+      {% else %}
+        <div class="stat-num">0</div>
+        <div class="stat-label">Credits Available</div>
+        <div class="stat-sub">{% if d.credits.ever_purchased %}No unexpired credits{% else %}No credits purchased yet{% endif %}</div>
+      {% endif %}
+    </div>
+  </article>
+
+  {# 2. Subscription #}
+  <article class="card stat">
+    <div class="stat-ic navy">{{ icon("calendar") }}</div>
+    <div class="stat-body">
+      <div class="stat-num">{{ money(d.subscription.price) }}<small> / month</small></div>
+      {% if d.subscription.status == "active" %}
+        <div class="stat-label">Subscription</div>
+        <span class="pill ok">Active</span>
+      {% else %}
+        <div class="stat-label">Subscription</div>
+        <span class="pill neutral">{{ {"none": "Not active", "lapsed": "Lapsed", "cancelled": "Cancelled"}[d.subscription.status] }}</span>
+      {% endif %}
+    </div>
+  </article>
+
+  {# 3. Checks — counts final-issued checks only #}
+  <article class="card stat">
+    <div class="stat-ic navy round">{{ icon("check") }}</div>
+    <div class="stat-body">
+      <div class="stat-num">{{ d.checks_completed }}</div>
+      <div class="stat-label">Checks Completed</div>
+      <div class="stat-sub {{ 'up' if d.checks_this_month }}">{% if d.checks_completed %}{{ '+' ~ d.checks_this_month if d.checks_this_month else 'None' }} this month{% else %}Final reports issued appear here{% endif %}</div>
+    </div>
+  </article>
+
+  {# 4. Savings — estimate only, needs an agreed baseline (P-16) #}
+  <article class="card stat">
+    <div class="stat-ic orange">{{ icon("savings") }}</div>
+    <div class="stat-body">
+      {% if d.savings is not none %}
+        <div class="stat-num">{{ money(d.savings)[:-3] }}</div>
+        <div class="stat-label">Estimated Savings</div>
+        <div class="stat-sub">vs. agreed previous-process cost</div>
+      {% else %}
+        <div class="stat-num muted">—</div>
+        <div class="stat-label">Potential Savings</div>
+        <div class="stat-sub">{% if d.savings_baseline_set %}Shown after your first final report{% else %}Available once a comparison baseline is agreed{% endif %}</div>
+      {% endif %}
+    </div>
+  </article>
+</section>
+
+<div class="grid">
+  <section class="card panel upload" aria-labelledby="up-h">
+    <header class="panel-head">
+      <div class="panel-ic navy">{{ icon("upload") }}</div>
+      <div>
+        <h2 id="up-h">Upload Your TMP</h2>
+        <p>Drag and drop your Traffic Management Plan (PDF or Word), or browse to upload.</p>
+      </div>
+    </header>
+    {% include "_dropzone.html" %}
+  </section>
+
+  <aside class="card panel credits" aria-labelledby="cr-h">
+    <header class="panel-head dark">
+      <div class="panel-ic gold">{{ icon("coins") }}</div>
+      <h2 id="cr-h">Your Credits</h2>
+    </header>
+    <div class="credit-split">
+      <div><div class="big">{{ d.credits.available }}</div><div>Credits Available</div></div>
+      <div class="sep" aria-hidden="true"></div>
+      <div>
+        {% if d.credits.next_expiry %}<div class="lbl">Next expiry</div><div>{{ d.credits.next_expiry.strftime('%-d %b %Y') }}</div>
+        {% else %}<div class="lbl">Expiry</div><div class="muted">Credits are valid {{ cfg().credits.validity_months }} months from purchase</div>{% endif %}
+      </div>
+    </div>
+    <div class="btn-col">
+      <a class="btn orange" href="/billing#buy">{{ icon("cart", "ic sm") }} Buy More Credits</a>
+      <a class="btn outline" href="/billing#history">View Credit History</a>
+    </div>
+  </aside>
+
+  <section class="card panel recent" aria-labelledby="rc-h">
+    <header class="panel-head row">
+      <div class="panel-ic plain">{{ icon("history") }}</div>
+      <h2 id="rc-h">Recent Checks</h2>
+      <a class="link-more" href="/checks">View All {{ icon("arrow", "ic sm") }}</a>
+    </header>
+    {% set rows = d.recent %}
+    {% include "_checks_table.html" %}
+  </section>
+
+  <aside class="card panel links" aria-labelledby="ql-h">
+    <header class="panel-head row">
+      <div class="panel-ic plain orange-t">{{ icon("bolt") }}</div>
+      <h2 id="ql-h">Quick Links</h2>
+    </header>
+    <ul class="quick">
+      <li><a href="/library">{{ icon("book") }}<span>View Compliance Sources</span>{{ icon("chevron", "ic sm") }}</a></li>
+      <li><a href="/billing#buy">{{ icon("card") }}<span>Purchase a Credit Pack</span>{{ icon("chevron", "ic sm") }}</a></li>
+      <li><a href="/help">{{ icon("help") }}<span>Get Help &amp; Support</span>{{ icon("chevron", "ic sm") }}</a></li>
+      <li><a href="/help#contact">{{ icon("phone") }}<span>Contact Us</span>{{ icon("chevron", "ic sm") }}</a></li>
+    </ul>
+  </aside>
+</div>
+{% endblock %}
