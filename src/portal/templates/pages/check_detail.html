@@ -47,7 +47,7 @@
   <div class="review-bar pad"><p><strong>Final issued {{ chk.final_issued_at|dmy }}.</strong> Findings below show your reviewer's decisions.</p></div>
   {% endif %}
   <p class="note pad">{{ icon("info", "ic sm") }} TMP Check is a document quality check, not an approval, certification or safety declaration.
-    {% if chk.ai_passes %}AI passes run: {{ chk.ai_passes }}.{% else %}This check ran the automated rule-based checks only (no AI passes).{% endif %}</p>
+    {% if chk.ai_passes and not chk.ai_passes.startswith('skipped') %}AI passes run: {{ chk.ai_passes }}{% if chk.ai_cost_usd %} (US${{ chk.ai_cost_usd }}){% endif %}.{% else %}This check ran the automated rule-based checks only. {{ chk.ai_passes[9:] if chk.ai_passes else '' }}{% endif %}</p>
 </section>
 
 <section class="card panel">

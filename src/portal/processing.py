@@ -22,6 +22,17 @@ STORAGE = Path(os.environ.get("TMPCHECK_STORAGE", ROOT / "customer-docs" / "port
 SIGNATURES = {".pdf": b"%PDF-", ".docx": b"PK\x03\x04"}
 
 
+def ai_status() -> tuple[str, str]:
+    """('on'|'off'|'no_key', explanation) for the AI passes, read from this process's environment."""
+    passes = os.environ.get("TMPCHECK_AI_PASSES", "").strip()
+    if not passes:
+        return "off", "AI passes are off (TMPCHECK_AI_PASSES not set in the window running the portal)."
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return "no_key", (f"AI passes {passes} were requested but no ANTHROPIC_API_KEY was found "
+                          "in the window running the portal.")
+    return "on", f"AI passes {passes} are on."
+
+
 class UploadError(ValueError):
     """Customer-facing rejection message. No credit is used."""
 
@@ -123,7 +134,9 @@ def run_check(check_id: int) -> None:
             results = [("deterministic", f) for f in det_checks.run(pdf)["findings"]]
 
             passes = os.environ.get("TMPCHECK_AI_PASSES", "").strip()
-            if passes and os.environ.get("ANTHROPIC_API_KEY"):
+            state, why = ai_status()
+            chk.ai_passes = None if state == "on" else f"skipped: {why}"
+            if state == "on":
                 from src.tmpcheck import llm_checks
                 ai = llm_checks.run(pdf, passes.split(","))
                 for p in ai["passes"].values():

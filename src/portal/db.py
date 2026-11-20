@@ -77,7 +77,7 @@ class Check(Base):
     failure_reason: Mapped[str | None] = mapped_column(Text)
     pages: Mapped[int | None] = mapped_column(Integer)
     storage_path: Mapped[str | None] = mapped_column(String(500))
-    ai_passes: Mapped[str | None] = mapped_column(String(20))       # e.g. "A,B,C" when AI checks ran
+    ai_passes: Mapped[str | None] = mapped_column(String(300))      # e.g. "A,B,C" when AI checks ran
     ai_cost_usd: Mapped[str | None] = mapped_column(String(20))
 
 

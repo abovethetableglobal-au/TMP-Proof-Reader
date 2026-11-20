@@ -29,6 +29,7 @@ async def lifespan(_app):
     if os.environ.get("TMPCHECK_ENV") != "local":
         raise RuntimeError("Portal has no authentication yet (stage S2). Set TMPCHECK_ENV=local to run locally.")
     init_db()
+    print("TMP Check portal:", processing.ai_status()[1], flush=True)
     yield
 
 
@@ -159,7 +160,8 @@ def check_detail(check_id: int, request: Request, ctx: Ctx = Depends(current), d
     counts = {s: sum(1 for f in findings if f.severity == s) for s in services.SEVERITIES}
     return render(request, "pages/check_detail.html", "my_checks", ctx, chk=chk, findings=findings,
                   status_label=label, tone=tone, pending=pending, counts=counts,
-                  error=request.query_params.get("error"), CheckStatus=CheckStatus)
+                  error=request.query_params.get("error"), CheckStatus=CheckStatus,
+                  ai_now=processing.ai_status())
 
 
 @app.get("/checks/{check_id}/status")
