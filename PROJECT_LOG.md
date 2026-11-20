@@ -77,3 +77,7 @@ Finding: Code §4.2.1 mandates use of a Main Roads TMP template with headings re
 | Personal cloud environment `TMP-Proof-Reader` created; session moved onto it | AI-PM (Owner approved) | Production complete | — | Setup script proven on next fresh session |
 | Claude API key | Owner | Awaiting input | — | Add env var `ANTHROPIC_API_KEY` in environment settings; start a new session |
 | §8 accreditation rules | AI-PM | Not started | — | Next |
+
+## 2026-11-20 — Security incident + §8 rules
+- **Incident:** Owner pasted an Anthropic token into chat. Not used or stored by AI-PM; Owner revoked it (R-21, closed). Key to be supplied via `ANTHROPIC_API_KEY` env var in TMP-Proof-Reader environment.
+- **WS3:** 5 rules added from Code §4.2.3 and §8 → 22 rules, core set ready for Tara review (G3).

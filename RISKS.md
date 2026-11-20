@@ -24,3 +24,4 @@ Scale: L/M/H. Score = Impact × Likelihood.
 | R-18 | Single reviewer (Tara) — availability bottleneck for G3, G5 and pilot turnaround | M | M | Agree time commitment; nominate backup accredited WTGTM reviewer | Owner | Open |
 | R-19 | Ground truth not blind — reviewer sees TMP Check output before setting reference findings | H | M | Tara sets reference findings **before** seeing any TMP Check output (TEST_METHODOLOGY §1) | AI-PM | Open |
 | R-20 | Reviewer accreditation assumed, not verified (S-07); if RTM not held, complex TMPs need another endorser | M | L | Sight accreditation records (level, number, expiry) before G3; record in AI_RESOURCES | AI-PM | Open |
+| R-21 | Credential exposure — an Anthropic token was pasted into chat on 2026-11-20 | M | L | Owner revoked it the same day; keys only via environment variable; AI-PM never stores or echoes keys | Owner | Closed 2026-11-20 |

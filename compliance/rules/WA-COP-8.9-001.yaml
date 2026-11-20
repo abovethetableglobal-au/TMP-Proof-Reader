@@ -1,0 +1,27 @@
+rule_id: WA-COP-8.9-001
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §8.8–8.9 (p104)
+requirement_plain: Accreditations quoted in the TMP (AWTM, RTM, etc.) must be current; Main Roads accreditations
+  are valid for three years. Currency can be confirmed against the accreditation database on the Main Roads website.
+applicability: All TMPs quoting accreditation numbers
+evidence_required:
+- Accreditation numbers (and dates, if stated) for preparer and endorser
+check_method: human-only
+expected_result: Reviewer confirms currency; any stated expiry is after the check date
+category: E
+default_severity: Query
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced

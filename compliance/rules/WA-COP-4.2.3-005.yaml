@@ -1,0 +1,28 @@
+rule_id: WA-COP-4.2.3-005
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §4.2.3 (p30)
+requirement_plain: On Main Roads controlled roads, TMPs involving complex traffic arrangements provide for at least
+  one WTM or AWTM accredited person on site at all times while road workers are present.
+applicability: Complex TMPs on Main Roads roads
+evidence_required:
+- Roles & responsibilities
+- on-site accreditation requirement
+check_method: presence
+expected_result: WTM/AWTM on-site requirement stated
+category: E
+default_severity: Major
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced

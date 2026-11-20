@@ -40,15 +40,15 @@ Status legend: **V** verified against primary source by AI-PM · **AI-X** extrac
 
 ## 4. Rules
 Schema: `compliance/rules/_schema.yaml`. Rule files: `compliance/rules/*.yaml`.
-No rules are approved for live use. Count: **17 verified by AI-PM against primary text** / 0 reviewed by Tara / 0 approved.
+No rules are approved for live use. Count: **22 verified by AI-PM against primary text** / 0 reviewed by Tara / 0 approved.
 
 | Clause | Rules | Notes |
 |---|---|---|
 | §3.5 | WA-COP-3.5-001 | Authorising road authority |
 | §4.2.1 | 001–010 | Template use, AWTM preparer, signatures, site visit + photo, contingency, TGS signing/labelling, 12-month review, watermarks |
 | §4.2.2 | 001–002 | Generic TMP minimum content, TGS selection procedure |
-| §4.2.3 | 001–004 | Complex-arrangement triggers → RTM endorsement; RTM ≠ preparer; no residual VH; risk assessment |
-| §8 | — | Next |
+| §4.2.3 | 001–005 | Complex-arrangement triggers → RTM endorsement; RTM ≠ preparer; no residual VH; risk assessment; WTM/AWTM on site (Main Roads roads) |
+| §8 | 8.3-001/002, 8.7-001, 8.9-001 | BWTM on site; supervised sign placement limits; TMA operator accreditation; accreditation currency (Query) |
 
 Page references use the Code's printed page numbers (printed page = PDF page − 1).
 
@@ -57,3 +57,4 @@ Page references use the Code's printed page numbers (printed page = PDF page −
 |---|---|---|---|
 | 2026-11-20 | AI-PM | Source identification; WA Code edition & adopted references | Edition verified; content AI-extracted, manual verification pending |
 | 2026-11-20 | AI-PM | §3.5, §4.2.1–4.2.3 primary text | 17 rules drafted & verified; awaiting Tara review |
+| 2026-11-20 | AI-PM | §8 primary text | 5 rules added (22 total); core set complete for Tara review |

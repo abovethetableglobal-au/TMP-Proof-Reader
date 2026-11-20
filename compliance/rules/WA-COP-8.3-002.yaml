@@ -1,0 +1,27 @@
+rule_id: WA-COP-8.3-002
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §8.3 (p101)
+requirement_plain: If the TMP allows road workers (≥12 months' experience) to implement signs under direct BWTM
+  supervision, the works must be on local roads with a permanent speed limit ≤50 km/h and <15,000 vpd.
+applicability: TMPs that permit non-accredited workers to implement signs
+evidence_required:
+- Road speed limit, road classification, traffic volume, supervision statement
+check_method: cross-reference
+expected_result: Conditions met, or provision not used
+category: E
+default_severity: Major
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced

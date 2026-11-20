@@ -13,7 +13,7 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-06 | Compliance rule schema | 0.1 | AI-PM | Production complete | Not approved | `compliance/rules/_schema.yaml` | — |
 | D-07 | TPR-01 three-perspective review (simulated) | 1.0 | AI-PM | User accepted | Approved (A-13) | `docs/reviews/TPR-01_project_strategy.md` | — |
 | D-08 | IR-01 independent review brief | 1.0 | AI-PM | Awaiting approval | Pending (Owner transfer) | `docs/handovers/IR-01_independent_strategy_review.md` | — |
-| D-09 | WA compliance rule library (initial) | 0.1 | AI-PM + Tara | In progress (17 rules; §8 next) | Not approved | `compliance/rules/` | Tara review; P-06 |
+| D-09 | WA compliance rule library (initial) | 0.1 | AI-PM + Tara | Ready for user review (22 rules; core set complete) — Tara review next | Not approved | `compliance/rules/` | Tara review; P-06 |
 | D-10 | Prototype pipeline | — | AI-PM | Not started | — | `src/` (TBC) | G2, P-04 |
 | D-11 | Report PDF template | — | AI-PM | Not started | — | TBC | D-10 |
 | D-12 | Annotated PDF generator | — | AI-PM | Not started | — | TBC | D-10 |

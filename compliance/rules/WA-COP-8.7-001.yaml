@@ -1,0 +1,28 @@
+rule_id: WA-COP-8.7-001
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §8.7 (p104)
+requirement_plain: Where the TMP uses a truck mounted attenuator (TMA), it requires the operator to hold Main Roads
+  'Operate Truck Mounted Attenuator' accreditation.
+applicability: TMPs using TMAs
+evidence_required:
+- TMA referenced in TMP/TGS
+- operator accreditation requirement
+check_method: cross-reference
+expected_result: Operator accreditation requirement stated wherever a TMA is used
+category: E
+default_severity: Moderate
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced

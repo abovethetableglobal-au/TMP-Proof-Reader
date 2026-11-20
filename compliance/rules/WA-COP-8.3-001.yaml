@@ -1,0 +1,27 @@
+rule_id: WA-COP-8.3-001
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §8.3 (p101)
+requirement_plain: Where traffic devices are used, the TMP's roles/responsibilities provide for at least one person
+  with BWTM accreditation on site at all times while road workers are present.
+applicability: TMPs using traffic control devices
+evidence_required:
+- Roles & responsibilities section naming BWTM on-site requirement
+check_method: presence
+expected_result: BWTM on-site requirement stated
+category: E
+default_severity: Moderate
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced
