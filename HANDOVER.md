@@ -37,6 +37,7 @@ export TMPCHECK_ENV=local
 python -m src.portal.devseed --org "Way to Go Traffic Management" --user "Your Name"
 uvicorn src.portal.app:app --port 8000
 python -m pytest tests/portal
+# Test states (local DB only): python -m src.portal.devtools sub active | credits 10 | use-credit | check REF-001 draft_review --findings Major=2 | reset
 ```
 Stage plan: `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` §5. S1 done; next S2 (accounts). S3 needs P-14, P-15.
 

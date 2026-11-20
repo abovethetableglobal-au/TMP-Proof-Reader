@@ -153,3 +153,4 @@ Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local);
 - A-25: Potential Savings card removed; replaced by "Awaiting Review" card (P-16 resolved). All dashboard decisions closed; S2 next.
 - Owner instruction: subscription price removed from dashboard Subscription tile (status only). Price still shown on Credits & Billing.
 - Owner instruction: Subscription tile shows status as the headline value (Active in green; Not active/Lapsed/Cancelled in grey).
+- Added `src/portal/devtools.py` so the Owner can switch the local test account between states (subscription, credits, checks). Local DB only.
