@@ -25,6 +25,15 @@ JURISDICTION = [
     ("JX-MRWA", re.compile(r"complex traffic management arrangements|Road Infrastructure Manager|State Roads?", re.I),
      "Main Roads / complex-arrangement wording — confirm it applies to this road and TMP type"),
 ]
+# Run-together or split words and missing spaces that the AI passes miss on some runs (BENCH-04)
+WORD_FORM = [
+    ("WF-JOINED", re.compile(r"\b(upto|alot|infront|aswell|eachother|incase|inbetween|ontop)\b", re.I),
+     "Words run together — should be two words (e.g. 'up to')"),
+    ("WF-SPLIT", re.compile(r"\b\d+\s+(week|day|month|hour|year) s\b", re.I),
+     "Word split by a stray space (e.g. 'week s' — should be 'weeks'' or 'weeks')"),
+    ("WF-NOSPACE", re.compile(r"\b(No|Ref|Cert)\.(?=[A-Z0-9])"),
+     "No space after the abbreviation's full stop"),
+]
 SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
 
 
@@ -47,6 +56,9 @@ def run(pdf: Path) -> dict:
         for rule, rx, issue, sev in PLACEHOLDERS:
             for m in rx.finditer(text):
                 add(rule, pno, m.group(0), issue, sev, "C Completeness")
+        for rule, rx, issue in WORD_FORM:
+            for m in rx.finditer(text):
+                add(rule, pno, text[max(0, m.start() - 30):m.end() + 30], issue, "Minor", "A Proofreading")
         for rule, rx, issue in JURISDICTION:
             for m in rx.finditer(text):
                 add(rule, pno, text[max(0, m.start() - 40):m.end() + 40], issue, "Query", "E Compliance", "Unable to verify")

@@ -32,7 +32,16 @@ def ai_status() -> tuple[str, str]:
     if not os.environ.get("ANTHROPIC_API_KEY"):
         return "no_key", (f"AI passes {passes} were requested but no ANTHROPIC_API_KEY was found "
                           "in the window running the portal.")
-    return "on", f"AI passes {passes} are on."
+    return "on", f"AI passes {passes} are on (×{ai_runs()} runs per check)."
+
+
+def ai_runs() -> int:
+    """How many times the AI passes run per check (results combined). Env TMPCHECK_AI_RUNS overrides config."""
+    try:
+        n = int(os.environ.get("TMPCHECK_AI_RUNS") or settings().get("ai", {}).get("runs", 1))
+    except ValueError:
+        n = 1
+    return max(1, min(n, 3))
 
 
 PASS_CATEGORY = {"A": "A Proofreading", "B": "B Consistency", "C": "C Completeness", "D": "D TGS cross-check"}
@@ -235,13 +244,17 @@ def run_check(check_id: int) -> None:
             chk.ai_passes = None if state == "on" else f"skipped: {why}"
             if state == "on":
                 from src.tmpcheck import llm_checks
-                ai = llm_checks.run(pdf, passes.split(","))
-                for p in ai["passes"].values():
-                    for f in p.get("findings", []):
-                        f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
-                        results.append(("ai", f))
-                chk.ai_passes = passes
-                chk.ai_cost_usd = f"{ai['usd_total']:.2f}"
+                runs = ai_runs()
+                total = 0.0
+                for _ in range(runs):   # BENCH-04: repeat runs and combine (grouping removes the overlap)
+                    ai = llm_checks.run(pdf, passes.split(","))
+                    total += ai["usd_total"]
+                    for p in ai["passes"].values():
+                        for f in p.get("findings", []):
+                            f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
+                            results.append(("ai", f))
+                chk.ai_passes = passes + (f" ×{runs}" if runs > 1 else "")
+                chk.ai_cost_usd = f"{total:.2f}"
 
             merged = dedupe(results)
             if state == "on":

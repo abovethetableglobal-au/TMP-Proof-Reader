@@ -203,3 +203,50 @@ def test_grouped_finding_renders_pages_and_list(env):
     html = c.get(f"/checks/{cid}").text
     assert "Pages 9, 21" in html and 'class="list"' in html
     assert c.get(f"/checks/{cid}/findings.json").json()["findings"][-1]["pages"] == "9, 21"
+
+
+def test_two_ai_runs_combined_and_grouped(env, monkeypatch):
+    """BENCH-04: AI passes run twice; findings from both runs are grouped; costs add up."""
+    c, S = env
+    add_credits(S)
+    from src.tmpcheck import llm_checks, consolidate as cons
+    calls = {"n": 0}
+
+    def fake_run(pdf, passes, dry_run=False):
+        calls["n"] += 1
+        f = {"page": 4, "section": "3", "evidence": "Signage will be installed in accordance with TMR requirements.",
+             "issue": f"Queensland TMR referenced (run {calls['n']})", "fix": "Use WA terms", "severity": "Moderate",
+             "related_pages": [], "pass": "C"}
+        return {"passes": {"C": {"findings": [f]}}, "usd_total": 1.25}
+    monkeypatch.setattr(llm_checks, "run", fake_run)
+    # grouping call returns every finding on its own (the page-level merge already combined the overlaps)
+    monkeypatch.setattr(cons, "group_findings", lambda fs: ([([i], "issue") for i in range(len(fs))], 0.10))
+    monkeypatch.setenv("TMPCHECK_AI_PASSES", "C")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-dummy")
+    monkeypatch.delenv("TMPCHECK_AI_RUNS", raising=False)
+    cid = upload(c).json()["id"]
+    assert calls["n"] == 2
+    with S() as s:
+        chk = s.get(dbm.Check, cid)
+        assert chk.ai_passes == "C ×2" and chk.ai_cost_usd == "2.60"
+        tmr = [f for f in s.query(dbm.Finding).filter_by(check_id=cid).all() if f.page == 4 and "TMR" in (f.issue + f.evidence)]
+        # both AI copies and the rule finding overlap on the same evidence → merged into one finding
+        assert len(tmr) == 1 and "rules" in tmr[0].source and "AI C" in tmr[0].source
+
+
+def test_ai_runs_setting(monkeypatch):
+    monkeypatch.setenv("TMPCHECK_AI_RUNS", "1")
+    assert processing.ai_runs() == 1
+    monkeypatch.setenv("TMPCHECK_AI_RUNS", "9")
+    assert processing.ai_runs() == 3
+    monkeypatch.delenv("TMPCHECK_AI_RUNS")
+    assert processing.ai_runs() == 2          # config default (BENCH-04)
+
+
+def test_word_form_rules():
+    from src.tmpcheck.det_checks import WORD_FORM
+    hits = lambda t: [r for r, rx, _ in WORD_FORM if rx.search(t)]
+    assert hits("volume is upto 500 vph") == ["WF-JOINED"]
+    assert hits("at least 2 week s notice") == ["WF-SPLIT"]
+    assert hits("Cert No.KTS-24") == ["WF-NOSPACE"]
+    assert hits("No. 5, setup, up to 500") == []

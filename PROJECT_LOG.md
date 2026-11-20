@@ -186,3 +186,8 @@ Not live-tested: no API key in the AI-PM environment. Consolidation failure fall
 ## 2026-11-20 — BENCH-03 scored
 - Tuned engine on SU026: 124 findings, 88% recall, ~0 false positives, est. 41–62 min review, US$2.75. Run-to-run variance ±7 items noted (supports human review gate). Next: D-11 report PDF, D-12 annotated PDF to complete G4 criteria.
 - BENCH-04: Owner re-ran SU026 (check 7): 84% alone; union with check 6 = 91%; with check 5 = 96%. Supports "2 runs + grouping" (option A). Awaiting Owner go-ahead.
+
+## 2026-11-20 — Two-run default (BENCH-04 option A, Owner approved)
+- AI passes now run twice per check (`config/portal.yaml` ai.runs: 2; env TMPCHECK_AI_RUNS overrides, max 3); findings combined, merged and grouped; cost summed.
+- New rule checks: run-together words ("upto"), split words ("week s"), missing space after "No." — items missed by every AI run.
+- 35/35 portal tests pass. Next: Owner runs SU026 (≈US$5.40) → BENCH-05.
