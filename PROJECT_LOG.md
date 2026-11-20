@@ -130,3 +130,13 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-20 — BENCH-02: full-reference scoring (LLM run blocked)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Confirm API key loads | AI-PM | Blocked | Key is defined on the environment but not loaded in this container | Owner starts a new session (variables load at container start) |
+| REF-01 transcribed to structured ground truth (110 rows) | AI-PM | Production complete | — | Stored git-ignored in customer-docs |
+| `src/tmpcheck/score.py` scorer (auto-match + adjudication) | AI-PM | Quality checked (self-test pass) | — | Use on LLM output |
+| Deterministic engine vs full reference | AI-PM | Quality checked | — | 10/110 recall, 100% precision |
+| LLM passes A–D on SU026 + scoring + cost | AI-PM | Blocked | API key | Run commands in BENCH-02 |
+Note: network secrets cannot carry a Claude API key (Anthropic hosts excluded); environment variable is the only route.
