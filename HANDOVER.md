@@ -10,6 +10,9 @@ _Last updated: 2026-11-20 by AI-PM_
 ## Architecture
 See `docs/ARCHITECTURE.md` (proposed, not approved). Stage 1 = local Python pipeline; portal/payments deferred.
 
+## Repository
+Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `main`).
+
 ## Repository layout
 | Path | Purpose |
 |---|---|
@@ -25,7 +28,7 @@ See `docs/ARCHITECTURE.md` (proposed, not approved). Stage 1 = local Python pipe
 Nothing to install yet. Prototype prerequisites (Stage 1): Python 3.11, LibreOffice, Tesseract, ocrmypdf, ClamAV, Anthropic API key (via environment secret — never committed).
 
 ## Outstanding issues
-See DECISIONS.md "Pending" and RISKS.md. Blocking: P-02 (persistence), P-03 (reviewer), WTGTM evidence.
+See DECISIONS.md "Pending" and RISKS.md. Blocking: P-03 (reviewer), WTGTM evidence.
 
 ## Next steps
 See PROJECT_PLAN.md "Immediate priorities".

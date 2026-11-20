@@ -13,12 +13,12 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-11 | Project records held in private GitHub repo `abovethetableglobal-au/TMP-Proof-Reader` (resolves P-02) | Persistence beyond ephemeral container | 2026-11-20 | Owner |
 
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
 | P-01 | Supply Master Prompt v1.4 (not in workspace) | Paste into CLAUDE.md §0 | G1 |
-| P-02 | Persistent repository: this cloud container is ephemeral; records exist only here until pushed | Create a private GitHub repo `TMP-Check` and attach it to this session | **Immediately** |
 | P-03 | Who is the qualified TM professional for (a) compliance rule review and (b) pilot report review, and at what cost? | Engage a WA RCTM/AWTM-accredited reviewer (WTGTM staff or contractor); confirm hourly rate | G2 |
 | P-04 | Approve Anthropic Claude API (commercial terms, no training on inputs) as AI processing provider: anonymised docs now, live docs after G6; prototype budget cap | Approve with cap ≈ $150 AUD/month during prototype | Before WS5 |
 | P-05 | Five-credit price shown as $745 (no discount). Confirm: is a 5-pack a product, and undiscounted? | Do not offer a 5-pack SKU; customer can buy 5 singles | G8 |

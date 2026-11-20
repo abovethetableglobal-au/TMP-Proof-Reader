@@ -16,6 +16,6 @@ Scale: L/M/H. Score = Impact × Likelihood.
 | R-10 | GST registration obligation arises as turnover grows | M | M | Configurable GST; Owner to obtain accountant advice | Owner | Open |
 | R-11 | Drawing/TGS interpretation unreliable (images, CAD PDFs) | M | H | Start with text-layer extraction; flag drawing checks as Query where uncertain; measure accuracy separately | AI-PM | Open |
 | R-12 | Low/unknown WTGTM volume → weak economics | M | M | Obtain monthly volume in evidence request | Owner | Open |
-| R-13 | Project records lost (ephemeral container, no remote) | M | H | P-02: push to private repo | Owner | Open |
+| R-13 | Project records lost (ephemeral container, no remote) | M | H | Pushed to private repo (A-11) | Owner | Closed 2026-11-20 |
 | R-14 | Over-building before validation | M | M | Gate discipline; payments deferred to post-G5 | AI-PM | Open |
 | R-15 | Delivery depends on Owner manually performing checks (non-scalable) | M | M | Reviewer role separable from Owner; SOPs | AI-PM | Open |

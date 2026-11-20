@@ -20,3 +20,7 @@
 1. Owner: P-02 repo, approve/send evidence request, decide P-01, P-03, P-04.
 2. AI-PM: manually verify Code §4.2 clauses; draft first rules (status draft-unverified).
 3. AI-PM: extraction/annotation spike on public MRWA TMP template.
+
+## 2026-11-20 — Repository established (AI-PM)
+- Private repo `abovethetableglobal-au/TMP-Proof-Reader` created by Owner and connected; initial commit pushed. P-02 resolved (A-11); R-13 closed.
+- Open: P-01 Master Prompt v1.4; P-03 reviewer; P-04 AI provider; WTGTM evidence request awaiting Owner approval.
