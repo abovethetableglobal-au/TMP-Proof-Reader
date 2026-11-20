@@ -17,8 +17,8 @@
 | TMP Check findings raised | 21 |
 | Confirmed correct | 18 (incl. 1 valid issue not in the reference: same garbled 'TBA' date on p10 as on the cover) |
 | Confirmed false positives | 0 (after DEF-D02-1 fix; 4 before) |
-| Awaiting reviewer adjudication | 3 repeated sentences not listed in the reference |
-| Precision | 86% confirmed (18/21); up to 100% subject to adjudication |
+| Excluded by Owner (2026-11-20) | 3 repeated sentences not listed in the reference — ignore |
+| Precision | 100% on scored findings (18/18); 3 excluded |
 | Run time | < 1 s |
 
 ## Detected (9)

@@ -120,6 +120,6 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 | Task | Owner / AI | Status | Dependencies | Next step |
 |---|---|---|---|---|
 | Deterministic checks v0.2 on REF-01 source TMP | AI-PM | Quality checked | — | — |
-| Adjudicate 3 repeated-sentence findings | Tara | Awaiting input | — | Confirm valid/invalid |
+| Adjudicate 3 repeated-sentence findings | Owner | User accepted — ignore (excluded from scoring) | — | — |
 | LLM pass (categories A, B, D) | AI-PM | Blocked | ANTHROPIC_API_KEY env var + new session | Owner adds key |
 Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~95 of ~105 reference items need the LLM pass.
