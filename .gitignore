@@ -1,0 +1,7 @@
+# Never commit customer documents or secrets
+customer-docs/
+*.env
+.env*
+__pycache__/
+*.pyc
+output/

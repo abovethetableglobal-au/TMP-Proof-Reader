@@ -1,0 +1,27 @@
+# TMP Check compliance rule schema (v0.1)
+# One YAML file per rule. Status must be "approved" before the engine may use it on live documents.
+rule_id: "WA-COP-4.2.1-001"          # {JURIS}-{SRC}-{clause}-{seq}
+source_id: "SRC-WA-COP"               # key into COMPLIANCE_REGISTER §1
+source_name: ""
+source_url: ""
+edition: ""                           # e.g. "March 2026"
+publication_date: ""                  # YYYY-MM or YYYY-MM-DD
+jurisdiction: "WA"
+authority: ""                         # e.g. "Main Roads WA"
+clause: ""                            # section/clause reference only — do NOT paste copyrighted text
+requirement_plain: ""                 # paraphrase in plain language
+applicability: ""                     # conditions, e.g. "State roads; site-specific TMPs"
+evidence_required: []                 # what in the TMP/TGS demonstrates the requirement
+check_method: ""                      # presence | consistency | cross-reference | value-range | human-only
+expected_result: ""
+category: ""                          # A|B|C|D|E per handover §5
+default_severity: ""                  # Critical|Major|Moderate|Minor|Query
+human_review: true                    # true = reviewer must confirm before release
+status: "draft-unverified"            # draft-unverified | verified | reviewed | approved | retired
+verification_date: ""
+verified_by: ""
+reviewer: ""                          # qualified TM professional
+change_history:
+  - date: ""
+    by: ""
+    change: ""
