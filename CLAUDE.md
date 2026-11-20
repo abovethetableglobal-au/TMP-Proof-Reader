@@ -40,7 +40,7 @@ Claude Code is the sole Chief AI Project Manager (AI-PM) for TMP Check. It owns 
 
 ## §3 Confidentiality
 - `customer-docs/` is git-ignored. Never commit customer documents.
-- Use anonymised documents for development. Live documents only after data-handling approval (Gate 6).
+- Use anonymised documents for development, except WTGTM's historical documents supplied 2026-11-20, which may be used under A-18. Live pilot documents only after data-handling approval (Gate 6).
 - No customer data to unapproved AI platforms. No training use.
 
 ## §4 Record-keeping

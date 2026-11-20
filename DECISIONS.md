@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-18 | WTGTM's **original historical** TMPs, TGSs and proofreading records may be used for development and testing in this Claude Code session (incl. Claude API processing) on WTGTM's **verbal** permission. Amends A-16 for historical documents only; live pilot documents still from G6. Written confirmation recommended but not required. Resolves P-11 (Option C) | Owner decision; speed | 2026-11-20 | Owner |
 | A-17 | **Gate 3 signed off (conditional):** 22 core WA rules approved for prototype use on test/anonymised documents (live use from G6). Conditions: Tara's accreditation details (level, number, expiry) and completed review pack filed by **2026-11-27** | Master Prompt §3.3 option A | 2026-11-20 | Owner |
 | A-16 | Anthropic Claude API approved as AI processing provider: anonymised/public documents now; live customer documents only after G6 data-handling approval. Budget cap **$150 AUD/month**. Resolves P-04 | Required for proofreading (A) and TMP↔TGS cross-check (D) | 2026-11-20 | Owner |
 | A-15 | **Self-approve operating model:** human review is performed by the customer's own accredited person. For WTGTM: Tara (WTGTM, accredited). TMP Check issues a *draft* to the reviewer; the final report + annotated PDF are issued only after the reviewer accepts/edits/rejects every finding. Tara also reviews the initial WA rule set (G3) and sets reference findings (G5). Resolves P-03 | Owner direction; WTGTM retains professional responsibility (Handover §9) | 2026-11-20 | Owner |
@@ -28,7 +29,6 @@
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
-| P-11 | Use WTGTM's original historical TMPs (verbal permission) for development in this Claude Code session, before G6? | Yes, once WTGTM confirms by one-line email; amend A-16 to cover historical documents with written permission | Before any upload |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
 
 ## Provisional assumptions (AI-PM, non-material)

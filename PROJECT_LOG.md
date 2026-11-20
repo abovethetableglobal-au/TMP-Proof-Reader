@@ -107,3 +107,4 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 - Owner reports WTGTM returned the evidence pack today. Not yet transferred to AI-PM.
 - Before handling: confirm anonymised, or WTGTM written permission (Handover §13 Phase 1; CLAUDE.md §3). Store only in git-ignored `customer-docs/`.
 - Owner reports WTGTM gave **verbal** permission to use original (non-anonymised) documents. Conflicts with request v0.2 wording (written permission) and A-16 (anonymised docs only before G6) — raised to Owner as P-11.
+- A-18: Owner chose Option C — proceed on verbal permission (R-22). Awaiting upload.
