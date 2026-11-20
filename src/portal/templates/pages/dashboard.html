@@ -31,13 +31,10 @@
   <article class="card stat">
     <div class="stat-ic navy">{{ icon("calendar") }}</div>
     <div class="stat-body">
-      {% if d.subscription.status == "active" %}
-        <div class="stat-label">Subscription</div>
-        <span class="pill ok">Active</span>
-      {% else %}
-        <div class="stat-label">Subscription</div>
-        <span class="pill neutral">{{ {"none": "Not active", "lapsed": "Lapsed", "cancelled": "Cancelled"}[d.subscription.status] }}</span>
-      {% endif %}
+      {% set st = d.subscription.status %}
+      <div class="stat-num {{ 'ok' if st == 'active' else 'off' }}">{{ {"active": "Active", "none": "Not active", "lapsed": "Lapsed", "cancelled": "Cancelled"}[st] }}</div>
+      <div class="stat-label">Subscription</div>
+      <div class="stat-sub">{% if st == "active" %}Platform access enabled{% else %}<a href="/billing">View subscription</a>{% endif %}</div>
     </div>
   </article>
 
