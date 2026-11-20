@@ -37,3 +37,11 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 |---|---|
 | `tests/portal/test_workflow.py`: full workflow (7/7 seeded issues found, credit consumed at draft, original byte-identical, edit needs note, final blocked until all decided), no-credit rejection, invalid type/empty/renamed/oversize rejected with no credit, corrupt PDF → failed with no credit, other organisation gets 404 on check/original/final | 8/8 pass (23/23 portal total) |
 | Playwright browser run: upload sample → draft → accept 7 → Final issued | Pass — `docs/reviews/screens/check-draft.png` |
+
+## OWNER-FT-01 — 2026-11-20 — Owner functional test on SU026 (local portal, Windows)
+| Item | Result |
+|---|---|
+| Upload 61-page SU026 under A-26 limit | Pass |
+| Rule-based checks only (AI passes not active in that session) | 21 findings: 0 Critical, 0 Major, 8 Moderate, 9 Minor, 4 Query |
+| Owner accepted all findings → final issued | Workflow pass. Not a benchmark: decisions were test clicks, not Tara's review |
+| Next | Re-run with AI passes; score against REF-01 (~105 items) as BENCH-02 |
