@@ -19,4 +19,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-12 | Annotated PDF generator | — | AI-PM | Not started | — | TBC | D-10 |
 | D-14 | Spike S-01 (extraction, completeness, annotation) | 0.1 | AI-PM | Quality checked | n/a (internal) | `src/spike/`, `docs/reviews/SPIKE-S01_results.md` | — |
 | D-15 | Rule review pack for Tara | 0.1 | AI-PM | User accepted | Completed by reviewer | `docs/outbound/TMP_Check_Rule_Review_Tara_v0.1.docx` | D-09 |
+| D-16 | G2 evidence analysis 01 (REF-01) | 0.1 | AI-PM | Ready for user review | Pending | `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md` | WTGTM evidence |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |

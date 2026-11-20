@@ -108,3 +108,9 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 - Before handling: confirm anonymised, or WTGTM written permission (Handover §13 Phase 1; CLAUDE.md §3). Store only in git-ignored `customer-docs/`.
 - Owner reports WTGTM gave **verbal** permission to use original (non-anonymised) documents. Conflicts with request v0.2 wording (written permission) and A-16 (anonymised docs only before G6) — raised to Owner as P-11.
 - A-18: Owner chose Option C — proceed on verbal permission (R-22). Awaiting upload.
+
+## 2026-11-20 — First evidence item analysed (REF-01)
+- Received 1 file: a 4-page proofread report (~105 findings) on a 61-page TMP. The TMP itself was not supplied.
+- 16 new engine requirements (RQ-01–RQ-16) derived; report layout recommended as base for Output 1.
+- Provenance flag: metadata shows Owner's business as author, code-generated PDF; must confirm who produced it before using it as ground truth.
+- Customer name discrepancy flagged: 'Way to Go' (report) vs 'Way Too Go' (brief).
