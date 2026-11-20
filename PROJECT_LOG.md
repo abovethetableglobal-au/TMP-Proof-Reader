@@ -148,3 +148,4 @@ Ten conflicts identified (plan §2): portal timing vs S-03, "Compliant" wording 
 | S3 ledger + purchase flow | AI-PM | Awaiting approval | P-14, P-15 | — |
 Applied: A-22 headline; statuses per plan C-6/C-7; 5-pack hidden (`offered: false`) pending P-14; purchase buttons = manual credit request (A-09); savings card empty until baseline (P-16 default). Banner is an SVG illustration — no licensed photo used (no spend). Upload validates type/size/signature client-side only; server upload is S4.
 Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local); "Contact us" details not yet set.
+- A-23: manual-invoice credit requests; 5-pack $745 offered (P-14, P-05 resolved). `CR-5 offered: true`.

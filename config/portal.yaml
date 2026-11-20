@@ -26,7 +26,7 @@ credit_products:
     name: Five-credit pack
     credits: 5
     price: 745.00
-    offered: false           # P-05 / P-14 pending Owner confirmation
+    offered: true            # A-23
   - sku: CR-10
     name: Ten-credit pack
     credits: 10

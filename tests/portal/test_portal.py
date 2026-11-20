@@ -127,8 +127,9 @@ def test_dashboard_empty_states(client):
     assert "Org A" in html and "Org B" not in html
 
 
-def test_five_pack_hidden_until_confirmed(client):
-    assert "Five-credit pack" not in client.get("/billing").text
+def test_five_pack_offered_a23(client):
+    html = client.get("/billing").text
+    assert "Five-credit pack" in html and "$745.00" in html
 
 
 def test_library_lists_22_approved_rules(client):
