@@ -1,6 +1,6 @@
 """Create the local development organisation and user.
 
-No credits, checks or savings baseline are seeded: the dashboard must show
+No credits or checks are seeded: the dashboard must show
 genuine empty states, never mock-up figures (brief §4).
 
     python -m src.portal.devseed [--org "Name"] [--user "Name"] [--email x@y]

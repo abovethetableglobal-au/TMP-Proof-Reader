@@ -7,7 +7,7 @@ import enum
 import os
 from datetime import datetime, timezone
 
-from sqlalchemy import (Enum, ForeignKey, Integer, Numeric, String, Text,
+from sqlalchemy import (Enum, ForeignKey, Integer, String, Text,
                         DateTime, create_engine)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
@@ -54,9 +54,6 @@ class Organisation(Base):
     subscription_status: Mapped[SubscriptionStatus] = mapped_column(
         Enum(SubscriptionStatus), default=SubscriptionStatus.none)
     subscription_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    # Per-customer comparison baseline (AUD per check) for the savings estimate.
-    # Null = not agreed → savings card shows an empty state (P-16).
-    savings_baseline_aud: Mapped[float | None] = mapped_column(Numeric(10, 2))
 
 
 class User(Base):

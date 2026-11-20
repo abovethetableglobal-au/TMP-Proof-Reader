@@ -73,16 +73,14 @@ def test_recent_checks_tenant_scoped_and_wording(db):
     assert rows[0]["findings"] == "No issue identified in this check"
 
 
-def test_completed_counts_final_only_and_savings_needs_baseline(db):
+def test_completed_counts_final_only_and_awaiting_review(db):
     org = db.get(dbm.Organisation, 1)
     db.add_all([dbm.Check(org_id=1, doc_ref="X", filename="x", status=dbm.CheckStatus.draft_review),
                 dbm.Check(org_id=1, doc_ref="Y", filename="y", status=dbm.CheckStatus.final_issued,
                           final_issued_at=NOW)]); db.commit()
     d = services.dashboard(db, org, NOW)
     assert d["checks_completed"] == 1 and d["checks_this_month"] == 1
-    assert d["savings"] is None
-    org.savings_baseline_aud = 405; db.commit()
-    assert services.dashboard(db, org, NOW)["savings"] == 405 - 149
+    assert d["awaiting_review"] == 1
 
 
 def test_prices_match_approved_commercial_model():
@@ -122,7 +120,7 @@ def test_dashboard_empty_states(client):
     html = client.get("/").text
     assert "No credits purchased yet" in html
     assert "No checks yet" in html
-    assert "Available once a comparison baseline is agreed" in html
+    assert "Awaiting Review" in html and "Savings" not in html
     assert "Fast. Thorough. Evidence-based." in html
     assert "Org A" in html and "Org B" not in html
 

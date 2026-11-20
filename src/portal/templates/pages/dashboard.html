@@ -52,19 +52,13 @@
     </div>
   </article>
 
-  {# 4. Savings — estimate only, needs an agreed baseline (P-16) #}
+  {# 4. Awaiting review — drafts with the customer's accredited reviewer (A-15). Savings card removed (A-25). #}
   <article class="card stat">
-    <div class="stat-ic orange">{{ icon("savings") }}</div>
+    <div class="stat-ic orange-o">{{ icon("history") }}</div>
     <div class="stat-body">
-      {% if d.savings is not none %}
-        <div class="stat-num">{{ money(d.savings)[:-3] }}</div>
-        <div class="stat-label">Estimated Savings</div>
-        <div class="stat-sub">vs. agreed previous-process cost</div>
-      {% else %}
-        <div class="stat-num muted">—</div>
-        <div class="stat-label">Potential Savings</div>
-        <div class="stat-sub">{% if d.savings_baseline_set %}Shown after your first final report{% else %}Available once a comparison baseline is agreed{% endif %}</div>
-      {% endif %}
+      <div class="stat-num">{{ d.awaiting_review }}</div>
+      <div class="stat-label">Awaiting Review</div>
+      <div class="stat-sub">{% if d.awaiting_review %}Drafts with your accredited reviewer{% else %}No drafts waiting for your reviewer{% endif %}</div>
     </div>
   </article>
 </section>

@@ -106,12 +106,8 @@ def dashboard(db: Session, org: Organisation, now: datetime | None = None) -> di
     this_month = sum(1 for c in db.execute(final).scalars()
                      if _aware(c.final_issued_at) and _aware(c.final_issued_at) >= month_start)
 
-    savings = None
-    if org.savings_baseline_aud is not None and completed:
-        # Estimate only (P-16): agreed baseline per check minus single-credit price,
-        # for checks whose final report has been issued.
-        per_check = float(org.savings_baseline_aud) - cfg["credit_products"][0]["price"]
-        savings = max(per_check, 0) * completed
+    awaiting = len(db.execute(select(Check.id).where(
+        Check.org_id == org.id, Check.status == CheckStatus.draft_review)).all())
 
     return {
         "credits": bal,
@@ -119,7 +115,6 @@ def dashboard(db: Session, org: Organisation, now: datetime | None = None) -> di
                          "price": cfg["subscription"]["price"]},
         "checks_completed": completed,
         "checks_this_month": this_month,
-        "savings": savings,
-        "savings_baseline_set": org.savings_baseline_aud is not None,
+        "awaiting_review": awaiting,
         "recent": recent_checks(db, org.id),
     }

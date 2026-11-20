@@ -4,7 +4,7 @@
 |---|---|
 | Deliverable | D-17 |
 | Source brief | Owner "TMP Check – Dashboard UI Implementation Brief" + dashboard mock-up, received 2026-11-20 |
-| Status | Awaiting approval (P-16); P-12–P-15 resolved by A-21–A-24 |
+| Status | In progress — all decisions resolved (A-21–A-25); S1 complete |
 | Process tier | Significant (§2A) |
 | Review | Simulated three-perspective review (§5.3) — §7 below |
 
@@ -49,7 +49,7 @@
 
 | Table | Key columns | Notes |
 |---|---|---|
-| `organisation` | id, name, subscription_status, subscription_started_at, savings_baseline_aud (nullable) | Status entered by admin until Stripe |
+| `organisation` | id, name, subscription_status, subscription_started_at | Status entered by admin until Stripe |
 | `user` | id, org_id, email, password_hash, role | |
 | `check` | id, org_id, doc_ref, filename, status, created_at, completed_at, failure_reason, credit_lot_id | Status enum per C-6 |
 | `finding` | id, check_id, severity, page, section, evidence, disposition{pending, accepted, edited, rejected} | From `llm_checks.Finding` |

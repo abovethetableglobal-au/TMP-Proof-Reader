@@ -150,3 +150,4 @@ Applied: A-22 headline; statuses per plan C-6/C-7; 5-pack hidden (`offered: fals
 Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local); "Contact us" details not yet set.
 - A-23: manual-invoice credit requests; 5-pack $745 offered (P-14, P-05 resolved). `CR-5 offered: true`.
 - A-24: credit consumed on draft delivery to reviewer (P-15 resolved). S3 unblocked; P-16 (savings baseline) remains, card defaults to empty state.
+- A-25: Potential Savings card removed; replaced by "Awaiting Review" card (P-16 resolved). All dashboard decisions closed; S2 next.

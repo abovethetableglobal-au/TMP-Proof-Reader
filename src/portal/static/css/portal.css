@@ -110,7 +110,7 @@ main { padding: 0 0 28px; flex: 1; }
 .stat-ic.round { background: var(--navy-800); color: #fff; border-radius: 50%; }
 .stat-ic.round .ic { width: 34px; height: 34px; stroke-width: 2.2; }
 .stat-ic.orange { color: var(--orange); }
-.stat-ic.orange .ic { fill: var(--orange); stroke: var(--orange-600); }
+.stat-ic.orange-o { color: var(--orange); }
 .stat-num { font-size: 32px; font-weight: 800; color: var(--navy-800); line-height: 1.1; }
 .stat-num small { font-size: 15px; font-weight: 600; }
 .stat-num.muted { color: #98a2b3; }

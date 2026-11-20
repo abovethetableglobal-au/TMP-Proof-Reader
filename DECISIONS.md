@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-25 | **Savings card removed (resolves P-16):** no savings figure on the dashboard until G8 commercial validation. Replaced by "Awaiting Review" (drafts with accredited reviewer). Departure from approved mock-up | Owner decision | 2026-11-20 | Owner |
 | A-24 | **Credit consumption point (resolves P-15):** 1 credit consumed when the draft report is delivered to the customer's accredited reviewer. Reversal entry if a re-run is needed to correct a TMP Check error (A-05 rule 5). Failed processing consumes nothing | Owner choice of recommended option | 2026-11-20 | Owner |
 | A-23 | **Credit purchasing until payments enabled (resolves P-14, P-05):** "Request credits" → manual invoice; admin records ledger purchase after payment received. Five-credit pack offered at $745 (no discount) | Owner choice of recommended option; A-09 retained | 2026-11-20 | Owner |
 | A-22 | **Portal wording (resolves P-13):** banner headline "Professional TMP Checking. Fast. Thorough. Evidence-based." Tagline "Check • Comply • Confident" retained | Owner choice of recommended option; CLAUDE.md §2 | 2026-11-20 | Owner |
@@ -35,7 +36,6 @@
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
-| P-16 | Potential Savings card baseline | Hidden until Owner sets per-customer baseline; label as estimate | Before S1 card build |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |
