@@ -3,7 +3,7 @@
 <form class="dropzone" data-dropzone
       data-max-bytes="{{ up.max_bytes }}"
       data-allowed="{{ up.allowed_extensions|join(',') }}"
-      onsubmit="return false">
+      onsubmit="return false" novalidate>
   <label class="dz-target" for="tmp-file">
     <span class="dz-ic">{{ icon("file-up") }}</span>
     <span class="btn navy dz-btn">Choose Files</span>

@@ -90,6 +90,7 @@ def recent_checks(db: Session, org_id: int, limit: int = 5) -> list[dict]:
             "status": label, "tone": tone,
             "findings": findings_summary(counts.get(c.id, Counter()), c.status),
             "has_report": c.status in (CheckStatus.draft_review, CheckStatus.final_issued),
+            "link": True,
         })
     return rows
 
@@ -115,3 +116,17 @@ def dashboard(db: Session, org: Organisation, now: datetime | None = None) -> di
         "awaiting_review": awaiting,
         "recent": recent_checks(db, org.id),
     }
+
+
+LEDGER_LABELS = {"purchase": "Credits purchased", "consume": "Credit used", "reversal": "Credit returned",
+                 "expiry": "Credits expired", "adjustment": "Adjustment"}
+
+
+def ledger_history(db: Session, org_id: int) -> list[dict]:
+    rows = db.execute(select(CreditLedger, Check.doc_ref)
+                      .outerjoin(Check, Check.id == CreditLedger.check_id)
+                      .where(CreditLedger.org_id == org_id)
+                      .order_by(CreditLedger.created_at.desc(), CreditLedger.id.desc())).all()
+    return [{"date": _aware(r.created_at), "type": LEDGER_LABELS[r.type.value], "qty": r.qty,
+             "ref": doc_ref or r.payment_ref or "", "expires": _aware(r.expires_at) if r.type.value == "purchase" else None,
+             "reason": r.reason or ""} for r, doc_ref in rows]

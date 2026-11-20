@@ -61,8 +61,31 @@
         if (kind !== ext) {
           return show(file, "error", "This file does not appear to be a valid " + ext.slice(1).toUpperCase() + " document. It may be damaged or renamed.");
         }
-        show(file, "ok", "File checks passed. Sending files to the checking service is not yet connected in this version — no credit has been used.");
+        upload(file);
       });
+    }
+
+    function upload(file) {
+      var fd = new FormData();
+      fd.append("file", file);
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/checks/upload");
+      show(file, "", "Uploading…");
+      xhr.upload.onprogress = function (e) {
+        if (e.lengthComputable) bar.style.width = Math.round(e.loaded / e.total * 100) + "%";
+      };
+      xhr.onload = function () {
+        var res = {};
+        try { res = JSON.parse(xhr.responseText); } catch (err) { /* non-JSON error */ }
+        if (xhr.status === 200 && res.url) {
+          show(file, "ok", "Uploaded. Checking has started — opening the check…");
+          window.location.href = res.url;
+        } else {
+          show(file, "error", (res.error || "Upload failed.") + " No credit has been used.");
+        }
+      };
+      xhr.onerror = function () { show(file, "error", "Upload failed — check your connection. No credit has been used."); };
+      xhr.send(fd);
     }
 
     input.addEventListener("change", function () { handle(input.files[0]); });
@@ -78,4 +101,13 @@
       handle(files[0]);
     });
   });
+  // Check page: poll until processing finishes
+  var poll = document.querySelector("[data-poll]");
+  if (poll) {
+    setInterval(function () {
+      fetch(poll.dataset.poll).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.status !== "uploaded" && d.status !== "processing") window.location.reload();
+      });
+    }, 2000);
+  }
 })();

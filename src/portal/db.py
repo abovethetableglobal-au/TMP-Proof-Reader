@@ -75,6 +75,10 @@ class Check(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     final_issued_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     failure_reason: Mapped[str | None] = mapped_column(Text)
+    pages: Mapped[int | None] = mapped_column(Integer)
+    storage_path: Mapped[str | None] = mapped_column(String(500))
+    ai_passes: Mapped[str | None] = mapped_column(String(20))       # e.g. "A,B,C" when AI checks ran
+    ai_cost_usd: Mapped[str | None] = mapped_column(String(20))
 
 
 class Finding(Base):
@@ -85,7 +89,15 @@ class Finding(Base):
     page: Mapped[int] = mapped_column(Integer)
     section: Mapped[str] = mapped_column(String(200))
     evidence: Mapped[str] = mapped_column(Text)
-    disposition: Mapped[str] = mapped_column(String(16), default="pending")
+    issue: Mapped[str] = mapped_column(Text, default="")
+    action: Mapped[str | None] = mapped_column(Text)
+    category: Mapped[str] = mapped_column(String(40), default="")
+    outcome: Mapped[str] = mapped_column(String(40), default="Potential issue")
+    rule: Mapped[str | None] = mapped_column(String(60))
+    source: Mapped[str] = mapped_column(String(20), default="deterministic")  # deterministic | ai
+    disposition: Mapped[str] = mapped_column(String(16), default="pending")   # pending|accepted|edited|rejected
+    reviewer_note: Mapped[str | None] = mapped_column(Text)
+    dispositioned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class CreditLedger(Base):

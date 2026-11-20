@@ -21,5 +21,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-15 | Rule review pack for Tara | 0.1 | AI-PM | User accepted | Completed by reviewer | `docs/outbound/TMP_Check_Rule_Review_Tara_v0.1.docx` | D-09 |
 | D-16 | G2 evidence analysis 01 (REF-01) | 0.1 | AI-PM | Ready for user review | Pending | `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md` | WTGTM evidence |
 | D-17 | Customer portal dashboard implementation plan | 0.1 | AI-PM | Awaiting approval | Pending (P-12–P-16) | `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` | Owner brief + mock-up 2026-11-20 |
-| D-18 | Customer portal — stage S1 shell | 0.1 | AI-PM | Ready for user review | Pending | `src/portal/`, `config/portal.yaml`, `tests/portal/` | A-21, A-22 |
+| D-18 | Customer portal — S1 shell + S4 upload/check + reviewer workflow | 0.2 | AI-PM | Ready for user review | Pending | `src/portal/`, `config/portal.yaml`, `tests/portal/` | A-21, A-22 |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |

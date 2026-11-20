@@ -6,11 +6,11 @@
   <tbody>
   {% for r in rows %}
     <tr>
-      <td data-label="Date">{{ r.date.strftime('%-d %b %Y') }}</td>
+      <td data-label="Date">{{ r.date|dmy }}</td>
       <td data-label="Document">{{ r.doc_ref }}</td>
       <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span></td>
       <td data-label="Findings">{{ r.findings }}</td>
-      <td data-label="Actions">{% if r.has_report %}<a class="btn small outline" href="/checks/{{ r.id }}">View Report</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+      <td data-label="Actions"><a class="btn small outline" href="/checks/{{ r.id }}">{{ 'View Report' if r.has_report else 'View' }}</a></td>
     </tr>
   {% endfor %}
   </tbody>

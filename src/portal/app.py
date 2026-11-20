@@ -10,16 +10,16 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 import yaml
-from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import services
+from . import processing, services
 from .config import RULES_DIR, money, price_label, settings
-from .db import Organisation, SessionLocal, User, init_db
+from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
 
 HERE = Path(__file__).parent
 
@@ -37,6 +37,8 @@ app = FastAPI(title="TMP Check", docs_url=None, redoc_url=None, lifespan=lifespa
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 templates = Jinja2Templates(directory=HERE / "templates")
 templates.env.globals.update(money=money, price_label=price_label, cfg=settings)
+# Portable date format (strftime "%-d" is not supported on Windows)
+templates.env.filters["dmy"] = lambda d: f"{d.day} {d:%b %Y}" if d else ""
 
 NAV = [
     ("dashboard", "Dashboard", "/", "home"),
@@ -99,7 +101,8 @@ def my_checks(request: Request, ctx: Ctx = Depends(current), db: Session = Depen
 def billing(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     products = [p for p in settings()["credit_products"] if p["offered"]]
     return render(request, "pages/billing.html", "billing", ctx,
-                  credits=services.credit_balance(db, ctx.org.id), products=products)
+                  credits=services.credit_balance(db, ctx.org.id), products=products,
+                  history=services.ledger_history(db, ctx.org.id))
 
 
 def load_rules() -> list[dict]:
@@ -121,3 +124,80 @@ def library(request: Request, ctx: Ctx = Depends(current)):
 @app.get("/help", response_class=HTMLResponse)
 def help_page(request: Request, ctx: Ctx = Depends(current)):
     return render(request, "pages/help.html", "help", ctx)
+
+
+# ---------- S4/S5: upload, check detail, reviewer workflow ----------
+
+def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
+    """Tenant-scoped lookup: another organisation's check is indistinguishable from a missing one."""
+    chk = db.get(Check, check_id)
+    if chk is None or chk.org_id != ctx.org.id:
+        raise HTTPException(404, "Check not found")
+    return chk
+
+
+@app.post("/checks/upload")
+async def upload(background: BackgroundTasks, file: UploadFile = File(...),
+                 ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    data = await file.read(settings()["upload"]["max_bytes"] + 1)
+    try:
+        chk = processing.create_check(db, ctx.org.id, file.filename or "upload", data)
+    except processing.UploadError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    background.add_task(processing.run_check, chk.id)
+    return {"id": chk.id, "url": f"/checks/{chk.id}"}
+
+
+@app.get("/checks/{check_id}", response_class=HTMLResponse)
+def check_detail(check_id: int, request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    chk = get_check(db, ctx, check_id)
+    order = {s: i for i, s in enumerate(services.SEVERITIES)}
+    findings = sorted(db.query(Finding).filter_by(check_id=chk.id).all(),
+                      key=lambda f: (order.get(f.severity, 9), f.page, f.id))
+    label, tone = services.STATUS_LABELS[chk.status]
+    pending = sum(1 for f in findings if f.disposition == "pending")
+    counts = {s: sum(1 for f in findings if f.severity == s) for s in services.SEVERITIES}
+    return render(request, "pages/check_detail.html", "my_checks", ctx, chk=chk, findings=findings,
+                  status_label=label, tone=tone, pending=pending, counts=counts,
+                  error=request.query_params.get("error"), CheckStatus=CheckStatus)
+
+
+@app.get("/checks/{check_id}/status")
+def check_status(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    return {"status": get_check(db, ctx, check_id).status.value}
+
+
+@app.post("/checks/{check_id}/findings/{finding_id}")
+def decide(check_id: int, finding_id: int, decision: str = Form(...), note: str = Form(""),
+           ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    chk = get_check(db, ctx, check_id)
+    f = db.get(Finding, finding_id)
+    if f is None or f.check_id != chk.id:
+        raise HTTPException(404, "Finding not found")
+    if chk.status != CheckStatus.draft_review:
+        raise HTTPException(409, "Findings can only be changed while the report is a draft")
+    try:
+        processing.disposition(db, f, decision, note)
+    except processing.UploadError as e:
+        return RedirectResponse(f"/checks/{chk.id}?error={e}#f{f.id}", status_code=303)
+    db.commit()
+    return RedirectResponse(f"/checks/{chk.id}#f{f.id}", status_code=303)
+
+
+@app.post("/checks/{check_id}/final")
+def final(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    chk = get_check(db, ctx, check_id)
+    try:
+        processing.issue_final(db, chk)
+    except processing.UploadError as e:
+        return RedirectResponse(f"/checks/{chk.id}?error={e}", status_code=303)
+    db.commit()
+    return RedirectResponse(f"/checks/{chk.id}", status_code=303)
+
+
+@app.get("/checks/{check_id}/original")
+def original(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    chk = get_check(db, ctx, check_id)
+    if not chk.storage_path:
+        raise HTTPException(404)
+    return FileResponse(chk.storage_path, filename=chk.filename)

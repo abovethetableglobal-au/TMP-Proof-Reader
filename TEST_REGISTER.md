@@ -31,3 +31,9 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 |---|---|
 | `tests/portal/test_portal.py` — ledger derivation (consume, reversal, expiry), tenant scoping, final-only completion count, savings baseline gate, prices vs A-02/A-03, no GST-inclusive label, no mock-up figures or forbidden words on 6 pages, 22 rules listed | 15/15 pass |
 | Playwright render 1536/1024/390 px; horizontal overflow | 0 px all widths — `docs/reviews/screens/` |
+
+## PORTAL-S4 — 2026-11-20
+| Test | Result |
+|---|---|
+| `tests/portal/test_workflow.py`: full workflow (7/7 seeded issues found, credit consumed at draft, original byte-identical, edit needs note, final blocked until all decided), no-credit rejection, invalid type/empty/renamed/oversize rejected with no credit, corrupt PDF → failed with no credit, other organisation gets 404 on check/original/final | 8/8 pass (23/23 portal total) |
+| Playwright browser run: upload sample → draft → accept 7 → Final issued | Pass — `docs/reviews/screens/check-draft.png` |

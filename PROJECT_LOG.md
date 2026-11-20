@@ -154,3 +154,12 @@ Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local);
 - Owner instruction: subscription price removed from dashboard Subscription tile (status only). Price still shown on Credits & Billing.
 - Owner instruction: Subscription tile shows status as the headline value (Active in green; Not active/Lapsed/Cancelled in grey).
 - Added `src/portal/devtools.py` so the Owner can switch the local test account between states (subscription, credits, checks). Local DB only.
+
+## 2026-11-20 — Portal functional slice (S4 + S5-lite)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Upload → server validation → stored original (git-ignored) → deterministic checks (+ AI passes if `TMPCHECK_AI_PASSES` and API key set) → draft → credit consumed (A-24) | AI-PM | Quality checked | — | Owner functional test |
+| Reviewer workflow: accept / edit (note required) / reject per finding; final blocked until all decided (A-15) | AI-PM | Quality checked | — | Reviewer role enforcement in S2 |
+| Credit history from ledger on Credits & Billing | AI-PM | Quality checked | — | — |
+| Synthetic sample `test-library/samples/SAMPLE-TMP-01.pdf` (7 seeded issues, no customer data) | AI-PM | Quality checked | — | — |
+Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF protection (S2). Fixed Windows crash: `%-d` date format replaced with portable filter.

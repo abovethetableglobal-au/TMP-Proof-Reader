@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}{{ chk.doc_ref }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <p class="crumb"><a href="/checks">My Checks</a> / {{ chk.doc_ref }}</p>
+  <h1>{{ chk.doc_ref }} <span class="pill {{ tone }}">{{ status_label }}</span></h1>
+  <p>{{ chk.filename }} · uploaded {{ chk.created_at|dmy }}{% if chk.pages %} · {{ chk.pages }} pages{% endif %}
+    · <a href="/checks/{{ chk.id }}/original">Download original</a></p>
+</div>
+
+{% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+
+{% if chk.status in (CheckStatus.uploaded, CheckStatus.processing) %}
+<section class="card panel" data-poll="/checks/{{ chk.id }}/status">
+  <div class="empty">
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="empty-title">Checking your TMP…</p>
+    <p>This page updates automatically. No credit is used unless the draft report is produced.</p>
+  </div>
+</section>
+
+{% elif chk.status == CheckStatus.failed %}
+<section class="card panel">
+  <div class="empty">
+    <p class="empty-title">This check could not be completed</p>
+    <p>{{ chk.failure_reason }}</p>
+    <p><strong>No credit was used.</strong></p>
+    <a class="btn navy small" href="/checks/new">Upload again</a>
+  </div>
+</section>
+
+{% else %}
+<section class="card panel">
+  <div class="summary pad">
+    {% for s, n in counts.items() %}<div class="sev-box sev-{{ s|lower }}"><strong>{{ n }}</strong><span>{{ s }}</span></div>{% endfor %}
+  </div>
+  {% if chk.status == CheckStatus.draft_review %}
+  <div class="review-bar pad">
+    <p>{% if pending %}<strong>Draft report.</strong> Your accredited reviewer must accept, edit or reject each finding. {{ pending }} of {{ findings|length }} still need a decision.
+       {% else %}<strong>All findings have a decision.</strong> The final report can now be issued.{% endif %}</p>
+    <form method="post" action="/checks/{{ chk.id }}/final">
+      <button class="btn orange" type="submit" {% if pending %}disabled aria-disabled="true"{% endif %}>Issue final report</button>
+    </form>
+  </div>
+  {% else %}
+  <div class="review-bar pad"><p><strong>Final issued {{ chk.final_issued_at|dmy }}.</strong> Findings below show your reviewer's decisions.</p></div>
+  {% endif %}
+  <p class="note pad">{{ icon("info", "ic sm") }} TMP Check is a document quality check, not an approval, certification or safety declaration.
+    {% if chk.ai_passes %}AI passes run: {{ chk.ai_passes }}.{% else %}This check ran the automated rule-based checks only (no AI passes).{% endif %}</p>
+</section>
+
+<section class="card panel">
+  {% if findings %}
+  <ol class="findings">
+  {% for f in findings %}
+    <li class="finding" id="f{{ f.id }}">
+      <div class="f-head">
+        <span class="sev sev-{{ f.severity|lower }}">{{ f.severity }}</span>
+        <span class="muted">Page {{ f.page }}{% if f.category %} · {{ f.category }}{% endif %}{% if f.rule %} · <code>{{ f.rule }}</code>{% endif %}</span>
+        <span class="f-outcome">{{ f.outcome }}</span>
+        <span class="disp disp-{{ f.disposition }}">{{ f.disposition|capitalize }}</span>
+      </div>
+      <p class="f-issue">{{ f.issue }}</p>
+      {% if f.evidence %}<blockquote>{{ f.evidence }}</blockquote>{% endif %}
+      {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
+      {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}
+      {% if chk.status == CheckStatus.draft_review %}
+      <form class="f-form" method="post" action="/checks/{{ chk.id }}/findings/{{ f.id }}">
+        <input name="note" type="text" placeholder="Reviewer note (required for Edit)" value="{{ f.reviewer_note or '' }}" aria-label="Reviewer note">
+        <button class="btn small outline" name="decision" value="accepted">Accept</button>
+        <button class="btn small outline" name="decision" value="edited">Edit</button>
+        <button class="btn small outline" name="decision" value="rejected">Reject</button>
+      </form>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+  {% else %}
+  <div class="empty"><p class="empty-title">No issue identified in this check</p>
+    <p>The automated checks raised no findings. Your reviewer must still review the TMP before the final is issued.</p></div>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

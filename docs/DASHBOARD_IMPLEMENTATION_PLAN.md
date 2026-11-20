@@ -64,8 +64,8 @@
 | S1 Shell ✅ (D-18) | Layout, nav, header, banner, footer, responsive (desktop/tablet/mobile), design tokens, all empty states | P-12, P-13 | Visual match to mock-up at 1440/1024/390 px; no illustrative data |
 | S2 Accounts | Login, org separation, roles, audit log | S1 | Cross-tenant access tests fail closed |
 | S3 Ledger | Credit ledger, balance, expiry, history, admin "record purchase" | P-14, P-15 | Ledger unit tests: purchase/consume/reversal/expiry/oldest-first |
-| S4 Upload → check | Drag-drop, type/size validation (PDF/DOCX ≤ 20 MB, page limits A-10), progress, pipeline job, failure → no credit | S2, S3 | Corrupt/oversize/wrong-type rejected with message; failure creates no consume row |
-| S5 My Checks + review | Check list, findings, reviewer disposition, draft→final, report/annotated downloads | D-11, D-12 | Final cannot be issued with any pending finding |
+| S4 Upload → check ✅ (local) | Drag-drop, type/size validation (PDF/DOCX ≤ 20 MB, page limits A-10), progress, pipeline job, failure → no credit | S2, S3 | Corrupt/oversize/wrong-type rejected with message; failure creates no consume row |
+| S5 My Checks + review (findings + reviewer workflow ✅; PDFs pending D-11/D-12) | Check list, findings, reviewer disposition, draft→final, report/annotated downloads | D-11, D-12 | Final cannot be issued with any pending finding |
 | S6 Library + Help | 22 rules (source, edition, clause, verification date), FAQ, contact | — | Every rule shows source + edition + clause |
 | S7 QA | Playwright screenshots, accessibility (WCAG 2.1 AA contrast), security review | S1–S6 | Brief §9 criteria all evidenced |
 

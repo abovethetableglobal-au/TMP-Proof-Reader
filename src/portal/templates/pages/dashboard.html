@@ -18,7 +18,7 @@
       {% if d.credits.available %}
         <div class="stat-num">{{ d.credits.available }}</div>
         <div class="stat-label">Credits Available</div>
-        <div class="stat-sub">{{ d.credits.expiring_qty }} expire {{ d.credits.next_expiry.strftime('%-d %b %Y') }}</div>
+        <div class="stat-sub">{{ d.credits.expiring_qty }} expire {{ d.credits.next_expiry|dmy }}</div>
       {% else %}
         <div class="stat-num">0</div>
         <div class="stat-label">Credits Available</div>
@@ -80,7 +80,7 @@
       <div><div class="big">{{ d.credits.available }}</div><div>Credits Available</div></div>
       <div class="sep" aria-hidden="true"></div>
       <div>
-        {% if d.credits.next_expiry %}<div class="lbl">Next expiry</div><div>{{ d.credits.next_expiry.strftime('%-d %b %Y') }}</div>
+        {% if d.credits.next_expiry %}<div class="lbl">Next expiry</div><div>{{ d.credits.next_expiry|dmy }}</div>
         {% else %}<div class="lbl">Expiry</div><div class="muted">Credits are valid {{ cfg().credits.validity_months }} months from purchase</div>{% endif %}
       </div>
     </div>

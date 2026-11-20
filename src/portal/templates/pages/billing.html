@@ -20,7 +20,7 @@
     <h2 id="bal-h" class="pad">Credit balance</h2>
     <div class="pad">
       <p class="price">{{ credits.available }} <small>credits</small></p>
-      <p class="muted">{% if credits.next_expiry %}{{ credits.expiring_qty }} expire on {{ credits.next_expiry.strftime('%-d %b %Y') }}.{% else %}Credits are valid {{ cfg().credits.validity_months }} months from purchase.{% endif %}</p>
+      <p class="muted">{% if credits.next_expiry %}{{ credits.expiring_qty }} expire on {{ credits.next_expiry|dmy }}.{% else %}Credits are valid {{ cfg().credits.validity_months }} months from purchase.{% endif %}</p>
     </div>
   </section>
 </div>
@@ -48,6 +48,21 @@
 
 <section class="card panel" id="history" aria-labelledby="hist-h">
   <h2 id="hist-h" class="pad">Credit history</h2>
+  {% if history %}
+  <div class="table-wrap">
+  <table class="checks">
+    <thead><tr><th scope="col">Date</th><th scope="col">Transaction</th><th scope="col">Credits</th><th scope="col">Reference</th><th scope="col">Expires</th></tr></thead>
+    <tbody>
+    {% for h in history %}
+      <tr><td data-label="Date">{{ h.date|dmy }}</td><td data-label="Transaction">{{ h.type }}</td>
+        <td data-label="Credits">{{ '%+d'|format(h.qty) }}</td><td data-label="Reference">{{ h.ref }}</td>
+        <td data-label="Expires">{{ h.expires|dmy if h.expires else '—' }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
   <div class="empty"><p class="empty-title">No transactions yet</p><p>Purchases, credits used and expiries will be listed here.</p></div>
+  {% endif %}
 </section>
 {% endblock %}
