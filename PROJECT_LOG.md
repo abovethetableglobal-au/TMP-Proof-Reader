@@ -123,3 +123,10 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 | Adjudicate 3 repeated-sentence findings | Owner | User accepted — ignore (excluded from scoring) | — | — |
 | LLM pass (categories A, B, D) | AI-PM | Blocked | ANTHROPIC_API_KEY env var + new session | Owner adds key |
 Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~95 of ~105 reference items need the LLM pass.
+
+## 2026-11-20 — LLM checking passes coded (G4)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
+Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
+Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
