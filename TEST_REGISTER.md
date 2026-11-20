@@ -53,3 +53,12 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Actual AI cost | **US$3.33** for a 61-page TMP (estimate was US$2–4) |
 | Defect found | Same issue reported by several passes (e.g. p25 template leftover ×4) → duplicate merging added; AI 'fix' and category were not shown → fixed |
 | Next | Owner runs `devtools dedupe 5`, exports JSON → BENCH-02 scoring vs REF-01 (~105 items) |
+
+## BENCH-02 — 2026-11-20 — SU026, rules + AI passes A–D (simulated scoring)
+| Measure | Result |
+|---|---|
+| Recall vs REF-01 | 97/110 rows (88%); leftovers 25/26, consistency 22/23, typos 35/44, TGS 8/9 |
+| Likely false positives | 3 (all pass D drawing placement) |
+| Findings | 211 (after merge) for ~105 issues — reviewer time 70–105 min, target 45 **not met** |
+| Cost | US$3.33 |
+| Detail | `docs/reviews/BENCH-02_SU026_AI_passes.md` |
