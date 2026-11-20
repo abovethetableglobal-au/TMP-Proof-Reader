@@ -62,3 +62,10 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Findings | 211 (after merge) for ~105 issues — reviewer time 70–105 min, target 45 **not met** |
 | Cost | US$3.33 |
 | Detail | `docs/reviews/BENCH-02_SU026_AI_passes.md` |
+
+## BENCH-02b — 2026-11-20 — grouping applied to check 5
+| Measure | Result |
+|---|---|
+| Findings | 211 → 138; recall 98/110 (89%), no reference item lost |
+| Over-merges | 3 (prompt tightened) |
+| Review time est. | 46–69 min (target 45) |

@@ -20,9 +20,12 @@ Several checks ran independently, so the same underlying problem is often report
 on different pages (e.g. a date conflict raised at page 10 and again at each TGS), or in different words.
 
 Return groups of finding ids:
-- Put findings in the same group only when fixing one would fix the others (same conflict, same
-  leftover block, same missing item, same wrong statement). Different typos are different problems,
-  even if they are the same kind of error; keep them separate.
+- Put findings in the same group only when ONE edit at ONE place would fix them all (same conflict,
+  same leftover block, same missing item, same wrong statement). If the fixes are different edits in
+  different places (e.g. fill in a consultation register AND attach evidence to an appendix; correct the
+  contents page AND add missing page footers; align a date range AND a duration), they are different
+  problems even if related: keep them separate. Different typos are different problems, even if they
+  are the same kind of error.
 - kind = "style_variant" only for pure presentation-consistency points: unit spacing, capitalisation,
   hyphenation or dash style, number/time/date formats, abbreviation or term variants (e.g. car park /
   carpark). Spelling mistakes, wrong words, grammar errors, missing punctuation and all factual,

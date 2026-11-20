@@ -66,3 +66,15 @@ Accreditation number format differs cover vs TGS; review date later than Rev 0 d
 | 3 | Pass D: placement judgements → Query; add body figures (p7–8) | AI-PM | $0 |
 | 4 | Re-run SU026 and re-score (BENCH-03) | Owner runs, AI-PM scores | ~US$3.50 |
 | 5 | Tara validates the 31 substantive extras and 3 disagreements (blind rule: she has already set REF-01) | Tara via Owner | Reviewer time |
+
+## Addendum 2026-11-20 — after AI issue grouping (same run, `devtools consolidate 5`)
+| Measure | Before grouping | After grouping |
+|---|---|---|
+| Findings | 211 | **138** |
+| Reference rows found | 97/110 (88%) | **98/110 (89%)** — no reference item lost; p22 trailing-comma item now visible in a merged finding |
+| Likely false positives | 3 | 2 (trucks on path; cone spacing +10%) |
+| Style roll-up | — | 23 points in one finding |
+| Est. review time (20–30 s/finding) | 70–105 min | **46–69 min** (target 45) |
+| Extra AI cost | — | US$0.18 |
+
+**Over-merging (3 cases):** dates + duration; p25 consultation placeholders + empty Appendix E; contents page + missing footers on pp55–56. Each pair is two reference items needing two different edits, now in one finding — a reviewer could action one fix and miss the other. Grouping prompt tightened ("one edit at one place"). To verify in BENCH-03.
