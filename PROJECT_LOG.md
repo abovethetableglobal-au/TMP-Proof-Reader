@@ -115,3 +115,11 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 - Provenance flag: metadata shows Owner's business as author, code-generated PDF; must confirm who produced it before using it as ground truth.
 - Customer name discrepancy flagged: 'Way to Go' (report) vs 'Way Too Go' (brief).
 - A-19: REF-01 confirmed correct → usable as reference findings. A-20: customer name corrected to 'Way to Go Traffic Management' across records; rule review pack and evidence request source files updated (copies already sent keep the old spelling).
+
+## 2026-11-20 — BENCH-01: first benchmark on a real TMP
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Deterministic checks v0.2 on REF-01 source TMP | AI-PM | Quality checked | — | — |
+| Adjudicate 3 repeated-sentence findings | Tara | Awaiting input | — | Confirm valid/invalid |
+| LLM pass (categories A, B, D) | AI-PM | Blocked | ANTHROPIC_API_KEY env var + new session | Owner adds key |
+Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~95 of ~105 reference items need the LLM pass.

@@ -7,7 +7,8 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 |---|---|---|---|---|---|
 | PUB-01 | T-EDGE (public) | MRWA TMP template, unfilled, DOCX→PDF | 42 | n/a (all placeholders expected) | Used in S-01 |
 | T-SEED-01 | T-SEED | PUB-01 with 3 headings deleted, 1 renamed; TOC left stale | 42 | AI-PM (seeded ground truth: `T-SEED-01.expected.json`) | Used in TD-01 |
-| REF-01 | T-HIST | Proofread report (~105 findings) for a 61-pp site-specific TMP; source TMP not yet received | 4 (report) | Confirmed correct by WTGTM (A-19) | Awaiting input (source TMP) |
+| REF-01 | T-HIST | Proofread report (~105 findings) for a 61-pp site-specific TMP; source TMP received 2026-11-20 (REF-01-SRC) | 4 (report) | Confirmed correct by WTGTM (A-19) | Awaiting input (source TMP) |
+| REF-01-SRC | T-HIST | Source TMP for REF-01 (redacted by customer), 61 pp incl. 3 TGSs | 61 | REF-01 (A-19) | Used in D-02 |
 | — | T-HIST | Further WTGTM evidence | — | — | Awaiting input |
 
 ## Runs

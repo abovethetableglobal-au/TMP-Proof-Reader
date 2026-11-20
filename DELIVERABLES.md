@@ -14,7 +14,7 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-07 | TPR-01 three-perspective review (simulated) | 1.0 | AI-PM | User accepted | Approved (A-13) | `docs/reviews/TPR-01_project_strategy.md` | — |
 | D-08 | IR-01 independent review brief | 1.0 | AI-PM | Awaiting approval | Pending (Owner transfer) | `docs/handovers/IR-01_independent_strategy_review.md` | — |
 | D-09 | WA compliance rule library (initial) | 0.1 | AI-PM + Tara | User accepted (conditional, A-17) | Not approved | `compliance/rules/` | Tara review; P-06 |
-| D-10 | Prototype pipeline | 0.1 | AI-PM | In progress (template-diff module done) | Not approved | `src/tmpcheck/` | API key; WTGTM evidence |
+| D-10 | Prototype pipeline | 0.1 | AI-PM | In progress (template-diff + deterministic checks v0.2; LLM pass blocked on API key) | Not approved | `src/tmpcheck/` | API key; WTGTM evidence |
 | D-11 | Report PDF template | — | AI-PM | Not started | — | TBC | D-10 |
 | D-12 | Annotated PDF generator | — | AI-PM | Not started | — | TBC | D-10 |
 | D-14 | Spike S-01 (extraction, completeness, annotation) | 0.1 | AI-PM | Quality checked | n/a (internal) | `src/spike/`, `docs/reviews/SPIKE-S01_results.md` | — |
