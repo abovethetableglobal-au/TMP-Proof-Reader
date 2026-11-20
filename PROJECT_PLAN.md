@@ -38,9 +38,9 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 ## Budget (Master Prompt §11.1)
 | Item | Approved | Committed | Actual |
 |---|---|---|---|
-| Project budget | **$0 — none approved yet** | $0 | $0 cash |
+| Project budget | $150 AUD/month (Claude API only) | $0 | $0 cash |
 | Firecrawl research credits (Owner's account) | Within existing tools | — | ~180 credits (2026-11-20) |
-| Requested: Claude API prototype (P-04) | Pending | — | — |
+| Claude API (A-16) | **$150 AUD/month cap** | $0 | $0 |
 | Requested: AS 1742.3:2019 licence (P-06) | Pending | — | — |
 | Requested: TM reviewer fees (P-03) | Pending | — | — |
 

@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-16 | Anthropic Claude API approved as AI processing provider: anonymised/public documents now; live customer documents only after G6 data-handling approval. Budget cap **$150 AUD/month**. Resolves P-04 | Required for proofreading (A) and TMP↔TGS cross-check (D) | 2026-11-20 | Owner |
 | A-15 | **Self-approve operating model:** human review is performed by the customer's own accredited person. For WTGTM: Tara (WTGTM, accredited). TMP Check issues a *draft* to the reviewer; the final report + annotated PDF are issued only after the reviewer accepts/edits/rejects every finding. Tara also reviews the initial WA rule set (G3) and sets reference findings (G5). Resolves P-03 | Owner direction; WTGTM retains professional responsibility (Handover §9) | 2026-11-20 | Owner |
 | A-14 | WTGTM evidence request v0.2 approved for Owner to send (blank templates raised to Essential) | Critical path G2; Spike S-01 finding | 2026-11-20 | Owner |
 | A-13 | **Project baseline approved** (Option A): strategy incl. phased category E (TPR-01), deliverables (DELIVERABLES.md), success criteria (PROJECT_BRIEF.md). Gate 1 signed off. Resolves P-10 | Master Prompt §17 | 2026-11-20 | Owner |
@@ -22,7 +23,6 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-04 | Approve Anthropic Claude API (commercial terms, no training on inputs) as AI processing provider: anonymised docs now, live docs after G6; prototype budget cap | Approve with cap ≈ $150 AUD/month during prototype | Before WS5 |
 | P-05 | Five-credit price shown as $745 (no discount). Confirm: is a 5-pack a product, and undiscounted? | Do not offer a 5-pack SKU; customer can buy 5 singles | G8 |
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |

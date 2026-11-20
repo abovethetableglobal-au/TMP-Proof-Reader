@@ -20,7 +20,7 @@ Governed by Master Prompt v1.4 §4. No work is recorded as performed by another 
 | Firecrawl search/scrape | Integrated MCP tool | Public web only | AI "query" extraction must be verified manually | Owner's Firecrawl credits — ~180 used on 2026-11-20 |
 | Google Drive | Connector available | Not yet used | Not approved for customer docs | — |
 | Gmail / Google Calendar | Connector available | Not used | Sending to WTGTM requires Owner approval | — |
-| Anthropic Claude API | **Not configured** | — | Needs API key + approval (P-04) | Pay per use |
+| Anthropic Claude API | Approved (A-16); key pending | Anonymised/public docs until G6 | Data terms to be verified & recorded before live use | Cap $150 AUD/month |
 | ChatGPT / Gemini | **No integration** | Human-mediated only | Owner must transfer briefs/results | Owner's plans |
 | Tara (WTGTM) | Appointed A-15 | Customer-side reviewer | Single reviewer (R-18); not independent of customer (R-17) | Borne by WTGTM (S-05) |
 
