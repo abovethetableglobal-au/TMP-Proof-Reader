@@ -23,3 +23,4 @@ Scale: L/M/H. Score = Impact × Likelihood.
 | R-17 | Rule set reviewed only by the founding customer's staff — not independent for other customers | M | M | Before G8/expansion: independent accredited review of rule library | Owner | Open |
 | R-18 | Single reviewer (Tara) — availability bottleneck for G3, G5 and pilot turnaround | M | M | Agree time commitment; nominate backup accredited WTGTM reviewer | Owner | Open |
 | R-19 | Ground truth not blind — reviewer sees TMP Check output before setting reference findings | H | M | Tara sets reference findings **before** seeing any TMP Check output (TEST_METHODOLOGY §1) | AI-PM | Open |
+| R-20 | Reviewer accreditation assumed, not verified (S-07); if RTM not held, complex TMPs need another endorser | M | L | Sight accreditation records (level, number, expiry) before G3; record in AI_RESOURCES | AI-PM | Open |

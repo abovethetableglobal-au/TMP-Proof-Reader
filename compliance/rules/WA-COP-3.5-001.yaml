@@ -1,0 +1,30 @@
+rule_id: WA-COP-3.5-001
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §3.5 (p25)
+requirement_plain: 'TMP identifies the road authority that must authorise it: Main Roads (or its authorised contractor)
+  for Main Roads roads; the LGA for local roads; Main Roads as well where LGA-road works affect Main Roads roads
+  or permanent Main Roads traffic signals.'
+applicability: All TMPs
+evidence_required:
+- Road authority named
+- road ownership stated
+- impact on Main Roads roads/signals considered
+check_method: consistency
+expected_result: Authorising authority consistent with roads described
+category: E
+default_severity: Moderate
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced

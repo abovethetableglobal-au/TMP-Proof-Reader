@@ -33,6 +33,7 @@
 | ID | Assumption | Revisit |
 |---|---|---|
 | S-05 | Tara's review time is provided by WTGTM at no cost to TMP Check | G6 pilot terms (P-09) |
+| S-07 | Tara (WTGTM business owner) holds the WA accreditations needed for all TMP types, incl. RTM for 'complex traffic arrangements' (Code §4.2.3). **Unverified** — Owner's understanding | Verify certificate numbers, levels & expiry before G3 |
 | S-06 | Handover §9 "review before release" is met when the accredited reviewer approves the draft before the final report is issued | G6 |
 | S-01 | WTGTM TMPs follow MRWA TMP template structure | G2 |
 | S-02 | Compliance baseline = WA Code March 2026 + its adopted AGTTM/AS editions (see COMPLIANCE_REGISTER) | G3 |

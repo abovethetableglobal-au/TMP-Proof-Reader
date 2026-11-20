@@ -61,3 +61,12 @@ Result: 32 evidence-bound findings, original unchanged, 3 defects found and fixe
 | Timeline | Removes reviewer-appointment blocker on G3/G5 |
 | Quality | New risks R-16 (automation bias), R-17 (independence), R-18 (single reviewer), R-19 (blind ground truth) |
 | Affected | CLAUDE.md §2, ARCHITECTURE, TEST_METHODOLOGY, COMMERCIAL_MODEL, RISKS, PLAN, AI_RESOURCES |
+
+## 2026-11-20 — WS3 core rules + reviewer accreditation
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Record Tara's accreditation as unverified assumption (S-07, R-20) | AI-PM | Production complete | — | Sight records before G3 |
+| Draft rules from WA Code §3.5, §4.2.1–4.2.3 (primary text, local PDF extraction, no Firecrawl spend) | AI-PM | Production complete (17 rules) | — | §8 accreditation rules |
+| Tara review of rule set | Tara | Not started | Rule set complete | G3 |
+
+Finding: Code §4.2.1 mandates use of a Main Roads TMP template with headings retained (VC-04) — confirms template-diff approach.

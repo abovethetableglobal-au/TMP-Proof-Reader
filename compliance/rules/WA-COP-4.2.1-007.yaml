@@ -1,0 +1,27 @@
+rule_id: WA-COP-4.2.1-007
+source_id: SRC-WA-COP
+source_name: Traffic Management for Works on Roads Code of Practice
+source_url: https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/traffic-management-for-works-on-roads-code-of-practice.pdf
+edition: March 2026
+publication_date: 2026-03
+jurisdiction: WA
+authority: Main Roads WA
+clause: §4.2.1 (p27)
+requirement_plain: Every TGS is labelled for the work situation it applies to (e.g. clearance to traffic conditions),
+  so the correct TGS is implemented.
+applicability: All TGSs
+evidence_required:
+- TGS title/label describing applicable situation
+check_method: consistency
+expected_result: Each TGS label matches a situation described in the TMP
+category: D
+default_severity: Moderate
+human_review: true
+status: verified
+verification_date: '2026-11-20'
+verified_by: AI-PM (read against primary text)
+reviewer: Tara (WTGTM) — pending
+change_history:
+- date: '2026-11-20'
+  by: AI-PM
+  change: Drafted from primary text; paraphrased, no Code text reproduced
