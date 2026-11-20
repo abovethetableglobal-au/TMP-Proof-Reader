@@ -35,3 +35,7 @@
 | Project baseline | Owner | Awaiting approval | — | P-10 |
 
 **Issues:** none new. **Approvals pending:** P-03–P-10.
+
+## 2026-11-20 — Gate 1 passed
+- Owner approved baseline Option A (A-13). G1 = User accepted.
+- Next: WS3 core rule drafting; WS6 technical spike on public MRWA TMP template.

@@ -10,7 +10,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 ## Gates
 | Gate | Criteria | Target | Status |
 |---|---|---|---|
-| G1 Initiation | Records, scope, plan established; Owner sign-off | 2026-11-27 | **Awaiting approval** (P-10) |
+| G1 Initiation | Records, scope, plan established; Owner sign-off | 2026-11-27 | **User accepted 2026-11-20** (A-13) |
 | G2 Customer requirements | ≥5 representative TMP packages + proofreader corrections received and analysed; requirements doc approved | 2026-12-18 | Blocked (WTGTM evidence) |
 | G3 Compliance framework | Initial WA rule set (target 30–60 rules) verified against primary sources and reviewed by qualified TM professional | 2027-01-29 | In progress |
 | G4 Working prototype | Representative TMP processed → report PDF + annotated PDF | 2027-02-05 | Not started |
@@ -22,7 +22,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 ## Workstreams
 | WS | Workstream | Owner | Depends on | Next action | Status |
 |---|---|---|---|---|---|
-| 1 | Project management | AI-PM | — | Owner sign-off of G1 | In progress |
+| 1 | Project management | AI-PM | — | Maintain records; manage G2 | In progress |
 | 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Owner sends `docs/WTGTM_EVIDENCE_REQUEST.md` | Awaiting approval |
 | 3 | Regulatory research | AI-PM; Qualified reviewer | Reviewer appointed (P-03); AS 1742.3 access (P-06) | Build source register → draft rules from Code §4.2 (core set per TPR-01) | In progress |
 | 4 | Product design | AI-PM | WS2 | Customer + reviewer workflow wireframes | Not started |
