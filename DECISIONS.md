@@ -28,6 +28,7 @@
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
+| P-11 | Use WTGTM's original historical TMPs (verbal permission) for development in this Claude Code session, before G6? | Yes, once WTGTM confirms by one-line email; amend A-16 to cover historical documents with written permission | Before any upload |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
