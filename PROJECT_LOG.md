@@ -24,3 +24,14 @@
 ## 2026-11-20 — Repository established (AI-PM)
 - Private repo `abovethetableglobal-au/TMP-Proof-Reader` created by Owner and connected; initial commit pushed. P-02 resolved (A-11); R-13 closed.
 - Open: P-01 Master Prompt v1.4; P-03 reviewer; P-04 AI provider; WTGTM evidence request awaiting Owner approval.
+
+## 2026-11-20 — Master Prompt v1.4 adopted (AI-PM)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Save Master Prompt v1.4; import into CLAUDE.md; fix hierarchy to §6.1 | AI-PM | Production complete | — | — |
+| Three-perspective review TPR-01 (simulated) | AI-PM | Ready for user review | — | Owner approves baseline (P-10) |
+| Independent review brief IR-01 | AI-PM | Awaiting approval | Owner transfer | Owner pastes to ChatGPT/Gemini |
+| Deliverable register; capability register; budget table; §11.2 status labels | AI-PM | Production complete | — | — |
+| Project baseline | Owner | Awaiting approval | — | P-10 |
+
+**Issues:** none new. **Approvals pending:** P-03–P-10.

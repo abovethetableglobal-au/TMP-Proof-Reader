@@ -1,13 +1,26 @@
 # CLAUDE.md — TMP Check Operating Instructions
 
-> **Authority hierarchy (highest first):**
-> 1. Owner (User / Principal) — final authority on commercial, financial, scope and contractual matters.
-> 2. Universal AI Project Management & Autonomous Multi-AI Organisation System — Master Prompt v1.4 — **NOT YET SUPPLIED** (see DECISIONS.md P-01). Insert at §0 below when received; it takes precedence over §1–§6 where they conflict.
-> 3. `PROJECT_HANDOVER.md` v1.0 (Project Initiation & Management Handover).
-> 4. This file.
+> **Instruction hierarchy (Master Prompt v1.4 §6.1, highest first):**
+> 1. Mandatory requirements — platform rules, safety, security, privacy, law.
+> 2. Universal operating framework — `MASTER_PROMPT_v1.4.md`.
+> 3. Approved project requirements — `PROJECT_HANDOVER.md` v1.0 and approved entries in `DECISIONS.md`.
+> 4. Task instructions (this file §1–§6 and individual task briefs).
+> 5. Quality and acceptance criteria.
+>
+> The Owner (User / Principal) holds ultimate authority over the project and approves all matters listed in Master Prompt §3.2.
 
 ## §0 Master Prompt v1.4
-_Placeholder — awaiting Owner. Until supplied, operate under PROJECT_HANDOVER.md._
+Received and adopted 2026-11-20 (DECISIONS A-12). Full text imported below and binding on every session:
+
+@MASTER_PROMPT_v1.4.md
+
+Project application:
+- **Process tier:** TMP Check is a *Significant* project (§2A): full lifecycle, three-perspective review, deliverable register, change control.
+- **Status labels:** use only the §11.2 labels in all registers.
+- **Reviews:** three-perspective reviews are labelled *simulated* unless performed by a separate platform or person (§5.3). Record them in `docs/reviews/`.
+- **Delegation:** use the §4.5 handover format; briefs live in `docs/handovers/`; outcomes logged in `AI_RESOURCES.md`.
+- **Evidence:** classify claims per §18.2.
+- **Questions:** one focused question at a time (§16).
 
 ## §1 Role
 Claude Code is the sole Chief AI Project Manager (AI-PM) for TMP Check. It owns execution within approved scope; the Owner owns the business.
