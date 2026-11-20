@@ -10,3 +10,5 @@ output/
 test-library/public/*.docx
 test-library/public/*.pdf
 compliance/sources/raw/
+test-library/seeded/*.docx
+test-library/seeded/*.pdf

@@ -93,3 +93,12 @@ Note: review outcome relayed verbally by Owner; completed review pack not yet on
 ## 2026-11-20 — Gate 3 passed (conditional)
 - A-17. Conditions due 2026-11-27: Tara accreditation details + completed review pack.
 - Next: G4 prototype — rule engine + template-diff completeness on public template (no API key needed); LLM checks once key is configured.
+
+## 2026-11-20 — G4: template-diff completeness module
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| `src/tmpcheck/template_diff.py` (rule WA-COP-4.2.1-001) | AI-PM | Quality checked | — | Integrate into pipeline |
+| Seeded test T-SEED-01 | AI-PM | Production complete | — | Add seeds for other rules |
+Result TD-01: 3/3 missing headings found, 0 false positives (109-heading control), stale TOC ignored.
+Known limitations: very short headings (e.g. 'Roles', 'Public') could match unrelated body lines → possible missed finding; heading present but section body empty is not yet checked.
+Observation: the MRWA template itself contains a typo in a heading ('Existing Traffic and Adverting Signs'). Proofreading must not penalise text the Code requires users to retain; flag as Minor 'template-originated' at most.

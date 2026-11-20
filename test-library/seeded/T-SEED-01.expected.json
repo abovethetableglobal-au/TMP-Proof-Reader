@@ -1,0 +1,13 @@
+{
+  "doc": "T-SEED-01",
+  "rule": "WA-COP-4.2.1-001",
+  "expected_missing": [
+    "Fog, Dust and Smoke",
+    "Rail Crossings",
+    "Shadow Vehicles"
+  ],
+  "must_not_flag": [
+    "Night-time Provisions"
+  ],
+  "note": "TOC not refreshed: deleted headings still appear in table of contents (tests TOC exclusion)"
+}

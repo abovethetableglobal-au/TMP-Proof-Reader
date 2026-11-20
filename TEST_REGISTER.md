@@ -6,11 +6,13 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Doc ID | Set | Description | Pages | Reference findings by | Status |
 |---|---|---|---|---|---|
 | PUB-01 | T-EDGE (public) | MRWA TMP template, unfilled, DOCX→PDF | 42 | n/a (all placeholders expected) | Used in S-01 |
+| T-SEED-01 | T-SEED | PUB-01 with 3 headings deleted, 1 renamed; TOC left stale | 42 | AI-PM (seeded ground truth: `T-SEED-01.expected.json`) | Used in TD-01 |
 | — | T-HIST | Awaiting WTGTM evidence | — | — | Awaiting input |
 
 ## Runs
 | Run ID | Date | Engine ver | Rule-set ver | Docs | Recall | Precision | Unsupported Critical | Citation acc. | Review min | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
+| TD-01 | 2026-11-20 | template_diff 0.1 | WA-COP-4.2.1-001 | PUB-01 (control), T-SEED-01 | 3/3 (100%) | 3/3 (100%); control 0 FP of 109 | 0 | 100% (rule cited on every finding) | n/a | Rename tolerated; stale TOC correctly ignored |
 | S-01 | 2026-11-20 | spike-0.1 | patterns only | PUB-01 | Not measured (no reference set) | 32/32 on inspected pages | 0 | n/a | n/a | See docs/reviews/SPIKE-S01_results.md |
 
 ## Defects
