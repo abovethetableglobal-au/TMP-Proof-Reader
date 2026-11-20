@@ -250,3 +250,41 @@ def test_word_form_rules():
     assert hits("at least 2 week s notice") == ["WF-SPLIT"]
     assert hits("Cert No.KTS-24") == ["WF-NOSPACE"]
     assert hits("No. 5, setup, up to 500") == []
+
+
+def test_report_and_annotated_outputs(env):
+    """D-11/D-12: draft outputs watermarked; final stored at issue; rejected findings excluded; original intact."""
+    import pymupdf
+    c, S = env
+    add_credits(S)
+    cid = upload(c).json()["id"]
+    r = c.get(f"/checks/{cid}/report.pdf")
+    assert r.status_code == 200 and r.content[:5] == b"%PDF-" and "DRAFT" in r.headers["content-disposition"]
+    rep = pymupdf.open(stream=r.content, filetype="pdf")
+    text = "".join(p.get_text() for p in rep)
+    assert "TMP Check Report" in text and "DRAFT" in text and "F-007" in text
+    for bad in ("compliant", "Compliant", "100%", " safe ", "approved"):
+        assert bad not in text, bad
+    a = c.get(f"/checks/{cid}/annotated.pdf")
+    ann = pymupdf.open(stream=a.content, filetype="pdf")
+    orig = pymupdf.open(SAMPLE)
+    assert ann.page_count == orig.page_count                                  # pagination preserved
+    assert all(x.get_text("text", flags=0) in y.get_text() or y.get_text().startswith(x.get_text())
+               for x, y in zip(orig, ann))                                    # original content unchanged
+    assert sum(len(list(p.annots())) for p in ann) >= 7
+
+    with S() as s:
+        fs = s.query(dbm.Finding).filter_by(check_id=cid).order_by(dbm.Finding.id).all()
+        for i, f in enumerate(fs):
+            f.disposition = "rejected" if f.rule == "PH-X" else "accepted"
+        s.commit()
+    c.post(f"/checks/{cid}/final")
+    with S() as s:
+        chk = s.get(dbm.Check, cid)
+        assert chk.status == dbm.CheckStatus.final_issued and chk.reviewer_name == "Alice"
+    fin = pymupdf.open(stream=c.get(f"/checks/{cid}/report.pdf").content, filetype="pdf")
+    ftext = "".join(p.get_text() for p in fin)
+    assert "FINAL" in ftext and "DRAFT" not in ftext and "Alice" in ftext
+    flat = " ".join(ftext.split())
+    assert "XXXX" not in flat and "1 was rejected" in flat                    # rejected finding left out
+    assert c.get(f"/checks/{cid}/annotated.pdf").status_code == 200

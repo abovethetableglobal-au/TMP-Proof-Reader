@@ -8,6 +8,12 @@
   <p>{{ chk.filename }} · uploaded {{ chk.created_at|dmy }}{% if chk.pages %} · {{ chk.pages }} pages{% endif %}
     · <a href="/checks/{{ chk.id }}/original">Download original</a>
     {% if findings %}· <a href="/checks/{{ chk.id }}/findings.json">Export findings (JSON)</a>{% endif %}</p>
+  {% if chk.status in (CheckStatus.draft_review, CheckStatus.final_issued) %}
+  <p class="downloads">
+    <a class="btn small navy" href="/checks/{{ chk.id }}/report.pdf">Report PDF{{ '' if chk.status == CheckStatus.final_issued else ' (draft)' }}</a>
+    <a class="btn small outline" href="/checks/{{ chk.id }}/annotated.pdf">Annotated TMP{{ '' if chk.status == CheckStatus.final_issued else ' (draft)' }}</a>
+  </p>
+  {% endif %}
 </div>
 
 {% if error %}<div class="alert error">{{ error }}</div>{% endif %}

@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
@@ -190,7 +190,7 @@ def decide(check_id: int, finding_id: int, decision: str = Form(...), note: str 
 def final(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
     try:
-        processing.issue_final(db, chk)
+        processing.issue_final(db, chk, reviewer=ctx.user.name)
     except processing.UploadError as e:
         return RedirectResponse(f"/checks/{chk.id}?error={e}", status_code=303)
     db.commit()
@@ -209,6 +209,35 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
                                        "action": f.action, "disposition": f.disposition,
                                        "reviewer_note": f.reviewer_note} for f in rows]},
                         headers={"Content-Disposition": f'attachment; filename="check-{chk.id}-findings.json"'})
+
+
+def _output(db: Session, ctx: Ctx, check_id: int, which: int) -> Response:
+    chk = get_check(db, ctx, check_id)
+    names = ("report", "annotated")
+    label = f"{chk.doc_ref} - TMP Check {'report' if which == 0 else 'annotated'}"
+    if chk.status == CheckStatus.final_issued:
+        path = processing.final_paths(chk)[which]
+        if not path.exists():
+            raise HTTPException(404, "Final file not found")
+        return FileResponse(path, filename=f"{label} (final).pdf", media_type="application/pdf")
+    if chk.status != CheckStatus.draft_review:
+        raise HTTPException(409, "No report until the check has finished")
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = processing.build_outputs(db, chk, Path(tmp), final=False)
+        data = paths[which].read_bytes()
+    return Response(data, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{label} (DRAFT).pdf"'})
+
+
+@app.get("/checks/{check_id}/report.pdf")
+def report_pdf(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    return _output(db, ctx, check_id, 0)
+
+
+@app.get("/checks/{check_id}/annotated.pdf")
+def annotated_pdf(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    return _output(db, ctx, check_id, 1)
 
 
 @app.get("/checks/{check_id}/original")

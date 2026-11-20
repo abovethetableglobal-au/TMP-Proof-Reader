@@ -192,3 +192,11 @@ Not live-tested: no API key in the AI-PM environment. Consolidation failure fall
 - New rule checks: run-together words ("upto"), split words ("week s"), missing space after "No." — items missed by every AI run.
 - 35/35 portal tests pass. Next: Owner runs SU026 (≈US$5.40) → BENCH-05.
 - BENCH-05: two-run default on SU026 = 92% recall, 152 findings, 1 FP, US$4.86. Recall target met; review time (51–76 min) is now the constraint. Next: D-11/D-12, then Tara times a real review.
+
+## 2026-11-20 — Outputs 1 and 2 built (D-11, D-12)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Report PDF: project/document details, scope A–E, compliance sources and editions, severity summary, numbered findings with evidence and suggested action, reviewer edits, matters for human review, limitations | AI-PM | Quality checked (sample) | — | Owner reviews on SU026 check 8 |
+| Annotated TMP: copy of original, highlights + F-number labels at quoted text, margin notes for VISUAL/unlocated and related pages; no pages added; original text unchanged | AI-PM | Quality checked (sample) | — | Owner reviews on SU026 |
+| Draft outputs watermarked DRAFT, generated on demand; finals generated and stored at issue (fixed record), rejected findings excluded, reviewer named | AI-PM | Quality checked | — | — |
+PyMuPDF only (no new dependency; WeasyPrint not needed — avoids GTK install on Windows). G4 criteria now met in prototype form, subject to Owner review of the SU026 outputs.

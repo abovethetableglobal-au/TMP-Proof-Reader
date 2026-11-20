@@ -15,8 +15,8 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-08 | IR-01 independent review brief | 1.0 | AI-PM | Awaiting approval | Pending (Owner transfer) | `docs/handovers/IR-01_independent_strategy_review.md` | — |
 | D-09 | WA compliance rule library (initial) | 0.1 | AI-PM + Tara | User accepted (conditional, A-17) | Not approved | `compliance/rules/` | Tara review; P-06 |
 | D-10 | Prototype pipeline | 0.1 | AI-PM | In progress (template-diff, deterministic checks v0.2, LLM passes A–D coded & wiring-tested; awaiting API key) | Not approved | `src/tmpcheck/` | API key; WTGTM evidence |
-| D-11 | Report PDF template | — | AI-PM | Not started | — | TBC | D-10 |
-| D-12 | Annotated PDF generator | — | AI-PM | Not started | — | TBC | D-10 |
+| D-11 | Report PDF (Output 1) | 0.1 | AI-PM | Quality checked (synthetic sample; 36 tests) | Not approved | `src/tmpcheck/outputs.py`; example `test-library/samples/outputs/` | D-10 |
+| D-12 | Annotated PDF (Output 2) | 0.1 | AI-PM | Quality checked (synthetic sample) | Not approved | `src/tmpcheck/outputs.py`; example `test-library/samples/outputs/` | D-10 |
 | D-14 | Spike S-01 (extraction, completeness, annotation) | 0.1 | AI-PM | Quality checked | n/a (internal) | `src/spike/`, `docs/reviews/SPIKE-S01_results.md` | — |
 | D-15 | Rule review pack for Tara | 0.1 | AI-PM | User accepted | Completed by reviewer | `docs/outbound/TMP_Check_Rule_Review_Tara_v0.1.docx` | D-09 |
 | D-16 | G2 evidence analysis 01 (REF-01) | 0.1 | AI-PM | Ready for user review | Pending | `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md` | WTGTM evidence |

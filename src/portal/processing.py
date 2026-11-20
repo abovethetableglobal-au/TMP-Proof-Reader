@@ -304,12 +304,70 @@ def disposition(db: Session, f: Finding, decision: str, note: str | None) -> Non
     f.dispositioned_at = utcnow() if decision != "pending" else None
 
 
-def issue_final(db: Session, chk: Check) -> None:
-    """A-15: final only after every finding has been dispositioned by the reviewer."""
+def compliance_sources() -> list[dict]:
+    """Sources of the approved rules in the compliance library, for the report (Handover §6)."""
+    import yaml
+    from .config import RULES_DIR
+    out: dict[tuple, int] = {}
+    for p in sorted(RULES_DIR.glob("*.yaml")):
+        if p.name.startswith("_"):
+            continue
+        r = yaml.safe_load(p.read_text(encoding="utf-8"))
+        if r.get("status") == "approved":
+            k = (r.get("source_name", ""), str(r.get("edition", "")), r.get("authority", ""))
+            out[k] = out.get(k, 0) + 1
+    return [{"name": n, "edition": e, "authority": a, "count": c} for (n, e, a), c in out.items()]
+
+
+def finding_rows(db: Session, chk: Check) -> list[dict]:
+    return [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
+             "issue": f.issue, "evidence": f.evidence, "action": f.action, "outcome": f.outcome, "rule": f.rule,
+             "source": f.source, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
+            for f in db.query(Finding).filter_by(check_id=chk.id).all()]
+
+
+def build_outputs(db: Session, chk: Check, folder: Path, final: bool) -> tuple[Path, Path]:
+    """Output 1 (report PDF) and Output 2 (annotated copy) — same F-numbers in both."""
+    from src.tmpcheck import outputs
+    org = chk_org_name(db, chk)
+    rows = finding_rows(db, chk)
+    items = outputs.number_findings(rows, final)
+    meta = outputs.Meta(doc_ref=chk.doc_ref, filename=chk.filename, organisation=org, pages=chk.pages,
+                        uploaded=chk.created_at, final=final, reviewer=chk.reviewer_name or "",
+                        final_date=chk.final_issued_at, ai_passes=(chk.ai_passes or "") if not
+                        (chk.ai_passes or "").startswith("skipped") else "", sources=compliance_sources())
+    folder.mkdir(parents=True, exist_ok=True)
+    kind = "final" if final else "draft"
+    annotated = outputs.annotate(to_pdf(Path(chk.storage_path)), items, folder / f"{kind}-annotated.pdf", final)
+    report = outputs.build_report(meta, items, rows, folder / f"{kind}-report.pdf")
+    return report, annotated
+
+
+def chk_org_name(db: Session, chk: Check) -> str:
+    from .db import Organisation
+    org = db.get(Organisation, chk.org_id)
+    return org.name if org else ""
+
+
+def final_paths(chk: Check) -> tuple[Path, Path]:
+    folder = Path(chk.storage_path).parent
+    return folder / "final-report.pdf", folder / "final-annotated.pdf"
+
+
+def issue_final(db: Session, chk: Check, reviewer: str = "") -> None:
+    """A-15: final only after every finding has been dispositioned by the reviewer.
+    The final report and annotated copy are produced and stored at issue, so they never change afterwards."""
     if chk.status != CheckStatus.draft_review:
         raise UploadError("Only a draft can be issued as final.")
     pending = db.query(Finding).filter_by(check_id=chk.id, disposition="pending").count()
     if pending:
         raise UploadError(f"{pending} finding(s) still need a decision before the final can be issued.")
-    chk.status = CheckStatus.final_issued
+    chk.reviewer_name = reviewer or chk.reviewer_name
     chk.final_issued_at = utcnow()
+    try:
+        build_outputs(db, chk, Path(chk.storage_path).parent, final=True)
+    except Exception as e:
+        traceback.print_exc()
+        chk.final_issued_at = None
+        raise UploadError("The final report could not be produced. The check is still a draft; please try again.") from e
+    chk.status = CheckStatus.final_issued

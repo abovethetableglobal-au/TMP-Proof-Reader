@@ -320,3 +320,4 @@ main > section.card { margin: 18px 22px 0 32px; }
   .disp { margin-left: 0; }
 }
 .finding blockquote.list { white-space: pre-line; }
+.downloads { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }

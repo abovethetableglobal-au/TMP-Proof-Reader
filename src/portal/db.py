@@ -74,6 +74,7 @@ class Check(Base):
     status: Mapped[CheckStatus] = mapped_column(Enum(CheckStatus), default=CheckStatus.uploaded)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     final_issued_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    reviewer_name: Mapped[str | None] = mapped_column(String(200))   # who issued the final (A-15)
     failure_reason: Mapped[str | None] = mapped_column(Text)
     pages: Mapped[int | None] = mapped_column(Integer)
     storage_path: Mapped[str | None] = mapped_column(String(500))

@@ -13,7 +13,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 | G1 Initiation | Records, scope, plan established; Owner sign-off | 2026-11-27 | **User accepted 2026-11-20** (A-13) |
 | G2 Customer requirements | ≥5 representative TMP packages + proofreader corrections received and analysed; requirements doc approved | 2026-12-18 | In progress — WTGTM evidence returned 2026-11-20; awaiting transfer & confidentiality confirmation |
 | G3 Compliance framework | Initial WA rule set (target 30–60 rules) verified against primary sources and reviewed by qualified TM professional | 2027-01-29 | **User accepted 2026-11-20 — conditional** (A-17; conditions due 2026-11-27) |
-| G4 Working prototype | Representative TMP processed → report PDF + annotated PDF | 2027-02-05 | Not started |
+| G4 Working prototype | Representative TMP processed → report PDF + annotated PDF | 2027-02-05 | In progress — engine BENCH-05 92% recall; Outputs 1 & 2 built 2026-11-20; awaiting Owner review on SU026 |
 | G5 Benchmark | Results vs independently reviewed findings; accuracy recorded in TEST_REGISTER | 2027-02-26 | Not started |
 | G6 Pilot readiness | Security, data-handling, human-review SOPs approved by Owner (and WTGTM where needed) | 2027-03-12 | Not started |
 | G7 Controlled pilot | Agreed number of live TMPs processed under human review | 2027-03-15 → 2027-04-23 | Not started |
