@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from .config import settings
 from .db import Check, CheckStatus, CreditLedger, Finding, Organisation, utcnow
 
 SEVERITIES = ["Critical", "Major", "Moderate", "Minor", "Query"]
@@ -97,7 +96,6 @@ def recent_checks(db: Session, org_id: int, limit: int = 5) -> list[dict]:
 
 def dashboard(db: Session, org: Organisation, now: datetime | None = None) -> dict:
     now = now or utcnow()
-    cfg = settings()
     bal = credit_balance(db, org.id, now)
 
     final = select(Check).where(Check.org_id == org.id, Check.status == CheckStatus.final_issued)
@@ -111,8 +109,7 @@ def dashboard(db: Session, org: Organisation, now: datetime | None = None) -> di
 
     return {
         "credits": bal,
-        "subscription": {"status": org.subscription_status.value,
-                         "price": cfg["subscription"]["price"]},
+        "subscription": {"status": org.subscription_status.value},
         "checks_completed": completed,
         "checks_this_month": this_month,
         "awaiting_review": awaiting,

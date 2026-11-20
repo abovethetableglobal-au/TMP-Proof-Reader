@@ -31,7 +31,6 @@
   <article class="card stat">
     <div class="stat-ic navy">{{ icon("calendar") }}</div>
     <div class="stat-body">
-      <div class="stat-num">{{ money(d.subscription.price) }}<small> / month</small></div>
       {% if d.subscription.status == "active" %}
         <div class="stat-label">Subscription</div>
         <span class="pill ok">Active</span>
