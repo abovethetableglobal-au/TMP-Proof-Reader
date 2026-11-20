@@ -32,6 +32,11 @@
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
+| P-12 | Dashboard brief (2026-11-20): build data-connected portal now vs S-03 "no portal until G5". See `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` C-1 | Build locally in parallel ($0, no hosting, no live data); G4 benchmark stays priority | Before S1 |
+| P-13 | Banner "Fast. Accurate. Compliant." and tagline "Check • Comply • Confident" conflict with CLAUDE.md §2 | Headline "Fast. Thorough. Evidence-based."; tagline Owner's call (alt "Check • Cite • Confident") | Before S1 |
+| P-14 | Credit purchase UI before payments allowed (A-09). Brief lists 5-pack $745 — confirm this resolves P-05 | "Request credits" → manual invoice; admin records ledger purchase; 5-pack offered at $745 | Before S3 |
+| P-15 | Point at which a credit is consumed | On successful delivery of draft to reviewer; reversal for TMP Check error | Before S3 |
+| P-16 | Potential Savings card baseline | Hidden until Owner sets per-customer baseline; label as estimate | Before S1 card build |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |

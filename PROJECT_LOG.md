@@ -130,3 +130,10 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-20 — Dashboard UI brief received
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Repository review + dashboard implementation plan (D-17) | AI-PM | Awaiting approval | P-12–P-16 | Owner decides P-12 |
+| Portal stages S1–S7 | AI-PM | Not started | P-12, P-13 | — |
+Ten conflicts identified (plan §2): portal timing vs S-03, "Compliant" wording vs CLAUDE.md §2, purchase UI vs A-09, 5-pack vs P-05, "Completed" status vs reviewer gate (A-15), credit consumption point, savings baseline. C-6, C-7, C-10 applied as safety/record corrections; remainder raised as P-12–P-16. Risks R-23, R-24 added.
