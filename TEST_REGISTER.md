@@ -69,3 +69,10 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Findings | 211 → 138; recall 98/110 (89%), no reference item lost |
 | Over-merges | 3 (prompt tightened) |
 | Review time est. | 46–69 min (target 45) |
+
+## BENCH-03 — 2026-11-20 — SU026 tuned engine (simulated scoring)
+| Measure | Result |
+|---|---|
+| Findings | 124; recall 97/110 (88%); false positives 0–1; review est. 41–62 min; US$2.75 |
+| Run variance | ±7 reference items between runs |
+| Detail | `docs/reviews/BENCH-03_SU026_tuned.md` |

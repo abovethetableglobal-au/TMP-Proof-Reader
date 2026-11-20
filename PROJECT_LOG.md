@@ -182,3 +182,6 @@ Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF prote
 Not live-tested: no API key in the AI-PM environment. Consolidation failure falls back to ungrouped findings.
 - Owner ran `devtools consolidate 5`: 211 → 138 findings (6 Major, 30 Moderate, 95 Minor, 7 Query) for US$0.18 (total US$3.51). Observed possible over-merge: p25 consultation placeholders grouped with p57 empty Appendix E (REF-01 lists them separately). Scoring pending JSON export.
 - BENCH-02b: grouping cut check 5 to 138 findings with no loss of reference items (89% recall); 3 over-merges → grouping prompt tightened. Next: BENCH-03 full re-run with new prompts.
+
+## 2026-11-20 — BENCH-03 scored
+- Tuned engine on SU026: 124 findings, 88% recall, ~0 false positives, est. 41–62 min review, US$2.75. Run-to-run variance ±7 items noted (supports human review gate). Next: D-11 report PDF, D-12 annotated PDF to complete G4 criteria.
