@@ -167,3 +167,4 @@ Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF prote
 - OWNER-FT-01: Owner ran SU026 end to end in local portal (rule-based only, 21 findings, final issued). AI passes not active in that run.
 - Owner second SU026 run again had no AI passes (silent skip). Portal now prints AI status at startup and records why passes were skipped on the check page.
 - OWNER-FT-02: AI passes ran on SU026 (293 raw findings, US$3.33). Added duplicate merging across checks, AI fix/category mapping, findings JSON export for benchmarking.
+- Dedupe on SU026 check 5: 293 → 211 findings (82 duplicates merged, 28%). Still ~2× REF-01 (~105); BENCH-02 scoring needed to separate genuine extras from noise.
