@@ -130,3 +130,10 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-20 — BENCH-02 blocked on API key setup
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| LLM pass on REF-01-SRC (BENCH-02) | AI-PM | Blocked | Env var must be named `ANTHROPIC_API_KEY` (stored as `Anthropic_api_key`); loads only in a new session | Owner renames the variable and starts a new session |
+- Network secrets cannot be used for api.anthropic.com, so an environment variable is the only route. Note: environment variables can be read by anyone who uses the environment and by commands in its sessions.
+- Customer files re-uploaded and copied to git-ignored `customer-docs/wtgtm-2026-11-20/` (container only; re-upload needed in a new session).
