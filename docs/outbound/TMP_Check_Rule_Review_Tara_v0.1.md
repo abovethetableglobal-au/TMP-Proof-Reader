@@ -1,6 +1,6 @@
 # TMP Check — Compliance Rule Review (WA)
 
-**For:** Tara, Way Too Go Traffic Management  
+**For:** Tara, Way to Go Traffic Management  
 **Source:** Main Roads WA *Traffic Management for Works on Roads Code of Practice*, March 2026 (page numbers are the Code's printed page numbers)  
 **Rules:** 22 (core set)
 

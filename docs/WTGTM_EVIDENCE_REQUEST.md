@@ -1,4 +1,4 @@
-# TMP Check — Information Request for Way Too Go Traffic Management
+# TMP Check — Information Request for Way to Go Traffic Management
 
 **Version:** 0.2 · **Status:** Approved by Owner 2026-11-20 (A-14) for sending.
 **Purpose:** Understand how WTGTM prepares and checks TMPs today, so TMP Check is built around your real documents and requirements.

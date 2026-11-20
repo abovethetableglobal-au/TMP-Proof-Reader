@@ -5,7 +5,7 @@ Source of truth: `PROJECT_HANDOVER.md` v1.0. This brief is the working summary; 
 | Item | Detail |
 |---|---|
 | Product | AI-assisted Traffic Management Plan (TMP) quality assurance, subscription + credits |
-| Founding customer | Way Too Go Traffic Management (WTGTM) |
+| Founding customer | Way to Go Traffic Management (WTGTM) |
 | Jurisdiction (initial) | Western Australia |
 | Currency / GST | AUD; GST not currently collected (configurable) |
 | Owner | User / Principal |

@@ -114,3 +114,4 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 - 16 new engine requirements (RQ-01–RQ-16) derived; report layout recommended as base for Output 1.
 - Provenance flag: metadata shows Owner's business as author, code-generated PDF; must confirm who produced it before using it as ground truth.
 - Customer name discrepancy flagged: 'Way to Go' (report) vs 'Way Too Go' (brief).
+- A-19: REF-01 confirmed correct → usable as reference findings. A-20: customer name corrected to 'Way to Go Traffic Management' across records; rule review pack and evidence request source files updated (copies already sent keep the old spelling).

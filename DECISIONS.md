@@ -13,6 +13,8 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-20 | Customer name is **Way to Go Traffic Management** (not 'Way Too Go'). Records corrected; erratum added to PROJECT_HANDOVER.md | Owner confirmation | 2026-11-20 | Owner |
+| A-19 | REF-01 proofread report confirmed correct by WTGTM — accepted as reference findings for benchmarking (relayed by Owner) | Owner confirmation | 2026-11-20 | Owner |
 | A-18 | WTGTM's **original historical** TMPs, TGSs and proofreading records may be used for development and testing in this Claude Code session (incl. Claude API processing) on WTGTM's **verbal** permission. Amends A-16 for historical documents only; live pilot documents still from G6. Written confirmation recommended but not required. Resolves P-11 (Option C) | Owner decision; speed | 2026-11-20 | Owner |
 | A-17 | **Gate 3 signed off (conditional):** 22 core WA rules approved for prototype use on test/anonymised documents (live use from G6). Conditions: Tara's accreditation details (level, number, expiry) and completed review pack filed by **2026-11-27** | Master Prompt §3.3 option A | 2026-11-20 | Owner |
 | A-16 | Anthropic Claude API approved as AI processing provider: anonymised/public documents now; live customer documents only after G6 data-handling approval. Budget cap **$150 AUD/month**. Resolves P-04 | Required for proofreading (A) and TMP↔TGS cross-check (D) | 2026-11-20 | Owner |

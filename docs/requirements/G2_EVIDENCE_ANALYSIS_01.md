@@ -8,7 +8,7 @@
 | Request items satisfied | A3 (proofreader corrections) for 1 TMP only. **Not received:** the TMP itself (A1), its TGSs (A2), templates (A4), A5–A9, Section B answers |
 | Status | Ready for user review |
 
-## 1. Provenance — must be confirmed before use as ground truth
+## 1. Provenance — **resolved 2026-11-20:** confirmed correct by WTGTM (A-19); customer name is 'Way to Go' (A-20)
 - PDF metadata: author = the Owner's business; generator = ReportLab (a code-generated PDF). **Assumption to check:** it may have been produced by an AI tool rather than the historical external proofreader.
 - If AI-produced, it is **not** independent ground truth. Tara must validate it (TEST_METHODOLOGY §1) before it is used to score TMP Check.
 - The report recommends changing a title-block company name to "Way to Go"; the project brief names the customer "Way Too Go". One of these is wrong — confirm the legal/trading name.

@@ -15,6 +15,8 @@
 **Project Manager:** Claude Code
 
 > Recorded in workspace 2026-11-20 by AI-PM from the Owner's handover message. Authoritative source document.
+>
+> **Erratum (2026-11-20, Owner, DECISIONS A-20):** the founding customer's name is **Way to Go Traffic Management**. Read every "Way Too Go" below as "Way to Go". Abbreviation WTGTM unchanged. Original text otherwise preserved.
 
 ---
 
