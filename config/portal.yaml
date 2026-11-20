@@ -43,8 +43,7 @@ payments_enabled: false
 upload:
   allowed_extensions: [".pdf", ".docx"]
   max_bytes: 20971520        # 20 MB
-  max_main_pages: 80         # A-10 (provisional)
-  max_drawing_pages: 10      # A-10 (provisional)
+  max_total_pages: 100       # A-26 (amends A-10): one total limit, drawings included
 
 branding:
   product: TMP Check

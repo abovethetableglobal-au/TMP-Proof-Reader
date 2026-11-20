@@ -163,3 +163,4 @@ Limitations: no authentication (app refuses to start unless TMPCHECK_ENV=local);
 | Credit history from ledger on Credits & Billing | AI-PM | Quality checked | — | — |
 | Synthetic sample `test-library/samples/SAMPLE-TMP-01.pdf` (7 seeded issues, no customer data) | AI-PM | Quality checked | — | — |
 Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF protection (S2). Fixed Windows crash: `%-d` date format replaced with portable filter.
+- A-26: SU026 (61 pp: 50 + 11 drawings) rejected under A-10 on Owner test. Owner approved single 100-page limit incl. drawings.

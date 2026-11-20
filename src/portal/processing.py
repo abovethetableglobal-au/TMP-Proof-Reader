@@ -112,11 +112,9 @@ def run_check(check_id: int) -> None:
             import pymupdf
             with pymupdf.open(pdf) as doc:
                 n = doc.page_count
-                drawings = sum(1 for p in doc if p.rect.width > p.rect.height)
-            up = settings()["upload"]
-            if n - drawings > up["max_main_pages"] or drawings > up["max_drawing_pages"]:
-                raise UploadError(f"This package has {n - drawings} main pages and {drawings} drawing pages. "
-                                  f"The limit is {up['max_main_pages']} + {up['max_drawing_pages']}.")
+            limit = settings()["upload"]["max_total_pages"]
+            if n > limit:   # A-26
+                raise UploadError(f"This package has {n} pages. The limit is {limit} pages including drawings.")
             if not any(p.get_text().strip() for p in pymupdf.open(pdf)):
                 raise UploadError("No readable text was found (scanned document). Scanned TMPs are not yet supported.")
             chk.pages = n

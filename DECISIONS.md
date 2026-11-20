@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-26 | **Page limit (amends A-10):** one limit of 100 pages per check, drawings included; separate main/drawing caps removed. Trigger: WTGTM SU026 (50 + 11 drawings) rejected under A-10. Still provisional — review with measured AI cost per check | Owner choice of recommended option | 2026-11-20 | Owner |
 | A-25 | **Savings card removed (resolves P-16):** no savings figure on the dashboard until G8 commercial validation. Replaced by "Awaiting Review" (drafts with accredited reviewer). Departure from approved mock-up | Owner decision | 2026-11-20 | Owner |
 | A-24 | **Credit consumption point (resolves P-15):** 1 credit consumed when the draft report is delivered to the customer's accredited reviewer. Reversal entry if a re-run is needed to correct a TMP Check error (A-05 rule 5). Failed processing consumes nothing | Owner choice of recommended option | 2026-11-20 | Owner |
 | A-23 | **Credit purchasing until payments enabled (resolves P-14, P-05):** "Request credits" → manual invoice; admin records ledger purchase after payment received. Five-credit pack offered at $745 (no discount) | Owner choice of recommended option; A-09 retained | 2026-11-20 | Owner |

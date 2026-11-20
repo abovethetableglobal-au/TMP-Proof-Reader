@@ -155,3 +155,15 @@ def test_other_org_cannot_see_check(env):
         assert "SAMPLE-TMP-01" not in c.get("/checks").text
     finally:
         os.environ["TMPCHECK_DEV_USER"] = "1"
+
+
+def test_page_limit_a26(env, monkeypatch):
+    c, S = env
+    add_credits(S)
+    from src.portal import config
+    cfg = dict(config.settings()); cfg["upload"] = {**cfg["upload"], "max_total_pages": 5}
+    monkeypatch.setattr(processing, "settings", lambda: cfg)
+    cid = upload(c).json()["id"]            # sample has 6 pages
+    page = c.get(f"/checks/{cid}").text
+    assert "has 6 pages. The limit is 5 pages including drawings" in page
+    assert balance(S) == 2

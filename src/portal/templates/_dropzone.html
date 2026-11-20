@@ -12,7 +12,7 @@
   </label>
   <p class="dz-meta">Supported formats: {{ up.allowed_extensions|map('upper')|map('replace', '.', '')|join(', ') }}
     <span aria-hidden="true">|</span> Max size: {{ (up.max_bytes / 1048576)|round|int }}MB
-    <span aria-hidden="true">|</span> Up to {{ up.max_main_pages }} pages + {{ up.max_drawing_pages }} drawing pages</p>
+    <span aria-hidden="true">|</span> Up to {{ up.max_total_pages }} pages incl. drawings</p>
   <div class="dz-status" role="status" aria-live="polite" hidden>
     <div class="dz-file"><span class="dz-name"></span><span class="dz-size"></span></div>
     <div class="progress" aria-hidden="true"><span></span></div>
