@@ -24,4 +24,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-18 | Customer portal — S1 shell + S4 upload/check + reviewer workflow | 0.2 | AI-PM | Ready for user review | Pending | `src/portal/`, `config/portal.yaml`, `tests/portal/` | A-21, A-22 |
 | D-19 | BENCH-02 engine benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-02_SU026_AI_passes.md` | OWNER-FT-02 |
 | D-20 | BENCH-03 tuned engine benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-03_SU026_tuned.md` | D-19 |
+| D-21 | BENCH-04 repeat-run variance (SU026) | 0.1 | AI-PM | Under review | Pending | `docs/reviews/BENCH-04_SU026_repeat_run.md` | D-20 |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |

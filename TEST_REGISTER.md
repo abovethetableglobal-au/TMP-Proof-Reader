@@ -76,3 +76,11 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Findings | 124; recall 97/110 (88%); false positives 0–1; review est. 41–62 min; US$2.75 |
 | Run variance | ±7 reference items between runs |
 | Detail | `docs/reviews/BENCH-03_SU026_tuned.md` |
+
+## BENCH-04 — 2026-11-20 — repeat run (check 7) and run union
+| Measure | Result |
+|---|---|
+| Check 7 alone | 92/110 (84%), 122 findings, 1 FP, US$2.58 |
+| Check 6 + 7 union | 100/110 (91%) |
+| Checks 5 + 6 + 7 union | 106/110 (96%) |
+| Detail | `docs/reviews/BENCH-04_SU026_repeat_run.md` |
