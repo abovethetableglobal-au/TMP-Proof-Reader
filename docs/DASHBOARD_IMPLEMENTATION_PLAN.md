@@ -4,7 +4,7 @@
 |---|---|
 | Deliverable | D-17 |
 | Source brief | Owner "TMP Check – Dashboard UI Implementation Brief" + dashboard mock-up, received 2026-11-20 |
-| Status | Awaiting approval (P-12 – P-16) |
+| Status | Awaiting approval (P-13 – P-16); P-12 resolved by A-21 |
 | Process tier | Significant (§2A) |
 | Review | Simulated three-perspective review (§5.3) — §7 below |
 

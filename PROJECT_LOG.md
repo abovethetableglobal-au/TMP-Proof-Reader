@@ -137,3 +137,4 @@ Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passe
 | Repository review + dashboard implementation plan (D-17) | AI-PM | Awaiting approval | P-12–P-16 | Owner decides P-12 |
 | Portal stages S1–S7 | AI-PM | Not started | P-12, P-13 | — |
 Ten conflicts identified (plan §2): portal timing vs S-03, "Compliant" wording vs CLAUDE.md §2, purchase UI vs A-09, 5-pack vs P-05, "Completed" status vs reviewer gate (A-15), credit consumption point, savings baseline. C-6, C-7, C-10 applied as safety/record corrections; remainder raised as P-12–P-16. Risks R-23, R-24 added.
+- A-21: Owner approved local portal build S1–S4 in parallel (P-12 resolved).
