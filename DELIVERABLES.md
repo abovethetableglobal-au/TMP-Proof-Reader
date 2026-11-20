@@ -25,4 +25,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-19 | BENCH-02 engine benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-02_SU026_AI_passes.md` | OWNER-FT-02 |
 | D-20 | BENCH-03 tuned engine benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-03_SU026_tuned.md` | D-19 |
 | D-21 | BENCH-04 repeat-run variance (SU026) | 0.1 | AI-PM | Under review | Pending | `docs/reviews/BENCH-04_SU026_repeat_run.md` | D-20 |
+| D-22 | BENCH-05 two-run benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-05_SU026_two_run.md` | A-27 |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |

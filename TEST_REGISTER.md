@@ -84,3 +84,9 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Check 6 + 7 union | 100/110 (91%) |
 | Checks 5 + 6 + 7 union | 106/110 (96%) |
 | Detail | `docs/reviews/BENCH-04_SU026_repeat_run.md` |
+
+## BENCH-05 — 2026-11-20 — two-run default (check 8)
+| Measure | Result |
+|---|---|
+| Recall | 101/110 (92%); 152 findings; 1 FP; review est. 51–76 min; US$4.86 |
+| Detail | `docs/reviews/BENCH-05_SU026_two_run.md` |

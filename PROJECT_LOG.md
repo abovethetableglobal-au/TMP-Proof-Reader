@@ -191,3 +191,4 @@ Not live-tested: no API key in the AI-PM environment. Consolidation failure fall
 - AI passes now run twice per check (`config/portal.yaml` ai.runs: 2; env TMPCHECK_AI_RUNS overrides, max 3); findings combined, merged and grouped; cost summed.
 - New rule checks: run-together words ("upto"), split words ("week s"), missing space after "No." — items missed by every AI run.
 - 35/35 portal tests pass. Next: Owner runs SU026 (≈US$5.40) → BENCH-05.
+- BENCH-05: two-run default on SU026 = 92% recall, 152 findings, 1 FP, US$4.86. Recall target met; review time (51–76 min) is now the constraint. Next: D-11/D-12, then Tara times a real review.
