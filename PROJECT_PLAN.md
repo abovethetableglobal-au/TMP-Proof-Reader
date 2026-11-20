@@ -24,14 +24,14 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 |---|---|---|---|---|---|
 | 1 | Project management | AI-PM | — | Maintain records; manage G2 | In progress |
 | 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Owner sends request (approved A-14); AI-PM tracks responses | Awaiting input |
-| 3 | Regulatory research | AI-PM; Qualified reviewer | Reviewer appointed (P-03); AS 1742.3 access (P-06) | Build source register → draft rules from Code §4.2 (core set per TPR-01) | In progress |
+| 3 | Regulatory research | AI-PM; Tara (WTGTM reviewer) | AS 1742.3 access (P-06) | Build source register → draft rules from Code §4.2 (core set per TPR-01) | In progress |
 | 4 | Product design | AI-PM | WS2 | Customer + reviewer workflow wireframes | Not started |
 | 5 | Checking engine | AI-PM | WS2, WS3, P-04 | Prompt/rule design on anonymised samples | Not started |
 | 6 | Document processing | AI-PM | Sample documents | Technical spike on public MRWA TMP template | Not started |
 | 7 | Report generation | AI-PM | WS5 | Report template + annotation spike | Not started |
 | 8 | Security | AI-PM; Owner approves | P-04, P-08 | Draft data-handling statement | Not started |
 | 9 | Commercial system | AI-PM | **G5 passed** | Ledger design only (no payments yet) | Not started |
-| 10 | Testing | AI-PM; Qualified reviewer | WS2, P-03 | Build reference set | Awaiting input |
+| 10 | Testing | AI-PM; Tara (blind reference findings) | WS2 | Build reference set | Awaiting input |
 | 11 | Pilot | AI-PM; Owner; WTGTM | G6 | Pilot agreement terms | Not started |
 | 12 | Commercial launch | Owner; AI-PM | G8 | — | Not started |
 

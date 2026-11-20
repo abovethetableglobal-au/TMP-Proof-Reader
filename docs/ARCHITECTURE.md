@@ -15,7 +15,8 @@ input/ (TMP + TGS PDFs/DOCX)
        D TMP↔TGS cross-check — drawing text extraction + LLM vision; low-confidence → Query
        E compliance        — only rules with status ≥ verified; must cite rule_id
   → evidence validator: every finding must quote text that exists on the cited page; else dropped or → Query
-  → review sheet (HTML) for human reviewer: accept / edit / reject each finding; timer captured
+  → DRAFT issued to customer's accredited reviewer (A-15): accept / edit / reject each finding + attestation; timer and dispositions captured (accuracy data)
+  → FINAL issued only after every finding is dispositioned
   → outputs: Report PDF (HTML→PDF, WeasyPrint) + Annotated PDF (PyMuPDF highlights + numbered notes on a copy)
 ```
 | Component | Choice | Cost |

@@ -50,3 +50,14 @@ Result: 32 evidence-bound findings, original unchanged, 3 defects found and fixe
 
 ## 2026-11-20 — Evidence request approved
 - A-14: request v0.2 approved; blank templates now item A4 (Essential). Owner to send. G2 clock starts on send.
+
+## 2026-11-20 — Change: self-approve operating model (Master Prompt §20.1)
+| Item | Assessment |
+|---|---|
+| Change | Customer's accredited person (Tara, WTGTM) reviews and approves each report; TMP Check issues draft → final after review |
+| Reason | Owner direction; matches WTGTM retaining professional responsibility |
+| Scope | No change to product scope; review workflow moves into customer portal |
+| Budget | Removes reviewer cost from TMP Check; contribution ≈ $128–143/credit (estimate) |
+| Timeline | Removes reviewer-appointment blocker on G3/G5 |
+| Quality | New risks R-16 (automation bias), R-17 (independence), R-18 (single reviewer), R-19 (blind ground truth) |
+| Affected | CLAUDE.md §2, ARCHITECTURE, TEST_METHODOLOGY, COMMERCIAL_MODEL, RISKS, PLAN, AI_RESOURCES |

@@ -9,7 +9,7 @@
 | T-REJ | Authority-rejected TMPs | WTGTM (A7) | High-value miss detection |
 | T-EDGE | Scanned, rotated, DOCX-only, >80 pages, drawings-only | Constructed | Intake robustness & pre-credit rejection |
 
-Ground truth for T-HIST, T-CLEAN and T-REJ is established by the **qualified reviewer**, independently of TMP Check output (blind).
+Ground truth for T-HIST, T-CLEAN and T-REJ is established by **Tara (WTGTM accredited reviewer, A-15)** *before* she sees any TMP Check output for that document (blind; R-19). During the pilot, reviewer accept/edit/reject dispositions provide ongoing precision data; misses are captured by a reviewer "add missed issue" action.
 
 ## 2. Matching rules
 A TMP Check finding **matches** a reference finding when: same issue, same page (±1), and category correct. Severity mismatches are recorded separately.

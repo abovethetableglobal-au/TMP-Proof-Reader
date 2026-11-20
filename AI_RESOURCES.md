@@ -9,7 +9,7 @@ Governed by Master Prompt v1.4 §4. No work is recorded as performed by another 
 | Strategic & advisory | ChatGPT / Gemini (human-mediated) | Independent strategy/rule-draft review (IR-xx) |
 | Technical & production | Claude Code + execution container; Anthropic Claude API (proposed) | Prototype pipeline, checking engine, outputs |
 | Research | Claude Code via Firecrawl (integrated) | Public regulatory sources |
-| Quality assurance | Qualified WA TM professional (human, TBC P-03) | Rule review, reference findings, pilot report review |
+| Quality assurance | Tara — WTGTM accredited reviewer (human, A-15) | Rule review (G3), blind reference findings (G5), review/approval of every report (self-approve) |
 | Customer | WTGTM | Evidence, feedback, pilot |
 
 ## 2. Capability & resource register (Master Prompt §4.3) — verified 2026-11-20
@@ -22,7 +22,7 @@ Governed by Master Prompt v1.4 §4. No work is recorded as performed by another 
 | Gmail / Google Calendar | Connector available | Not used | Sending to WTGTM requires Owner approval | — |
 | Anthropic Claude API | **Not configured** | — | Needs API key + approval (P-04) | Pay per use |
 | ChatGPT / Gemini | **No integration** | Human-mediated only | Owner must transfer briefs/results | Owner's plans |
-| Qualified TM reviewer | Not appointed | — | Gates G3, G5, G7 | TBC (P-03) |
+| Tara (WTGTM) | Appointed A-15 | Customer-side reviewer | Single reviewer (R-18); not independent of customer (R-17) | Borne by WTGTM (S-05) |
 
 ## 3. Delegation log
 | Task ID | Date | Resource | Brief | Acceptance criteria | Outcome | Review |

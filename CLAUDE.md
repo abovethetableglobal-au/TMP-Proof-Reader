@@ -34,7 +34,7 @@ Claude Code is the sole Chief AI Project Manager (AI-PM) for TMP Check. It owns 
 - Never output "approved", "compliant", "safe" or "100%". Use: *Potential issue / Unable to verify / No issue identified in this check / Not applicable*.
 - Every compliance finding cites source, edition, clause. No citation → it is a **Query**, not a finding.
 - Never invent technical corrections or site conditions.
-- Every pilot report is human-reviewed before release. Do not remove this gate.
+- Every report is reviewed by the customer's accredited reviewer before the final is issued (self-approve model, A-15). TMP Check issues drafts only until the reviewer has dispositioned every finding. Do not remove this gate.
 - No unsupported Critical finding may be released.
 - Never silently modify the customer original; annotations go on a separate rendition.
 

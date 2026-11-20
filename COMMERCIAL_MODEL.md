@@ -41,8 +41,10 @@ Assumes 10 comparable checks in one month and $405 is representative. $675 (9 hr
 | Cost driver per check | Assumption | Basis |
 |---|---|---|
 | AI processing | $2–$15 | Est. 80-page TMP + drawings; measure in prototype |
-| Human review (pilot) | 0.5–1.5 hr × reviewer rate | **Dominant cost**; reviewer rate TBD (P-03) |
+| Human review (pilot) | $0 to TMP Check — performed by customer's accredited reviewer (A-15) | Cost borne by customer; reduces their net saving |
 | Hosting/storage | < $1 | Small-scale cloud |
 | Payment fees | ~1.75%–2.9% + fixed | Provider TBD |
 
-**Break-even sensitivity:** at $75/hr review, contribution per single credit ≈ $149 − (review hrs × 75) − ~$15. Review must be ≲1.5 hrs to stay positive; target ≤45 min. See R-03.
+**Our contribution per credit (estimate):** ≈ $149 − AI/infra (~$3–16) − payment fees ≈ **$128–143**.
+
+**Customer net saving per check (estimate):** $405 − $149 − (reviewer hrs × $75). At 1 hr review ≈ $181; at 2 hrs ≈ $106. Reviewer time remains a key metric because it drives the customer's value.
