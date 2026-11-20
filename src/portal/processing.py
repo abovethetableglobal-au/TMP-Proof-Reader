@@ -56,9 +56,40 @@ def same_issue(a: dict, b: dict) -> bool:
     return SequenceMatcher(None, ea, eb).ratio() >= 0.75
 
 
+def _sources(src: str, f: dict) -> set[str]:
+    if "_sources" in f:
+        return set(f["_sources"])
+    if src == "deterministic":
+        return {"rules"}
+    if src == "ai":
+        return {f"AI {f.get('pass', '')}".strip()}
+    return {x.strip() for x in src.split(",") if x.strip()}
+
+
+def _pages(f: dict) -> set[int]:
+    return {int(f.get("page") or 1), *(int(p) for p in f.get("related_pages") or [])}
+
+
+def merge(items: list[tuple[str, dict]]) -> tuple[str, dict]:
+    """Merge findings that describe one problem. Keeps the most severe rating (Query only if all are Query),
+    the clearest explanation, the longest evidence, every page and every source — nothing is silently dropped."""
+    if len(items) == 1 and "_sources" in items[0][1]:
+        return items[0]
+    sev = min((f.get("severity", "Query") for _, f in items), key=lambda s: SEV_RANK.get(s, 4))
+    best = max(items, key=lambda it: ("rules" not in _sources(*it), len(it[1].get("issue", ""))))[1]
+    merged = dict(best, severity=sev)
+    merged["evidence"] = max((f.get("evidence", "") for _, f in items), key=len)
+    merged["rule"] = next((f.get("rule") for _, f in items if f.get("rule")), None)
+    pages = set().union(*(_pages(f) for _, f in items))
+    merged["page"] = min(int(f.get("page") or 1) for _, f in items)
+    merged["related_pages"] = sorted(pages - {merged["page"]})
+    srcs = set().union(*(_sources(s, f) for s, f in items))
+    merged["_sources"] = sorted(srcs)
+    return ", ".join(sorted(srcs)), merged
+
+
 def dedupe(results: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
-    """Merge duplicate findings from different checks. Keeps the most severe rating (Query only if all are
-    Query), the clearest explanation, and records every source so nothing is silently dropped."""
+    """Step 1 (no AI): merge findings on the same page with overlapping evidence."""
     groups: list[list[tuple[str, dict]]] = []
     for item in results:
         for g in groups:
@@ -67,15 +98,35 @@ def dedupe(results: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
                 break
         else:
             groups.append([item])
-    out = []
-    for g in groups:
-        sev = min((f.get("severity", "Query") for _, f in g), key=lambda s: SEV_RANK.get(s, 4))
-        best = max(g, key=lambda it: (it[0] == "ai", len(it[1].get("issue", ""))))[1]
-        merged = dict(best, severity=sev)
-        merged["evidence"] = max((f.get("evidence", "") for _, f in g), key=len)
-        merged["rule"] = next((f.get("rule") for _, f in g if f.get("rule")), None)
-        srcs = sorted({("rules" if s == "deterministic" else f"AI {f.get('pass', '')}".strip()) for s, f in g})
-        out.append((", ".join(srcs), merged))
+    return [merge(g) for g in groups]
+
+
+def style_rollup(items: list[tuple[str, dict]]) -> tuple[str, dict]:
+    """Roll pure style/format consistency points into one finding, as a human proofreader's style list does."""
+    src, base = merge(items)
+    lines = [f"• p{f.get('page')}: {' '.join(str(f.get('issue', '')).split())}" for _, f in
+             sorted(items, key=lambda it: int(it[1].get("page") or 1))]
+    base.update(severity="Minor", category="A Proofreading", outcome="Potential issue", rule=None,
+                issue=f"Style inconsistencies to standardise across the document ({len(items)} items). "
+                      "Choose one form for each item and apply it throughout.",
+                evidence="\n".join(lines), action="Standardise each item listed.")
+    return src, base
+
+
+def consolidate(results: list[tuple[str, dict]], grouper) -> list[tuple[str, dict]]:
+    """Step 2 (AI): group findings that describe the same problem across pages/passes; roll up style points.
+    `grouper(findings) -> [(indices, kind)]`. Any failure leaves the findings as they were."""
+    if len(results) < 2:
+        return results
+    groups = grouper([f for _, f in results])
+    out, style = [], []
+    for idx, kind in groups:
+        merged = merge([results[i] for i in idx])
+        (style if kind == "style_variant" else out).append(merged)
+    if len(style) > 1:
+        out.append(style_rollup(style))
+    else:
+        out += style
     return out
 
 
@@ -188,20 +239,32 @@ def run_check(check_id: int) -> None:
                 for p in ai["passes"].values():
                     for f in p.get("findings", []):
                         f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
-                        if f.get("related_pages"):
-                            f["issue"] = f"{f.get('issue', '')} (see also page{'s' if len(f['related_pages']) > 1 else ''} " \
-                                         f"{', '.join(map(str, f['related_pages']))})"
                         results.append(("ai", f))
                 chk.ai_passes = passes
                 chk.ai_cost_usd = f"{ai['usd_total']:.2f}"
 
-            for src, f in dedupe(results):
+            merged = dedupe(results)
+            if state == "on":
+                try:
+                    from src.tmpcheck import consolidate as cons
+                    usd = [0.0]
+
+                    def grouper(fs):
+                        groups, cost = cons.group_findings(fs)
+                        usd[0] = cost
+                        return groups
+                    merged = consolidate(merged, grouper)
+                    chk.ai_cost_usd = f"{float(chk.ai_cost_usd or 0) + usd[0]:.2f}"
+                except Exception:   # consolidation is an aid; never fail the check over it
+                    traceback.print_exc()
+            for src, f in merged:
                 db.add(Finding(check_id=chk.id, severity=f.get("severity", "Query"), page=int(f.get("page") or 1),
                                section=str(f.get("section") or f.get("category") or "")[:200],
                                evidence=f.get("evidence", ""), issue=f.get("issue", ""),
                                action=f.get("action") or f.get("fix") or f.get("suggested_correction"),
                                category=f.get("category", ""), outcome=f.get("outcome", "Potential issue"),
-                               rule=f.get("rule") or f.get("rule_id"), source=src))
+                               rule=f.get("rule") or f.get("rule_id"), source=src,
+                               pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
             _consume_credit(db, chk)
             chk.status = CheckStatus.draft_review
             db.commit()

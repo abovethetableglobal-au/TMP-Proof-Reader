@@ -73,8 +73,9 @@ def run(pdf: Path) -> dict:
     for k, occ in seen.items():
         pgs = sorted({p for p, _ in occ})
         if len(occ) > 1 and pgs[-1] - pgs[0] <= 6:  # nearby repeats (distant ones are often legitimate boilerplate)
+            # Query, not Minor: repeats can be deliberate (Owner excluded this type in BENCH-01; BENCH-02 action)
             add("DUP-SENT", pgs[0], occ[0][1], f"Sentence repeated {len(occ)} times (pages {', '.join(map(str, pgs))})",
-                "Minor", "A Proofreading")
+                "Query", "A Proofreading", "Unable to verify")
 
     for i, f in enumerate(findings, 1):
         f["id"] = f"F-{i:03d}"

@@ -95,6 +95,7 @@ class Finding(Base):
     outcome: Mapped[str] = mapped_column(String(40), default="Potential issue")
     rule: Mapped[str | None] = mapped_column(String(60))
     source: Mapped[str] = mapped_column(String(60), default="rules")  # which checks raised it, e.g. "AI C, rules"
+    pages: Mapped[str | None] = mapped_column(String(300))      # all pages the issue affects, e.g. "10, 59, 60"
     disposition: Mapped[str] = mapped_column(String(16), default="pending")   # pending|accepted|edited|rejected
     reviewer_note: Mapped[str | None] = mapped_column(Text)
     dispositioned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -130,4 +131,21 @@ SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
 
 def init_db(eng=None) -> None:
-    Base.metadata.create_all(eng or engine)
+    eng = eng or engine
+    Base.metadata.create_all(eng)
+    _add_missing_columns(eng)
+
+
+def _add_missing_columns(eng) -> None:
+    """Local SQLite only: add columns introduced after a database was created (no data is changed)."""
+    if eng.dialect.name != "sqlite":
+        return
+    from sqlalchemy import inspect, text
+    insp = inspect(eng)
+    with eng.begin() as conn:
+        for table in Base.metadata.sorted_tables:
+            have = {c["name"] for c in insp.get_columns(table.name)}
+            for col in table.columns:
+                if col.name not in have:
+                    conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" '
+                                      f'{col.type.compile(dialect=eng.dialect)}'))

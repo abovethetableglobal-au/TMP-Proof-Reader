@@ -58,12 +58,12 @@
     <li class="finding" id="f{{ f.id }}">
       <div class="f-head">
         <span class="sev sev-{{ f.severity|lower }}">{{ f.severity }}</span>
-        <span class="muted">Page {{ f.page }}{% if f.category %} · {{ f.category }}{% endif %}{% if f.rule %} · <code>{{ f.rule }}</code>{% endif %}</span>
+        <span class="muted">{% if f.pages %}Pages {{ f.pages }}{% else %}Page {{ f.page }}{% endif %}{% if f.category %} · {{ f.category }}{% endif %}{% if f.rule %} · <code>{{ f.rule }}</code>{% endif %}</span>
         <span class="f-outcome">{{ f.outcome }}</span>
         <span class="disp disp-{{ f.disposition }}">{{ f.disposition|capitalize }}</span>
       </div>
       <p class="f-issue">{{ f.issue }}</p>
-      {% if f.evidence %}<blockquote>{{ f.evidence }}</blockquote>{% endif %}
+      {% if f.evidence %}<blockquote class="{{ 'list' if '\n' in f.evidence }}">{{ f.evidence }}</blockquote>{% endif %}
       {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
       <p class="muted small">Found by: {{ f.source }}</p>
       {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}

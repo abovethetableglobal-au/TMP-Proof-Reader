@@ -204,7 +204,7 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
     rows = db.query(Finding).filter_by(check_id=chk.id).order_by(Finding.page, Finding.id).all()
     return JSONResponse({"check_id": chk.id, "doc_ref": chk.doc_ref, "pages": chk.pages, "ai_passes": chk.ai_passes,
                          "ai_cost_usd": chk.ai_cost_usd, "status": chk.status.value,
-                         "findings": [{"id": f.id, "page": f.page, "severity": f.severity, "category": f.category,
+                         "findings": [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
                                        "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
                                        "action": f.action, "disposition": f.disposition,
                                        "reviewer_note": f.reviewer_note} for f in rows]},

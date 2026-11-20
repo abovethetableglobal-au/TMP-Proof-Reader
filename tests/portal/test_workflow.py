@@ -189,3 +189,17 @@ def test_export_json(env):
     cid = upload(c).json()["id"]
     r = c.get(f"/checks/{cid}/findings.json")
     assert r.status_code == 200 and len(r.json()["findings"]) == 7
+
+
+def test_grouped_finding_renders_pages_and_list(env):
+    c, S = env
+    add_credits(S)
+    cid = upload(c).json()["id"]
+    with S() as s:
+        s.add(dbm.Finding(check_id=cid, severity="Minor", page=9, section="", pages="9, 21",
+                          evidence="• p9: Unit spacing\n• p21: Volume spacing", issue="Style inconsistencies (2 items)",
+                          source="AI A"))
+        s.commit()
+    html = c.get(f"/checks/{cid}").text
+    assert "Pages 9, 21" in html and 'class="list"' in html
+    assert c.get(f"/checks/{cid}/findings.json").json()["findings"][-1]["pages"] == "9, 21"

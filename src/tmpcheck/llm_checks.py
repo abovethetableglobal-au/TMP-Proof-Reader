@@ -60,21 +60,30 @@ Rules:
   wording (e.g. 'Existing Traffic and Adverting Signs'). Do not report template-mandated heading text as an error.
 - Severity: Critical = potential serious safety or mandatory-requirement issue; Major = significant technical/completeness concern;
   Moderate = important inconsistency or ambiguity; Minor = editorial/presentation; Query = cannot verify from the document.
-- Be thorough: a typical 60-page TMP contains dozens of genuine issues. Report every instance, not a sample."""
+- Be thorough: a typical 60-page TMP contains dozens of genuine issues. Report every distinct error, not a sample.
+- Report each underlying problem once. If the same conflict or omission shows on several pages, report it at the
+  first page and list the other pages in 'related_pages'; do not raise it again for each page."""
 
 PASSES = {
     "A": ("Proofreading and presentation",
           "Check spelling, grammar, punctuation, sentence clarity, capitalisation, abbreviations and units "
           "(e.g. '60km/h' vs '60 km/h', 'AS1742.3' vs 'AS 1742.3:2019'), heading wording, and wrong words. "
-          "Report each error individually. Also list inconsistent variants of the same term (e.g. car park/carpark) "
-          "as one Minor finding per term, giving the variants in 'evidence'."),
+          "Report each error individually. Work through this punctuation checklist on every page, including bullets, "
+          "table cells and the last sentence of each section: missing full stop at the end of a sentence; double or stray "
+          "punctuation (';.', '. -', ':-', '20 km/h.'); missing space after a full stop or before a unit; words run "
+          "together or split ('upto', 'week s'); missing apostrophes ('2 weeks notice'); stray spaces in headings "
+          "('Constraint /Impacts'); a term defined twice. "
+          "Style consistency is different: do NOT report unit spacing, capitalisation, hyphenation, dash style, time or "
+          "date formats, or term variants (e.g. car park/carpark, Prestart/pre-start) instance by instance. Give ONE Minor "
+          "finding per term, listing every variant in 'evidence' and the pages in 'related_pages'."),
     "B": ("Document consistency",
           "Cross-check facts across the whole document, appendices and TGS drawings: project dates and duration, hours and "
           "days of work, revision numbers and dates (including TGS dates vs site inspection date), vehicle and traffic "
           "counts and volumes, speeds, setbacks and device sizes, stage numbering, role titles, names and contact details, "
           "contents page vs actual headings and page numbers, internal cross-references ('see 7.3.2'), and risk scores "
           "(recalculate Likelihood x Consequence and the rating band against the TMP's own matrix). "
-          "For each conflict cite one page in 'page' and the others in 'related_pages'. Put unresolved conflicts in open_questions."),
+          "For each conflict cite one page in 'page' and the others in 'related_pages', and report the conflict once only. "
+          "Put unresolved conflicts in open_questions."),
     "C": ("Completeness and template leftovers",
           "Find template instructions or example text left in, blank fields and table cells, empty registers, sections "
           "that say 'N/A' but are later described as applicable (or vice versa), statements that contradict each other, "
@@ -85,7 +94,11 @@ PASSES = {
           "Look at every TGS drawing and figure as an image. Compare title blocks (date, revision, duration, company name, "
           "sign quantities) with the TMP text; check signs and devices described in the text appear on the plan; check "
           "labels and notes against the text (tolerances, cone spacing, aftercare); and report text or symbols clipped by "
-          "the drawing frame. Use 'VISUAL:' evidence where the drawing has no selectable text."),
+          "the drawing frame. Also check body figures and site photos (e.g. Figure 1 and 2): captions, dates and photo "
+          "order against the text. Judgements about where an item sits on an aerial photo or plan (e.g. whether a truck is "
+          "on a path, or whether spacing meets a tolerance) are uncertain at drawing scale: report them as Query unless "
+          "unmistakable, and do not contradict a note on the drawing that is consistent with the TMP text. "
+          "Use 'VISUAL:' evidence where the drawing has no selectable text."),
 }
 
 

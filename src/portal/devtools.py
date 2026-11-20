@@ -8,6 +8,7 @@ Data created here is test data, never shown as real customer information.
     python -m src.portal.devtools use-credit
     python -m src.portal.devtools check REF-001 draft_review|final_issued|processing|failed [--findings Critical=1,Major=2]
     python -m src.portal.devtools dedupe 5          # merge duplicate findings in an existing draft
+    python -m src.portal.devtools consolidate 5     # AI grouping of an existing draft (needs ANTHROPIC_API_KEY, ~US$0.15)
     python -m src.portal.devtools reset
 """
 import argparse
@@ -31,6 +32,7 @@ def main() -> None:
     k.add_argument("--findings", default="", help="e.g. Critical=1,Major=2,Minor=3")
     sp.add_parser("reset")
     dd = sp.add_parser("dedupe"); dd.add_argument("check_id", type=int)
+    cc = sp.add_parser("consolidate"); cc.add_argument("check_id", type=int)
     a = ap.parse_args()
 
     init_db()
@@ -65,6 +67,42 @@ def main() -> None:
                 for i in range(int(n)):
                     db.add(Finding(check_id=chk.id, severity=sev.strip(), page=1, section="Test",
                                    evidence="Local test data"))
+        elif a.cmd == "consolidate":
+            from .processing import consolidate
+            from src.tmpcheck.consolidate import group_findings
+            if not os.environ.get("ANTHROPIC_API_KEY"):
+                sys.exit("Set ANTHROPIC_API_KEY in this window first.")
+            chk = db.get(Check, a.check_id)
+            if chk is None or chk.org_id != org.id or chk.status != CheckStatus.draft_review:
+                sys.exit("Check not found or not a draft.")
+            rows = db.query(Finding).filter_by(check_id=chk.id).all()
+            if any(r.disposition != "pending" for r in rows):
+                sys.exit("Some findings already have decisions; consolidate only runs on untouched drafts.")
+            items = []
+            for r in rows:
+                pages = [int(x) for x in (r.pages or str(r.page)).split(",") if x.strip()]
+                items.append((r.source or "rules", {
+                    "page": r.page, "related_pages": [p for p in pages if p != r.page], "severity": r.severity,
+                    "evidence": r.evidence, "issue": r.issue, "action": r.action, "category": r.category,
+                    "outcome": r.outcome, "rule": r.rule, "section": r.section,
+                    "_sources": [x.strip() for x in (r.source or "rules").split(",")]}))
+            cost = [0.0]
+
+            def grouper(fs):
+                g, usd = group_findings(fs)
+                cost[0] = usd
+                return g
+            merged = consolidate(items, grouper)
+            for r in rows:
+                db.delete(r)
+            from .processing import _pages
+            for src, f in merged:
+                db.add(Finding(check_id=chk.id, severity=f["severity"], page=f["page"], section=f["section"],
+                               evidence=f["evidence"], issue=f["issue"], action=f["action"], category=f["category"],
+                               outcome=f["outcome"], rule=f["rule"], source=src,
+                               pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
+            chk.ai_cost_usd = f"{float(chk.ai_cost_usd or 0) + cost[0]:.2f}"
+            print(f"{len(rows)} findings -> {len(merged)} after grouping (US${cost[0]:.2f}).")
         elif a.cmd == "dedupe":
             from .processing import dedupe
             chk = db.get(Check, a.check_id)

@@ -319,3 +319,4 @@ main > section.card { margin: 18px 22px 0 32px; }
   .summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .disp { margin-left: 0; }
 }
+.finding blockquote.list { white-space: pre-line; }

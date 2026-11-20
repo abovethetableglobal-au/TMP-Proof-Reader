@@ -8,7 +8,7 @@
 | Engine | `det_checks` 0.2 + `llm_checks` passes A,B,C,D + cross-check duplicate merging (portal 0.2) |
 | Data | Findings export `check-5-findings.json` (git-ignored `customer-docs/`) |
 | Scorer | AI-PM — **simulated, not independent** (§5.3). Matching by page + issue meaning. Needs Tara's confirmation before G5 use |
-| Status | Under review |
+| Status | Under review — actions 1–3 implemented 2026-11-20, BENCH-03 pending |
 
 ## Headline
 | Measure | Result |

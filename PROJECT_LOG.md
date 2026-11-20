@@ -171,3 +171,12 @@ Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF prote
 
 ## 2026-11-20 — BENCH-02 scored
 - Recall 88% (97/110) vs REF-01, 3 likely false positives, US$3.33. Main gap is noise: 211 findings → est. 70–105 min review vs 45 min target (R-03). Actions: cross-page grouping, style roll-up, pass A punctuation, pass D placement → Query. Scoring is simulated; Tara to confirm extras.
+
+## 2026-11-20 — BENCH-02 actions 1–3 implemented
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Cross-page/cross-pass issue grouping (one text-only Claude call; returns id groups only, never edits findings) + style roll-up into one finding | AI-PM | Quality checked (unit tests, fake API client) | Live API | Owner: `devtools consolidate 5` (~US$0.15), then BENCH-03 re-run |
+| Pass A punctuation checklist; style variants one-per-term; pass B one report per conflict; pass D placement → Query, body figures added | AI-PM | Production complete | Live API | BENCH-03 |
+| DUP-SENT rule → Query / Unable to verify (Owner excluded type in BENCH-01) | AI-PM | Quality checked | — | — |
+| `pages` field (all pages an issue affects); SQLite auto-adds new columns to existing local DBs | AI-PM | Quality checked | — | — |
+Not live-tested: no API key in the AI-PM environment. Consolidation failure falls back to ungrouped findings.
