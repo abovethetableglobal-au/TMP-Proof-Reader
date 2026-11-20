@@ -89,3 +89,7 @@ Finding: Code §4.2.1 mandates use of a Main Roads TMP template with headings re
 | Reviewer accreditation details (S-07) | Owner / Tara | Awaiting input | — | Provide level, number, expiry |
 | Gate 3 sign-off | Owner | Awaiting approval | S-07 | Owner decision |
 Note: review outcome relayed verbally by Owner; completed review pack not yet on file.
+
+## 2026-11-20 — Gate 3 passed (conditional)
+- A-17. Conditions due 2026-11-27: Tara accreditation details + completed review pack.
+- Next: G4 prototype — rule engine + template-diff completeness on public template (no API key needed); LLM checks once key is configured.

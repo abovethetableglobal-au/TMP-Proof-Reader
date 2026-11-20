@@ -17,7 +17,7 @@ expected_result: Conditions met, or provision not used
 category: E
 default_severity: Major
 human_review: true
-status: reviewed
+status: approved
 verification_date: '2026-11-20'
 verified_by: AI-PM (read against primary text)
 reviewer: Tara (WTGTM) — accepted without amendment 2026-11-20 (relayed by Owner)
@@ -28,3 +28,6 @@ change_history:
 - date: '2026-11-20'
   by: Tara (WTGTM) via Owner
   change: 'Reviewed: accepted as written'
+- date: '2026-11-20'
+  by: Owner (A-17)
+  change: Approved for prototype use on test/anonymised documents; live use from G6

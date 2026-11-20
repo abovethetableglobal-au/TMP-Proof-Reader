@@ -40,7 +40,7 @@ Status legend: **V** verified against primary source by AI-PM · **AI-X** extrac
 
 ## 4. Rules
 Schema: `compliance/rules/_schema.yaml`. Rule files: `compliance/rules/*.yaml`.
-No rules are approved for live use. Count: **22 verified by AI-PM against primary text** / **22 reviewed by Tara (accepted, no amendments)** / 0 approved for live use (pending G3 sign-off).
+No rules are approved for live use. Count: **22 verified by AI-PM against primary text** / **22 reviewed by Tara (accepted, no amendments)** / **22 approved for prototype use** (A-17); live use from G6.
 
 | Clause | Rules | Notes |
 |---|---|---|
