@@ -5,3 +5,7 @@ customer-docs/
 __pycache__/
 *.pyc
 output/
+
+# Third-party downloads (fetch from source URL; do not redistribute)
+test-library/public/*.docx
+test-library/public/*.pdf

@@ -39,3 +39,11 @@
 ## 2026-11-20 — Gate 1 passed
 - Owner approved baseline Option A (A-13). G1 = User accepted.
 - Next: WS3 core rule drafting; WS6 technical spike on public MRWA TMP template.
+
+## 2026-11-20 — WS6 Spike S-01
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Spike S-01 on public MRWA TMP template | AI-PM | Quality checked | — | Template-diff design once WTGTM templates (A5) arrive |
+| Core rule drafting (Code §3.5, §4.2, §8) | AI-PM | Not started | Manual Code verification | Next work item |
+
+Result: 32 evidence-bound findings, original unchanged, 3 defects found and fixed, 3 gaps logged. Key learning: completeness should be a template-diff against WTGTM templates — raises priority of evidence item A5.

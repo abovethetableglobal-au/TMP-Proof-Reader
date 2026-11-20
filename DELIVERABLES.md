@@ -17,4 +17,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-10 | Prototype pipeline | — | AI-PM | Not started | — | `src/` (TBC) | G2, P-04 |
 | D-11 | Report PDF template | — | AI-PM | Not started | — | TBC | D-10 |
 | D-12 | Annotated PDF generator | — | AI-PM | Not started | — | TBC | D-10 |
+| D-14 | Spike S-01 (extraction, completeness, annotation) | 0.1 | AI-PM | Quality checked | n/a (internal) | `src/spike/`, `docs/reviews/SPIKE-S01_results.md` | — |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |
