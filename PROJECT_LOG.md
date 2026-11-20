@@ -166,3 +166,4 @@ Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF prote
 - A-26: SU026 (61 pp: 50 + 11 drawings) rejected under A-10 on Owner test. Owner approved single 100-page limit incl. drawings.
 - OWNER-FT-01: Owner ran SU026 end to end in local portal (rule-based only, 21 findings, final issued). AI passes not active in that run.
 - Owner second SU026 run again had no AI passes (silent skip). Portal now prints AI status at startup and records why passes were skipped on the check page.
+- OWNER-FT-02: AI passes ran on SU026 (293 raw findings, US$3.33). Added duplicate merging across checks, AI fix/category mapping, findings JSON export for benchmarking.

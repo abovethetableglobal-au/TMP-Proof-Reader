@@ -197,6 +197,20 @@ def final(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_
     return RedirectResponse(f"/checks/{chk.id}", status_code=303)
 
 
+@app.get("/checks/{check_id}/findings.json")
+def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    """Findings with reviewer decisions — used for benchmarking (TEST_METHODOLOGY)."""
+    chk = get_check(db, ctx, check_id)
+    rows = db.query(Finding).filter_by(check_id=chk.id).order_by(Finding.page, Finding.id).all()
+    return JSONResponse({"check_id": chk.id, "doc_ref": chk.doc_ref, "pages": chk.pages, "ai_passes": chk.ai_passes,
+                         "ai_cost_usd": chk.ai_cost_usd, "status": chk.status.value,
+                         "findings": [{"id": f.id, "page": f.page, "severity": f.severity, "category": f.category,
+                                       "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
+                                       "action": f.action, "disposition": f.disposition,
+                                       "reviewer_note": f.reviewer_note} for f in rows]},
+                        headers={"Content-Disposition": f'attachment; filename="check-{chk.id}-findings.json"'})
+
+
 @app.get("/checks/{check_id}/original")
 def original(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)

@@ -94,7 +94,7 @@ class Finding(Base):
     category: Mapped[str] = mapped_column(String(40), default="")
     outcome: Mapped[str] = mapped_column(String(40), default="Potential issue")
     rule: Mapped[str | None] = mapped_column(String(60))
-    source: Mapped[str] = mapped_column(String(20), default="deterministic")  # deterministic | ai
+    source: Mapped[str] = mapped_column(String(60), default="rules")  # which checks raised it, e.g. "AI C, rules"
     disposition: Mapped[str] = mapped_column(String(16), default="pending")   # pending|accepted|edited|rejected
     reviewer_note: Mapped[str | None] = mapped_column(Text)
     dispositioned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

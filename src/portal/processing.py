@@ -9,7 +9,9 @@ import os
 import shutil
 import subprocess
 import tempfile
+import re
 import traceback
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from sqlalchemy.orm import Session
@@ -31,6 +33,50 @@ def ai_status() -> tuple[str, str]:
         return "no_key", (f"AI passes {passes} were requested but no ANTHROPIC_API_KEY was found "
                           "in the window running the portal.")
     return "on", f"AI passes {passes} are on."
+
+
+PASS_CATEGORY = {"A": "A Proofreading", "B": "B Consistency", "C": "C Completeness", "D": "D TGS cross-check"}
+SEV_RANK = {"Critical": 0, "Major": 1, "Moderate": 2, "Minor": 3, "Query": 4}
+
+
+def _norm(s: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", (s or "").lower())).strip()
+
+
+def same_issue(a: dict, b: dict) -> bool:
+    """Two findings describe the same issue: same page and overlapping evidence text."""
+    if int(a.get("page") or 0) != int(b.get("page") or 0):
+        return False
+    ea, eb = _norm(a.get("evidence")), _norm(b.get("evidence"))
+    if len(ea) < 12 or len(eb) < 12:
+        return ea == eb and bool(ea)
+    short, long_ = sorted((ea, eb), key=len)
+    if short in long_ or long_.startswith(short[:60]):
+        return True
+    return SequenceMatcher(None, ea, eb).ratio() >= 0.75
+
+
+def dedupe(results: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
+    """Merge duplicate findings from different checks. Keeps the most severe rating (Query only if all are
+    Query), the clearest explanation, and records every source so nothing is silently dropped."""
+    groups: list[list[tuple[str, dict]]] = []
+    for item in results:
+        for g in groups:
+            if same_issue(g[0][1], item[1]):
+                g.append(item)
+                break
+        else:
+            groups.append([item])
+    out = []
+    for g in groups:
+        sev = min((f.get("severity", "Query") for _, f in g), key=lambda s: SEV_RANK.get(s, 4))
+        best = max(g, key=lambda it: (it[0] == "ai", len(it[1].get("issue", ""))))[1]
+        merged = dict(best, severity=sev)
+        merged["evidence"] = max((f.get("evidence", "") for _, f in g), key=len)
+        merged["rule"] = next((f.get("rule") for _, f in g if f.get("rule")), None)
+        srcs = sorted({("rules" if s == "deterministic" else f"AI {f.get('pass', '')}".strip()) for s, f in g})
+        out.append((", ".join(srcs), merged))
+    return out
 
 
 class UploadError(ValueError):
@@ -140,15 +186,20 @@ def run_check(check_id: int) -> None:
                 from src.tmpcheck import llm_checks
                 ai = llm_checks.run(pdf, passes.split(","))
                 for p in ai["passes"].values():
-                    results += [("ai", f) for f in p.get("findings", [])]
+                    for f in p.get("findings", []):
+                        f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
+                        if f.get("related_pages"):
+                            f["issue"] = f"{f.get('issue', '')} (see also page{'s' if len(f['related_pages']) > 1 else ''} " \
+                                         f"{', '.join(map(str, f['related_pages']))})"
+                        results.append(("ai", f))
                 chk.ai_passes = passes
                 chk.ai_cost_usd = f"{ai['usd_total']:.2f}"
 
-            for src, f in results:
+            for src, f in dedupe(results):
                 db.add(Finding(check_id=chk.id, severity=f.get("severity", "Query"), page=int(f.get("page") or 1),
                                section=str(f.get("section") or f.get("category") or "")[:200],
                                evidence=f.get("evidence", ""), issue=f.get("issue", ""),
-                               action=f.get("action") or f.get("suggested_correction"),
+                               action=f.get("action") or f.get("fix") or f.get("suggested_correction"),
                                category=f.get("category", ""), outcome=f.get("outcome", "Potential issue"),
                                rule=f.get("rule") or f.get("rule_id"), source=src))
             _consume_credit(db, chk)

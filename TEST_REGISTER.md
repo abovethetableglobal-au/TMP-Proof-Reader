@@ -45,3 +45,11 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Rule-based checks only (AI passes not active in that session) | 21 findings: 0 Critical, 0 Major, 8 Moderate, 9 Minor, 4 Query |
 | Owner accepted all findings → final issued | Workflow pass. Not a benchmark: decisions were test clicks, not Tara's review |
 | Next | Re-run with AI passes; score against REF-01 (~105 items) as BENCH-02 |
+
+## OWNER-FT-02 — 2026-11-20 — SU026 with AI passes A–D (Owner's PC)
+| Item | Result |
+|---|---|
+| AI passes A,B,C,D + rule checks | 293 findings: 0 Critical, 12 Major, 73 Moderate, 188 Minor, 20 Query |
+| Actual AI cost | **US$3.33** for a 61-page TMP (estimate was US$2–4) |
+| Defect found | Same issue reported by several passes (e.g. p25 template leftover ×4) → duplicate merging added; AI 'fix' and category were not shown → fixed |
+| Next | Owner runs `devtools dedupe 5`, exports JSON → BENCH-02 scoring vs REF-01 (~105 items) |

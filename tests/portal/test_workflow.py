@@ -167,3 +167,25 @@ def test_page_limit_a26(env, monkeypatch):
     page = c.get(f"/checks/{cid}").text
     assert "has 6 pages. The limit is 5 pages including drawings" in page
     assert balance(S) == 2
+
+
+def test_dedupe_merges_same_issue_keeps_distinct():
+    ev = "<Detail consultation/communication with relevant agencies as required, e.g. PTA, emergency services, LGAs>"
+    items = [("deterministic", {"page": 25, "severity": "Moderate", "evidence": ev[:60], "issue": "Template instruction left", "rule": "PH-ANGLE"}),
+             ("ai", {"page": 25, "severity": "Major", "evidence": ev, "issue": "Template instruction is left in and no consultation is described.", "pass": "C"}),
+             ("ai", {"page": 25, "severity": "Major", "evidence": ev[:80], "issue": "Placeholder not replaced.", "pass": "A"}),
+             ("ai", {"page": 26, "severity": "Major", "evidence": ev, "issue": "Same text, other page", "pass": "C"}),
+             ("ai", {"page": 25, "severity": "Minor", "evidence": "Speed limit 60km/h should read 60 km/h", "issue": "Unit spacing", "pass": "A"})]
+    out = processing.dedupe(items)
+    assert len(out) == 3
+    src, merged = out[0]
+    assert merged["severity"] == "Major" and merged["rule"] == "PH-ANGLE" and merged["evidence"] == ev
+    assert src == "AI A, AI C, rules"
+
+
+def test_export_json(env):
+    c, S = env
+    add_credits(S)
+    cid = upload(c).json()["id"]
+    r = c.get(f"/checks/{cid}/findings.json")
+    assert r.status_code == 200 and len(r.json()["findings"]) == 7

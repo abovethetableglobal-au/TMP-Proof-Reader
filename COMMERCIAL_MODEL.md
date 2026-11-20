@@ -48,3 +48,5 @@ Assumes 10 comparable checks in one month and $405 is representative. $675 (9 hr
 **Our contribution per credit (estimate):** ≈ $149 − AI/infra (~$3–16) − payment fees ≈ **$128–143**.
 
 **Customer net saving per check (estimate):** $405 − $149 − (reviewer hrs × $75). At 1 hr review ≈ $181; at 2 hrs ≈ $106. Reviewer time remains a key metric because it drives the customer's value.
+
+**Measured 2026-11-20 (OWNER-FT-02):** AI processing US$3.33 for SU026 (61 pp, passes A–D) ≈ A$5. Within the $2–15 assumption.

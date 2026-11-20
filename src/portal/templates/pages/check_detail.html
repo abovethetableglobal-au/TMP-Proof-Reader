@@ -6,7 +6,8 @@
   <p class="crumb"><a href="/checks">My Checks</a> / {{ chk.doc_ref }}</p>
   <h1>{{ chk.doc_ref }} <span class="pill {{ tone }}">{{ status_label }}</span></h1>
   <p>{{ chk.filename }} · uploaded {{ chk.created_at|dmy }}{% if chk.pages %} · {{ chk.pages }} pages{% endif %}
-    · <a href="/checks/{{ chk.id }}/original">Download original</a></p>
+    · <a href="/checks/{{ chk.id }}/original">Download original</a>
+    {% if findings %}· <a href="/checks/{{ chk.id }}/findings.json">Export findings (JSON)</a>{% endif %}</p>
 </div>
 
 {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
@@ -64,6 +65,7 @@
       <p class="f-issue">{{ f.issue }}</p>
       {% if f.evidence %}<blockquote>{{ f.evidence }}</blockquote>{% endif %}
       {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
+      <p class="muted small">Found by: {{ f.source }}</p>
       {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}
       {% if chk.status == CheckStatus.draft_review %}
       <form class="f-form" method="post" action="/checks/{{ chk.id }}/findings/{{ f.id }}">
