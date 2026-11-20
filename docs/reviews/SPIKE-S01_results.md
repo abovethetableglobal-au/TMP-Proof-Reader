@@ -34,5 +34,5 @@
 
 ## Conclusions
 1. **Source-supported conclusion:** Extraction, evidence-bound findings and non-destructive annotation are feasible at negligible cost with open-source tooling.
-2. **Recommendation:** Build category C completeness primarily as a *template-diff* against WTGTM's own templates, with pattern rules as a backstop. This raises the priority of evidence item A5.
+2. **Recommendation:** Build category C completeness primarily as a *template-diff* against WTGTM's own templates, with pattern rules as a backstop. This raises the priority of evidence item A4 (renumbered in request v0.2).
 3. **Hypothesis (untested):** Most category A–C value can be delivered deterministically, reserving LLM cost for proofreading nuance and categories D–E — to be tested in G4.

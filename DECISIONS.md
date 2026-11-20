@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-14 | WTGTM evidence request v0.2 approved for Owner to send (blank templates raised to Essential) | Critical path G2; Spike S-01 finding | 2026-11-20 | Owner |
 | A-13 | **Project baseline approved** (Option A): strategy incl. phased category E (TPR-01), deliverables (DELIVERABLES.md), success criteria (PROJECT_BRIEF.md). Gate 1 signed off. Resolves P-10 | Master Prompt §17 | 2026-11-20 | Owner |
 | A-12 | Master Prompt v1.4 adopted as governing framework (resolves P-01) | Owner supplied | 2026-11-20 | Owner |
 | A-11 | Project records held in private GitHub repo `abovethetableglobal-au/TMP-Proof-Reader` (resolves P-02) | Persistence beyond ephemeral container | 2026-11-20 | Owner |

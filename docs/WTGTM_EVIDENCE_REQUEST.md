@@ -1,6 +1,6 @@
 # TMP Check — Information Request for Way Too Go Traffic Management
 
-**Status:** DRAFT — for Owner approval before sending.
+**Version:** 0.2 · **Status:** Approved by Owner 2026-11-20 (A-14) for sending.
 **Purpose:** Understand how WTGTM prepares and checks TMPs today, so TMP Check is built around your real documents and requirements.
 
 ## How we will handle your documents
@@ -15,8 +15,8 @@
 | A1 | Completed historical TMPs (mix of simple, typical, complex) | 5–10 | **Essential** |
 | A2 | TGS drawings that went with each A1 TMP | All | **Essential** |
 | A3 | The proofreader's marked-up versions / correction lists for A1 | As many as available | **Essential** |
-| A4 | Final, corrected versions of A1 (after proofreading) | Same as A1 | High |
-| A5 | Current WTGTM TMP template(s) (Word) | All in use | High |
+| A4 | Current WTGTM TMP template(s) — blank Word versions | All in use | **Essential** |
+| A5 | Final, corrected versions of A1 (after proofreading) | Same as A1 | High |
 | A6 | Internal checklists or QA procedures for TMPs | All | High |
 | A7 | Any TMPs that were rejected or returned by MRWA / a council, with reasons | 2–5 | High |
 | A8 | Client- or council-specific requirements you regularly work to | List + docs | Medium |

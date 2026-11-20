@@ -47,3 +47,6 @@
 | Core rule drafting (Code §3.5, §4.2, §8) | AI-PM | Not started | Manual Code verification | Next work item |
 
 Result: 32 evidence-bound findings, original unchanged, 3 defects found and fixed, 3 gaps logged. Key learning: completeness should be a template-diff against WTGTM templates — raises priority of evidence item A5.
+
+## 2026-11-20 — Evidence request approved
+- A-14: request v0.2 approved; blank templates now item A4 (Essential). Owner to send. G2 clock starts on send.

@@ -23,7 +23,7 @@ Compliance library (WS3) runs in parallel with WS2 and must be reviewed before G
 | WS | Workstream | Owner | Depends on | Next action | Status |
 |---|---|---|---|---|---|
 | 1 | Project management | AI-PM | — | Maintain records; manage G2 | In progress |
-| 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Owner sends `docs/WTGTM_EVIDENCE_REQUEST.md` | Awaiting approval |
+| 2 | Customer discovery | AI-PM (Owner sends) | Owner approval of request | Owner sends request (approved A-14); AI-PM tracks responses | Awaiting input |
 | 3 | Regulatory research | AI-PM; Qualified reviewer | Reviewer appointed (P-03); AS 1742.3 access (P-06) | Build source register → draft rules from Code §4.2 (core set per TPR-01) | In progress |
 | 4 | Product design | AI-PM | WS2 | Customer + reviewer workflow wireframes | Not started |
 | 5 | Checking engine | AI-PM | WS2, WS3, P-04 | Prompt/rule design on anonymised samples | Not started |
