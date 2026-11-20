@@ -70,3 +70,10 @@ Result: 32 evidence-bound findings, original unchanged, 3 defects found and fixe
 | Tara review of rule set | Tara | Not started | Rule set complete | G3 |
 
 Finding: Code §4.2.1 mandates use of a Main Roads TMP template with headings retained (VC-04) — confirms template-diff approach.
+
+## 2026-11-20 — Claude API approved (A-16); environment set up
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Personal cloud environment `TMP-Proof-Reader` created; session moved onto it | AI-PM (Owner approved) | Production complete | — | Setup script proven on next fresh session |
+| Claude API key | Owner | Awaiting input | — | Add env var `ANTHROPIC_API_KEY` in environment settings; start a new session |
+| §8 accreditation rules | AI-PM | Not started | — | Next |
