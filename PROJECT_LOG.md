@@ -180,3 +180,4 @@ Not yet: report PDF (D-11), annotated PDF (D-12), sign-in/roles (S2), CSRF prote
 | DUP-SENT rule → Query / Unable to verify (Owner excluded type in BENCH-01) | AI-PM | Quality checked | — | — |
 | `pages` field (all pages an issue affects); SQLite auto-adds new columns to existing local DBs | AI-PM | Quality checked | — | — |
 Not live-tested: no API key in the AI-PM environment. Consolidation failure falls back to ungrouped findings.
+- Owner ran `devtools consolidate 5`: 211 → 138 findings (6 Major, 30 Moderate, 95 Minor, 7 Query) for US$0.18 (total US$3.51). Observed possible over-merge: p25 consultation placeholders grouped with p57 empty Appendix E (REF-01 lists them separately). Scoring pending JSON export.
