@@ -25,8 +25,9 @@ def db():
     s = S()
     a = dbm.Organisation(name="Org A"); b = dbm.Organisation(name="Org B")
     s.add_all([a, b]); s.flush()
-    s.add_all([dbm.User(org_id=a.id, name="Alice Smith", email="a@x"),
-               dbm.User(org_id=b.id, name="Bob", email="b@x")])
+    from tests.portal.conftest import PW_HASH
+    s.add_all([dbm.User(org_id=a.id, name="Alice Smith", email="a@x", role="customer_reviewer", password_hash=PW_HASH),
+               dbm.User(org_id=b.id, name="Bob", email="b@x", password_hash=PW_HASH)])
     s.commit()
     yield s
     s.close()
@@ -96,8 +97,9 @@ def test_prices_match_approved_commercial_model():
 def client(db):
     from fastapi.testclient import TestClient
     appmod.app.dependency_overrides[appmod.get_db] = lambda: db
-    os.environ["TMPCHECK_DEV_USER"] = "1"
+    from tests.portal.conftest import login
     with TestClient(appmod.app) as c:
+        login(c, "a@x")
         yield c
     appmod.app.dependency_overrides.clear()
 

@@ -62,7 +62,7 @@
 | Stage | Scope | Depends on | Done when |
 |---|---|---|---|
 | S1 Shell ✅ (D-18) | Layout, nav, header, banner, footer, responsive (desktop/tablet/mobile), design tokens, all empty states | P-12, P-13 | Visual match to mock-up at 1440/1024/390 px; no illustrative data |
-| S2 Accounts | Login, org separation, roles, audit log | S1 | Cross-tenant access tests fail closed |
+| S2 Accounts ✅ (local) | Login, org separation, roles, audit log | S1 | Cross-tenant access tests fail closed |
 | S3 Ledger | Credit ledger, balance, expiry, history, admin "record purchase" | P-14, P-15 | Ledger unit tests: purchase/consume/reversal/expiry/oldest-first |
 | S4 Upload → check ✅ (local) | Drag-drop, type/size validation (PDF/DOCX ≤ 20 MB, page limit A-26), progress, pipeline job, failure → no credit | S2, S3 | Corrupt/oversize/wrong-type rejected with message; failure creates no consume row |
 | S5 My Checks + review (findings + reviewer workflow ✅; PDFs pending D-11/D-12) | Check list, findings, reviewer disposition, draft→final, report/annotated downloads | D-11, D-12 | Final cannot be issued with any pending finding |

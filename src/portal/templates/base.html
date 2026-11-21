@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="csrf-token" content="{{ ctx.csrf }}">
 <title>{% block title %}Dashboard{% endblock %} · {{ cfg().branding.product }}</title>
 <link rel="icon" href="/static/img/logo-mark.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/static/css/portal.css">
@@ -44,7 +45,8 @@
           <div class="menu">
             <a href="/billing">Credits &amp; Billing</a>
             <a href="/help">Help &amp; Support</a>
-            <span class="menu-note">Sign-in arrives in stage S2</span>
+            <span class="menu-note">{{ ctx.user.email }} · {{ 'Accredited reviewer' if ctx.reviewer else 'User' }}</span>
+            <form method="post" action="/logout"><input type="hidden" name="csrf_token" value="{{ ctx.csrf }}"><button class="menu-btn" type="submit">Sign out</button></form>
           </div>
         </details>
       </div>

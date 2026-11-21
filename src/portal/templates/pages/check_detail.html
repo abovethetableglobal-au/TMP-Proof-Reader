@@ -46,9 +46,14 @@
   <div class="review-bar pad">
     <p>{% if pending %}<strong>Draft report.</strong> Your accredited reviewer must accept, edit or reject each finding. {{ pending }} of {{ findings|length }} still need a decision.
        {% else %}<strong>All findings have a decision.</strong> The final report can now be issued.{% endif %}</p>
+    {% if ctx.reviewer %}
     <form method="post" action="/checks/{{ chk.id }}/final">
+      <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
       <button class="btn orange" type="submit" {% if pending %}disabled aria-disabled="true"{% endif %}>Issue final report</button>
     </form>
+    {% else %}
+    <p class="small muted">Only your organisation's accredited reviewer can decide findings and issue the final.</p>
+    {% endif %}
   </div>
   {% else %}
   <div class="review-bar pad"><p><strong>Final issued {{ chk.final_issued_at|dmy }}.</strong> Findings below show your reviewer's decisions.</p></div>
@@ -73,8 +78,9 @@
       {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
       <p class="muted small">Found by: {{ f.source }}</p>
       {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}
-      {% if chk.status == CheckStatus.draft_review %}
+      {% if chk.status == CheckStatus.draft_review and ctx.reviewer %}
       <form class="f-form" method="post" action="/checks/{{ chk.id }}/findings/{{ f.id }}">
+        <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
         <input name="note" type="text" placeholder="Reviewer note (required for Edit)" value="{{ f.reviewer_note or '' }}" aria-label="Reviewer note">
         <button class="btn small outline" name="decision" value="accepted">Accept</button>
         <button class="btn small outline" name="decision" value="edited">Edit</button>

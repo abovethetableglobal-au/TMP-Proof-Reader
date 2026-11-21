@@ -62,7 +62,32 @@ class User(Base):
     org_id: Mapped[int] = mapped_column(ForeignKey("organisation.id"), index=True)
     name: Mapped[str] = mapped_column(String(200))
     email: Mapped[str] = mapped_column(String(320), unique=True)
-    role: Mapped[str] = mapped_column(String(32), default="customer_user")
+    role: Mapped[str] = mapped_column(String(32), default="customer_user")   # customer_user | customer_reviewer | admin
+    password_hash: Mapped[str | None] = mapped_column(String(300))
+    active: Mapped[bool] = mapped_column(default=True)
+
+
+class UserSession(Base):
+    """Server-side login session. Only a hash of the cookie token is stored."""
+    __tablename__ = "user_session"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class AuditEvent(Base):
+    """Append-only access and action log (brief §7, ARCHITECTURE security baseline)."""
+    __tablename__ = "audit_event"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    org_id: Mapped[int | None] = mapped_column(Integer, index=True)
+    user_id: Mapped[int | None] = mapped_column(Integer)
+    action: Mapped[str] = mapped_column(String(60))
+    object: Mapped[str | None] = mapped_column(String(120))
+    detail: Mapped[str | None] = mapped_column(Text)
+    ip: Mapped[str | None] = mapped_column(String(64))
 
 
 class Check(Base):

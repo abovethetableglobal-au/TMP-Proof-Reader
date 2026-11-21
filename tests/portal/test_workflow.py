@@ -14,6 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from src.portal import app as appmod, db as dbm, processing, services
+from tests.portal.conftest import login
 
 ROOT = Path(__file__).resolve().parents[2]
 SAMPLE = ROOT / "test-library" / "samples" / "SAMPLE-TMP-01.pdf"
@@ -34,7 +35,10 @@ def env(tmp_path, monkeypatch):
     s = S()
     a = dbm.Organisation(name="Org A"); b = dbm.Organisation(name="Org B")
     s.add_all([a, b]); s.flush()
-    s.add_all([dbm.User(org_id=a.id, name="Alice", email="a@x"), dbm.User(org_id=b.id, name="Bob", email="b@x")])
+    from tests.portal.conftest import PW_HASH
+    s.add_all([dbm.User(org_id=a.id, name="Alice", email="a@x", role="customer_reviewer", password_hash=PW_HASH),
+               dbm.User(org_id=b.id, name="Bob", email="b@x", password_hash=PW_HASH),
+               dbm.User(org_id=a.id, name="Uma", email="u@x", role="customer_user", password_hash=PW_HASH)])
     s.commit()
 
     def get_db():
@@ -44,8 +48,8 @@ def env(tmp_path, monkeypatch):
         finally:
             d.close()
     appmod.app.dependency_overrides[appmod.get_db] = get_db
-    os.environ["TMPCHECK_DEV_USER"] = "1"
     with TestClient(appmod.app) as c:
+        login(c, "a@x")
         yield c, S
     appmod.app.dependency_overrides.clear()
 
@@ -147,14 +151,14 @@ def test_other_org_cannot_see_check(env):
     c, S = env
     add_credits(S)
     cid = upload(c).json()["id"]
-    os.environ["TMPCHECK_DEV_USER"] = "2"
-    try:
-        assert c.get(f"/checks/{cid}").status_code == 404
-        assert c.get(f"/checks/{cid}/original").status_code == 404
-        assert c.post(f"/checks/{cid}/final").status_code == 404
-        assert "SAMPLE-TMP-01" not in c.get("/checks").text
-    finally:
-        os.environ["TMPCHECK_DEV_USER"] = "1"
+    login(c, "b@x")
+    assert c.get(f"/checks/{cid}").status_code == 404
+    assert c.get(f"/checks/{cid}/original").status_code == 404
+    assert c.get(f"/checks/{cid}/report.pdf").status_code == 404
+    assert c.post(f"/checks/{cid}/final").status_code in (403, 404)
+    assert "SAMPLE-TMP-01" not in c.get("/checks").text
+    with S() as s:
+        assert s.query(dbm.AuditEvent).filter_by(action="denied_other_org").count() >= 3
 
 
 def test_page_limit_a26(env, monkeypatch):
@@ -288,3 +292,52 @@ def test_report_and_annotated_outputs(env):
     flat = " ".join(ftext.split())
     assert "XXXX" not in flat and "1 was rejected" in flat                    # rejected finding left out
     assert c.get(f"/checks/{cid}/annotated.pdf").status_code == 200
+
+
+def test_sign_in_required_and_csrf_and_roles(env):
+    c, S = env
+    add_credits(S)
+    cid = upload(c).json()["id"]
+    with S() as s:
+        fid = s.query(dbm.Finding).filter_by(check_id=cid).first().id
+    # signed out: pages redirect to sign-in, actions refused
+    c.cookies.clear()
+    r = c.get("/", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"].startswith("/login")
+    assert c.post("/checks/upload", files={"file": ("a.pdf", b"%PDF-1", "application/pdf")}).status_code == 401
+    # wrong password
+    assert "not recognised" in c.get(login(c, "a@x", "wrong-password-x").headers["location"],).text
+    # CSRF: signed in but no token → 403
+    login(c, "a@x")
+    hdr = c.headers.pop("X-CSRF-Token")
+    assert c.post(f"/checks/{cid}/findings/{fid}", data={"decision": "accepted"}).status_code == 403
+    c.headers["X-CSRF-Token"] = hdr
+    # customer_user: can view and upload, cannot decide or issue final
+    login(c, "u@x")
+    page = c.get(f"/checks/{cid}").text
+    assert "Only your organisation's accredited reviewer" in page and 'value="accepted"' not in page
+    assert c.post(f"/checks/{cid}/findings/{fid}", data={"decision": "accepted"}).status_code == 403
+    assert c.post(f"/checks/{cid}/final").status_code == 403
+    # reviewer can decide
+    login(c, "a@x")
+    assert c.post(f"/checks/{cid}/findings/{fid}", data={"decision": "accepted"}).status_code == 200
+    with S() as s:
+        actions = {e.action for e in s.query(dbm.AuditEvent).all()}
+    assert {"login", "login_failed", "upload", "view_check", "finding_decision"} <= actions
+
+
+def test_logout_ends_session(env):
+    c, S = env
+    tok = c.cookies.get("tmpcheck_session")
+    assert c.post("/logout", follow_redirects=False).status_code == 303
+    c.cookies.set("tmpcheck_session", tok)
+    assert c.get("/", follow_redirects=False).status_code == 303          # old token no longer valid
+
+
+def test_password_rules():
+    from src.portal import auth
+    import pytest as _p
+    with _p.raises(ValueError):
+        auth.hash_password("short")
+    h = auth.hash_password("a-long-enough-password")
+    assert auth.verify_password("a-long-enough-password", h) and not auth.verify_password("nope-nope-nope", h)

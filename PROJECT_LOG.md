@@ -200,3 +200,12 @@ Not live-tested: no API key in the AI-PM environment. Consolidation failure fall
 | Annotated TMP: copy of original, highlights + F-number labels at quoted text, margin notes for VISUAL/unlocated and related pages; no pages added; original text unchanged | AI-PM | Quality checked (sample) | — | Owner reviews on SU026 |
 | Draft outputs watermarked DRAFT, generated on demand; finals generated and stored at issue (fixed record), rejected findings excluded, reviewer named | AI-PM | Quality checked | — | — |
 PyMuPDF only (no new dependency; WeasyPrint not needed — avoids GTK install on Windows). G4 criteria now met in prototype form, subject to Owner review of the SU026 outputs.
+
+## 2026-11-21 — Portal stage S2: sign-in, roles, CSRF, audit log
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Sign-in with email + password (scrypt hashes, 10+ chars, 5-failure lockout), server-side sessions (12 h, HttpOnly, SameSite=Lax, only token hash stored), sign-out | AI-PM | Quality checked | — | Owner sets password via devseed |
+| Roles: customer_user (upload/view) vs customer_reviewer/admin (decide findings, issue final) — enforces A-15 in the portal | AI-PM | Quality checked | — | — |
+| CSRF token on every POST (form field or header) | AI-PM | Quality checked | — | — |
+| Audit log (append-only): login, failed login, upload, view, downloads, exports, decisions, final issue, cross-organisation access attempts | AI-PM | Quality checked | — | Admin view later |
+39/39 portal tests (incl. signed-out redirect, wrong password, missing CSRF → 403, user role → 403, other organisation → 404 + audit). Standard library only (no new dependency). Still local-only; hosting needs G6 security review (penetration test, HTTPS, data-handling approval).

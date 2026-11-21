@@ -1,9 +1,8 @@
 """TMP Check customer portal — FastAPI + Jinja2 (A-21, local build).
 
 Run:  uvicorn src.portal.app:app --reload
-Stage S1: shell, navigation, live-data dashboard with empty states.
-Authentication arrives in S2; until then a local dev context is used and the
-app refuses to start unless TMPCHECK_ENV=local.
+Stage S2: sign-in, roles, CSRF and audit log. Still a local build: the app refuses to start
+unless TMPCHECK_ENV=local, because hosting needs the G6 security and data-handling approvals.
 """
 import os
 from contextlib import asynccontextmanager
@@ -17,7 +16,9 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import processing, services
+from urllib.parse import quote
+
+from . import auth, processing, services
 from .config import RULES_DIR, money, price_label, settings
 from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
 
@@ -27,7 +28,7 @@ HERE = Path(__file__).parent
 @asynccontextmanager
 async def lifespan(_app):
     if os.environ.get("TMPCHECK_ENV") != "local":
-        raise RuntimeError("Portal has no authentication yet (stage S2). Set TMPCHECK_ENV=local to run locally.")
+        raise RuntimeError("Local build only (hosting needs G6 approvals). Set TMPCHECK_ENV=local to run locally.")
     init_db()
     print("TMP Check portal:", processing.ai_status()[1], flush=True)
     yield
@@ -63,18 +64,89 @@ def get_db():
 
 
 class Ctx:
-    def __init__(self, user: User, org: Organisation):
-        self.user, self.org = user, org
+    def __init__(self, user: User, org: Organisation, token: str, ip: str | None):
+        self.user, self.org, self.token, self.ip = user, org, token, ip
+
+    @property
+    def csrf(self) -> str:
+        return auth.csrf_token(self.token)
+
+    @property
+    def reviewer(self) -> bool:
+        return auth.is_reviewer(self.user)
 
 
-def current(db: Session = Depends(get_db)) -> Ctx:
-    """S1 placeholder for authentication: the local dev user (TMPCHECK_DEV_USER, default id 1).
-    Replaced by session login in S2."""
-    uid = int(os.environ.get("TMPCHECK_DEV_USER", "1"))
-    user = db.get(User, uid)
+class NotSignedIn(Exception):
+    pass
+
+
+@app.exception_handler(NotSignedIn)
+def _not_signed_in(request: Request, exc: NotSignedIn):
+    if request.method == "GET":
+        return RedirectResponse(f"/login?next={quote(request.url.path)}", status_code=303)
+    return JSONResponse({"error": "Please sign in again."}, status_code=401)
+
+
+def current(request: Request, db: Session = Depends(get_db)) -> Ctx:
+    token = request.cookies.get(auth.COOKIE)
+    user = auth.session_user(db, token)
     if user is None:
-        raise HTTPException(503, "No local user. Run: python -m src.portal.devseed")
-    return Ctx(user, db.get(Organisation, user.org_id))
+        raise NotSignedIn()
+    return Ctx(user, db.get(Organisation, user.org_id), token, request.client.host if request.client else None)
+
+
+async def checked(request: Request, ctx: Ctx = Depends(current)) -> Ctx:
+    """POST guard: valid CSRF token from the X-CSRF-Token header or a csrf_token form field."""
+    supplied = request.headers.get("x-csrf-token")
+    if not supplied and "form" in request.headers.get("content-type", ""):
+        supplied = (await request.form()).get("csrf_token")
+    if not auth.csrf_ok(ctx.token, supplied):
+        raise HTTPException(403, "Security check failed. Refresh the page and try again.")
+    return ctx
+
+
+def reviewer_only(ctx: Ctx = Depends(checked)) -> Ctx:
+    """A-15: only the organisation's accredited reviewer decides findings and issues finals."""
+    if not ctx.reviewer:
+        raise HTTPException(403, "Only your organisation's accredited reviewer can do this.")
+    return ctx
+
+
+def log(db: Session, ctx: Ctx, action: str, obj: str | None = None, detail: str | None = None) -> None:
+    auth.audit(db, ctx.user, action, obj, detail, ctx.ip)
+
+
+@app.get("/login", response_class=HTMLResponse)
+def login_page(request: Request, next: str = "/", error: str | None = None):
+    return templates.TemplateResponse(request, "pages/login.html", {"next": next, "error": error})
+
+
+@app.post("/login")
+def login(request: Request, email: str = Form(...), password: str = Form(...), next: str = Form("/"),
+          db: Session = Depends(get_db)):
+    ip = request.client.host if request.client else None
+    user = auth.authenticate(db, email, password)
+    if user is None:
+        auth.audit(db, None, "login_failed", detail=(email or "")[:120], ip=ip)
+        msg = "Too many attempts. Try again in 5 minutes." if auth.locked(email or "") else \
+            "Email or password not recognised."
+        return RedirectResponse(f"/login?error={quote(msg)}&next={quote(next)}", status_code=303)
+    token = auth.start_session(db, user)
+    auth.audit(db, user, "login", ip=ip)
+    target = next if next.startswith("/") and not next.startswith("//") else "/"
+    resp = RedirectResponse(target, status_code=303)
+    resp.set_cookie(auth.COOKIE, token, httponly=True, samesite="lax", max_age=auth.SESSION_HOURS * 3600,
+                    secure=os.environ.get("TMPCHECK_HTTPS") == "1")
+    return resp
+
+
+@app.post("/logout")
+def logout(ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
+    log(db, ctx, "logout")
+    auth.end_session(db, ctx.token)
+    resp = RedirectResponse("/login", status_code=303)
+    resp.delete_cookie(auth.COOKIE)
+    return resp
 
 
 def render(request: Request, name: str, active: str, ctx: Ctx, **kw) -> HTMLResponse:
@@ -133,18 +205,21 @@ def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
     """Tenant-scoped lookup: another organisation's check is indistinguishable from a missing one."""
     chk = db.get(Check, check_id)
     if chk is None or chk.org_id != ctx.org.id:
+        if chk is not None:
+            log(db, ctx, "denied_other_org", f"check:{check_id}")
         raise HTTPException(404, "Check not found")
     return chk
 
 
 @app.post("/checks/upload")
 async def upload(background: BackgroundTasks, file: UploadFile = File(...),
-                 ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+                 ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
     data = await file.read(settings()["upload"]["max_bytes"] + 1)
     try:
         chk = processing.create_check(db, ctx.org.id, file.filename or "upload", data)
     except processing.UploadError as e:
         return JSONResponse({"error": str(e)}, status_code=400)
+    log(db, ctx, "upload", f"check:{chk.id}", chk.filename)
     background.add_task(processing.run_check, chk.id)
     return {"id": chk.id, "url": f"/checks/{chk.id}"}
 
@@ -152,6 +227,7 @@ async def upload(background: BackgroundTasks, file: UploadFile = File(...),
 @app.get("/checks/{check_id}", response_class=HTMLResponse)
 def check_detail(check_id: int, request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
+    log(db, ctx, "view_check", f"check:{chk.id}")
     order = {s: i for i, s in enumerate(services.SEVERITIES)}
     findings = sorted(db.query(Finding).filter_by(check_id=chk.id).all(),
                       key=lambda f: (order.get(f.severity, 9), f.page, f.id))
@@ -171,7 +247,7 @@ def check_status(check_id: int, ctx: Ctx = Depends(current), db: Session = Depen
 
 @app.post("/checks/{check_id}/findings/{finding_id}")
 def decide(check_id: int, finding_id: int, decision: str = Form(...), note: str = Form(""),
-           ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+           ctx: Ctx = Depends(reviewer_only), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
     f = db.get(Finding, finding_id)
     if f is None or f.check_id != chk.id:
@@ -183,17 +259,19 @@ def decide(check_id: int, finding_id: int, decision: str = Form(...), note: str 
     except processing.UploadError as e:
         return RedirectResponse(f"/checks/{chk.id}?error={e}#f{f.id}", status_code=303)
     db.commit()
+    log(db, ctx, "finding_decision", f"finding:{f.id}", decision)
     return RedirectResponse(f"/checks/{chk.id}#f{f.id}", status_code=303)
 
 
 @app.post("/checks/{check_id}/final")
-def final(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+def final(check_id: int, ctx: Ctx = Depends(reviewer_only), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
     try:
         processing.issue_final(db, chk, reviewer=ctx.user.name)
     except processing.UploadError as e:
         return RedirectResponse(f"/checks/{chk.id}?error={e}", status_code=303)
     db.commit()
+    log(db, ctx, "final_issued", f"check:{chk.id}")
     return RedirectResponse(f"/checks/{chk.id}", status_code=303)
 
 
@@ -201,6 +279,7 @@ def final(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_
 def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     """Findings with reviewer decisions — used for benchmarking (TEST_METHODOLOGY)."""
     chk = get_check(db, ctx, check_id)
+    log(db, ctx, "export_findings", f"check:{chk.id}")
     rows = db.query(Finding).filter_by(check_id=chk.id).order_by(Finding.page, Finding.id).all()
     return JSONResponse({"check_id": chk.id, "doc_ref": chk.doc_ref, "pages": chk.pages, "ai_passes": chk.ai_passes,
                          "ai_cost_usd": chk.ai_cost_usd, "status": chk.status.value,
@@ -213,7 +292,7 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
 
 def _output(db: Session, ctx: Ctx, check_id: int, which: int) -> Response:
     chk = get_check(db, ctx, check_id)
-    names = ("report", "annotated")
+    log(db, ctx, "download_" + ("report" if which == 0 else "annotated"), f"check:{chk.id}")
     label = f"{chk.doc_ref} - TMP Check {'report' if which == 0 else 'annotated'}"
     if chk.status == CheckStatus.final_issued:
         path = processing.final_paths(chk)[which]
@@ -243,6 +322,7 @@ def annotated_pdf(check_id: int, ctx: Ctx = Depends(current), db: Session = Depe
 @app.get("/checks/{check_id}/original")
 def original(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
+    log(db, ctx, "download_original", f"check:{chk.id}")
     if not chk.storage_path:
         raise HTTPException(404)
     return FileResponse(chk.storage_path, filename=chk.filename)

@@ -70,6 +70,8 @@
       fd.append("file", file);
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "/checks/upload");
+      var meta = document.querySelector('meta[name="csrf-token"]');
+      if (meta) xhr.setRequestHeader("X-CSRF-Token", meta.content);
       show(file, "", "Uploading…");
       xhr.upload.onprogress = function (e) {
         if (e.lengthComputable) bar.style.width = Math.round(e.loaded / e.total * 100) + "%";
