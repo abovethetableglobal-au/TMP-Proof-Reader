@@ -69,7 +69,7 @@ def authenticate(db: Session, email: str, password: str) -> User | None:
     if locked(email):
         return None
     user = db.query(User).filter(User.email == email).first()
-    if user and user.active and verify_password(password, user.password_hash):
+    if user and user.active is not False and verify_password(password, user.password_hash):
         _failures.pop(email, None)
         return user
     if not user:
@@ -98,7 +98,7 @@ def session_user(db: Session, token: str | None) -> User | None:
         db.commit()
         return None
     user = db.get(User, s.user_id)
-    return user if user and user.active else None
+    return user if user and user.active is not False else None
 
 
 def end_session(db: Session, token: str | None) -> None:

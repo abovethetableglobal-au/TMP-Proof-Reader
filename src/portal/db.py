@@ -173,5 +173,9 @@ def _add_missing_columns(eng) -> None:
             have = {c["name"] for c in insp.get_columns(table.name)}
             for col in table.columns:
                 if col.name not in have:
+                    default = ""
+                    if col.default is not None and getattr(col.default, "is_scalar", False):
+                        v = col.default.arg
+                        default = f" DEFAULT {int(v) if isinstance(v, bool) else repr(v)}"
                     conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" '
-                                      f'{col.type.compile(dialect=eng.dialect)}'))
+                                      f'{col.type.compile(dialect=eng.dialect)}{default}'))
