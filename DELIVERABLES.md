@@ -26,4 +26,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-20 | BENCH-03 tuned engine benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-03_SU026_tuned.md` | D-19 |
 | D-21 | BENCH-04 repeat-run variance (SU026) | 0.1 | AI-PM | Under review | Pending | `docs/reviews/BENCH-04_SU026_repeat_run.md` | D-20 |
 | D-22 | BENCH-05 two-run benchmark (SU026) | 0.1 | AI-PM | Under review | Pending (Tara confirmation) | `docs/reviews/BENCH-05_SU026_two_run.md` | A-27 |
+| D-23 | Reviewer test instructions for Tara (timed review of check 8) | 0.1 | AI-PM | Awaiting approval | Owner to approve and send (CLAUDE.md §1) | `docs/outbound/TMP_Check_Reviewer_Test_Tara_v0.1.docx` | S2, check 8 |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |

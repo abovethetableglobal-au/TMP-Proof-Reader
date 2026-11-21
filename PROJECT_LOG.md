@@ -211,3 +211,4 @@ PyMuPDF only (no new dependency; WeasyPrint not needed — avoids GTK install on
 39/39 portal tests (incl. signed-out redirect, wrong password, missing CSRF → 403, user role → 403, other organisation → 404 + audit). Standard library only (no new dependency). Still local-only; hosting needs G6 security review (penetration test, HTTPS, data-handling approval).
 - Fix: upgrading a pre-S2 local database added the new `active` column as empty, which would have blocked sign-in. New columns now get their default; empty treated as active. Tested on a simulated old database.
 - Owner signed in to the S2 portal on Windows after upgrade (existing data intact: 5 SU026 drafts, 93 test credits). S2 user-accepted for local use pending Owner confirmation.
+- D-23 drafted: one-page reviewer test instructions for Tara (screen-share method, no data leaves Owner PC). Awaiting Owner approval to send.
