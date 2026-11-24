@@ -130,3 +130,6 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-24 — Resume attempt
+- BENCH-02 Blocked: API key env var + source PDF re-upload. External TMP Check outputs reviewed; issues in HANDOVER.md. Awaiting Owner: origin of those outputs.
