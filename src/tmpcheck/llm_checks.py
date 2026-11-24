@@ -109,7 +109,11 @@ CATALOGUE = Path(__file__).resolve().parents[2] / "compliance" / "risk_catalogue
 
 def catalogue_text() -> str:
     cat = yaml.safe_load(CATALOGUE.read_text())
-    return "\n".join(f"- {r['id']} {r['hazard']} (if TMP states: {', '.join(r['triggers'])})" for r in cat["risks"])
+    src = cat["source"]
+    head = (f"Items marked [B.1] are from {src['name']}, {src['edition']}, {src['clause']} — indicative, not minimum; "
+            "cite as e.g. 'AGTTM02-26 Ed 1.2 App B Table B.1 (item B1-09) — not the WA-adopted edition' in 'fix'. Items marked [AI-PM] are uncited prompts.")
+    return head + "\n" + "\n".join(f"- {r['id']} [{r['src']}] {r['group']}: {r['hazard']} (if TMP states: {', '.join(r['triggers'])})"
+                                    for r in cat["risks"])
 
 
 def norm(s: str) -> str:
