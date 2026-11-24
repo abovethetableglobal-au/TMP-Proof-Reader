@@ -4,6 +4,9 @@
 # describes the trigger. It is not a Code requirement list: a missing item is reported as a Query
 # (no clause citation), never as a compliance finding (CLAUDE.md §2).
 # Source basis: AI-PM general traffic-management knowledge — to be confirmed/edited by reviewer.
+# PLANNED: realign to Austroads AGTTM Part 2 (AGTTM02-26, Ed 1.2, May 2026) Appendix B
+# "Traffic Management Plan Risk Considerations Checklist" and §3.3 / §4.5 — PDF not yet obtained
+# (austroads.gov.au blocks automated download). Paraphrase only; do not reproduce Austroads text.
 version: 0.1
 status: draft
 risks:

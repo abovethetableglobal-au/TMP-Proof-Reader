@@ -147,3 +147,4 @@ Copilot research classification: TMP annual volume — no source (Copilot's own 
 | Pass E in `llm_checks.py` (missing / inapplicable risks, controls not carried through, rating checks) | AI-PM | Production complete — not run | API key | Run in BENCH-02 |
 | `compliance/risk_catalogue.yaml` v0.1 (18 expected hazards) | AI-PM | Ready for user review | — | Tara review: add/remove/reword hazards and triggers |
 Trigger: Tara feedback — risk analysis is the most important part. In scope (document QA of an existing section); no design or site assumptions.
+| Realign risk catalogue to AGTTM Part 2 (AGTTM02-26 Ed 1.2) Appendix B "TMP Risk Considerations Checklist" | AI-PM | Awaiting input | Owner downloads free PDF (site blocks automated download) | Map items, cite source/edition/appendix |
