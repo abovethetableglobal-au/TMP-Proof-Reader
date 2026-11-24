@@ -32,6 +32,7 @@
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
+| P-12 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now; revisit after pilot benchmark. TMP generation conflicts with §2 (no design) | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |

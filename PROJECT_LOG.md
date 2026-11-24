@@ -130,3 +130,13 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-24 — FB-01 reviewer feedback (SU025) + external research received
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Record Tara feedback (`docs/reviews/FB-01_Tara_SU025.md`) | AI-PM | Production complete | — | — |
+| Confirm whether Q3 answer means F-001/F-002 are wrong | Owner → Tara | Awaiting input | Tara Q5 reply | Owner asks Tara |
+| Ground site-dependent Criticals in TMP text (else Query) | AI-PM | Not started | Confirmation above | Change C-pass prompt + evidence validator |
+| Copilot market research (TMP volumes, RTM count) | Copilot (via Owner) | Under review | — | Verify RTM count against MRWA register |
+| BENCH-02 | AI-PM | Blocked | API key env var; re-upload SU026 files | — |
+Copilot research classification: TMP annual volume — no source (Copilot's own "20,000+" is an unverified estimate); RTM ~40–50 — source-supported, unverified by AI-PM; City of Perth ~300 permits/month — unverified. Copilot's "pivot to RTM reviewers / AI-generated TMPs" is a scope change → P-12.
