@@ -20,4 +20,4 @@
 
 **Open questions**
 - Owner feedback on report/annotation layout.
-- Pending decisions: P-06 (AS 1742.3 licence), P-07 (credit gaps), P-08 (data residency), P-09 (pilot terms); A-17 conditions (Tara accreditation details) overdue since 2026-11-27 target.
+- Pending decisions: P-06 (AS 1742.3 licence), P-07 (credit gaps), P-08 (data residency), P-09 (pilot terms); A-17 conditions (Tara accreditation details + review pack) due 2026-11-27.
