@@ -111,7 +111,7 @@ def catalogue_text() -> str:
     cat = yaml.safe_load(CATALOGUE.read_text())
     src = cat["source"]
     head = (f"Items marked [B.1] are from {src['name']}, {src['edition']}, {src['clause']} — indicative, not minimum; "
-            "cite as e.g. 'AGTTM02-26 Ed 1.2 App B Table B.1 (item B1-09) — not the WA-adopted edition' in 'fix'. Items marked [AI-PM] are uncited prompts.")
+            "cite as e.g. 'AGTTM Part 2 Ed 1.1 (2021) App B Table B1 (item B1-09)' in 'fix'. Items marked [AI-PM] are uncited prompts.")
     return head + "\n" + "\n".join(f"- {r['id']} [{r['src']}] {r['group']}: {r['hazard']} (if TMP states: {', '.join(r['triggers'])})"
                                     for r in cat["risks"])
 

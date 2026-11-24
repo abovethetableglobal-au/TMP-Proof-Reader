@@ -149,3 +149,4 @@ Copilot research classification: TMP annual volume — no source (Copilot's own 
 Trigger: Tara feedback — risk analysis is the most important part. In scope (document QA of an existing section); no design or site assumptions.
 | Realign risk catalogue to AGTTM Part 2 (AGTTM02-26 Ed 1.2) Appendix B "TMP Risk Considerations Checklist" | AI-PM | Awaiting input | Owner downloads free PDF (site blocks automated download) | Map items, cite source/edition/appendix |
 | Risk catalogue v0.2: 34 items from AGTTM02-26 Table B.1 + 8 supplementary worker-safety items | AI-PM | Ready for user review | Tara review; Ed 1.1 comparison | Owner supplies AGTTM02-21 (Ed 1.1) |
+| Ed 1.1 vs Ed 1.2 Table B1 comparison | AI-PM | Quality checked — word-for-word identical (765/765 words; layout only) | — | Catalogue v0.3 cites WA-adopted Ed 1.1 |

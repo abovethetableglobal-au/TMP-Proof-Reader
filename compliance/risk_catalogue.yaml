@@ -3,18 +3,18 @@
 # Primary source: Austroads, Guide to Temporary Traffic Management Part 2: Traffic Management Planning,
 #   AGTTM02-26, Edition 1.2 (26 May 2026), Appendix B, Table B.1 "List of common issues and associated risks", pp 51–53.
 #   Copy supplied by Owner 2026-11-24 (free public download). Items paraphrased, not reproduced.
-#   EDITION CAVEAT (COMPLIANCE_REGISTER VC-01): WA Code (Mar 2026) adopts AGTTM Ed 1.1 (2021), not Ed 1.2.
-#   Until Ed 1.1 Appendix B is compared, findings cite "AGTTM02-26 Ed 1.2 (not WA-adopted edition)".
+#   EDITION CHECK 2026-11-24: Table B.1 compared word-for-word with WA-adopted Ed 1.1 (AGTTM02-21,
+#   Sept 2021, App B Table B1, pp 49–52): content identical (layout/punctuation only). Cite Ed 1.1 (VC-01).
 #   Austroads states Table B.1 is indicative only, not exhaustive and not a minimum requirement →
 #   a missing item is a Query (citing B.1 as a prompt), never a compliance finding (CLAUDE.md §2).
 # Supplementary items (source: AI-PM) cover worker-safety hazards not in Table B.1; uncited → Query.
-version: 0.2
+version: 0.3
 status: draft
 source:
   id: SRC-AGTTM02
   name: Guide to Temporary Traffic Management Part 2 — Traffic Management Planning
-  edition: AGTTM02-26 Ed 1.2 (May 2026)
-  clause: Appendix B, Table B.1 (pp 51–53); see also §3.3 Risk assessment, §4.5 Risk management
+  edition: AGTTM02-21 Ed 1.1 (Sept 2021) — WA-adopted; identical in AGTTM02-26 Ed 1.2
+  clause: Appendix B, Table B1 (Ed 1.1 pp 49–52; Ed 1.2 pp 51–53); see also §3.3 Risk assessment, §4.5 Risk management
 risks:
   # --- AGTTM02-26 Table B.1 ---
   - {id: B1-01, group: Vulnerable road users, hazard: "Pedestrians, cyclists, people with disability, children, prams, mobility-aid users cannot pass the site safely on existing paths", triggers: [footpath or shared path affected, pedestrians or cyclists present], src: B.1}
