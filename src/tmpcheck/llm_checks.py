@@ -1,4 +1,4 @@
-"""LLM checking passes (categories A, B, C-semantic, D) — Claude API.
+"""LLM checking passes (categories A, B, C-semantic, D, E-risk) — Claude API.
 
 Design
 - One TMP PDF sent once as a `document` block (text + page images, so TGS drawings are seen),
@@ -9,7 +9,7 @@ Design
 - Server-side refusal fallback enabled; usage and cost recorded per pass.
 
 Requires ANTHROPIC_API_KEY. Approved use: A-16 / A-18 (historical WTGTM documents).
-Usage: python -m src.tmpcheck.llm_checks <tmp.pdf> <out.json> [--passes A,B,C,D] [--dry-run]
+Usage: python -m src.tmpcheck.llm_checks <tmp.pdf> <out.json> [--passes A,B,C,D,E] [--dry-run]
 """
 import argparse
 import base64
@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import List, Literal, Optional
 
 import anthropic
+import yaml
 import pymupdf
 from pydantic import BaseModel, Field
 
@@ -86,7 +87,29 @@ PASSES = {
           "sign quantities) with the TMP text; check signs and devices described in the text appear on the plan; check "
           "labels and notes against the text (tolerances, cone spacing, aftercare); and report text or symbols clipped by "
           "the drawing frame. Use 'VISUAL:' evidence where the drawing has no selectable text."),
+    "E": ("Risk assessment review",
+          "Review the TMP's risk assessment / risk register against the works the TMP itself describes. Report:\n"
+          "1. Missing risk: an activity or condition stated in the TMP (location of works, plant, speed, pedestrians, "
+          "night works, excavation, detours, peak traffic etc.) whose hazard is not addressed in the risk assessment. "
+          "Severity Query. 'evidence' = exact text stating the activity/condition; name the hazard in 'issue'; "
+          "put the risk-assessment page in related_pages. If the TMP does not state the trigger, do NOT report it.\n"
+          "2. Inapplicable risk: a risk or control that contradicts the works described (e.g. trenching risks when the "
+          "TMP says no excavation; carriageway risks when works are stated to be on the verge only). Severity Moderate.\n"
+          "3. Control not carried through: a control relied on in the risk assessment (e.g. traffic controller, speed "
+          "reduction, barrier, spotter, after-hours inspection) that does not appear in the TGS, method or roles. Major.\n"
+          "4. Rating problems: residual rating not lower than or equal to inherent without explanation; ratings that do "
+          "not match the TMP's own matrix; any residual VH rating (Critical, cite WA-COP-4.2.3-003).\n"
+          "5. Risk assessment absent or a blank template (Major; cite WA-COP-4.2.3-004 if RTM-endorsed).\n"
+          "Do not assert site conditions the TMP does not state. Use this expected-risk prompt list only as a "
+          "reminder of hazards to look for:\n{catalogue}"),
 }
+
+CATALOGUE = Path(__file__).resolve().parents[2] / "compliance" / "risk_catalogue.yaml"
+
+
+def catalogue_text() -> str:
+    cat = yaml.safe_load(CATALOGUE.read_text())
+    return "\n".join(f"- {r['id']} {r['hazard']} (if TMP states: {', '.join(r['triggers'])})" for r in cat["risks"])
 
 
 def norm(s: str) -> str:
@@ -129,6 +152,8 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
     out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
     for code in passes:
         name, instructions = PASSES[code]
+        if code == "E":
+            instructions = instructions.format(catalogue=catalogue_text())
         req = dict(model=MODEL, max_tokens=MAX_TOKENS, system=SYSTEM,
                    output_config={"effort": EFFORT}, output_format=PassResult,
                    betas=BETAS, fallbacks="default",
@@ -167,7 +192,7 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("pdf"); ap.add_argument("out")
-    ap.add_argument("--passes", default="A,B,C,D"); ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--passes", default="A,B,C,D,E"); ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     res = run(Path(a.pdf), a.passes.split(","), a.dry_run)
     if not a.dry_run:

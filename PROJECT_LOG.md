@@ -140,3 +140,10 @@ Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passe
 | Copilot market research (TMP volumes, RTM count) | Copilot (via Owner) | Under review | — | Verify RTM count against MRWA register |
 | BENCH-02 | AI-PM | Blocked | API key env var; re-upload SU026 files | — |
 Copilot research classification: TMP annual volume — no source (Copilot's own "20,000+" is an unverified estimate); RTM ~40–50 — source-supported, unverified by AI-PM; City of Perth ~300 permits/month — unverified. Copilot's "pivot to RTM reviewers / AI-generated TMPs" is a scope change → P-12.
+
+## 2026-11-24 — Pass E: risk assessment review
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Pass E in `llm_checks.py` (missing / inapplicable risks, controls not carried through, rating checks) | AI-PM | Production complete — not run | API key | Run in BENCH-02 |
+| `compliance/risk_catalogue.yaml` v0.1 (18 expected hazards) | AI-PM | Ready for user review | — | Tara review: add/remove/reword hazards and triggers |
+Trigger: Tara feedback — risk analysis is the most important part. In scope (document QA of an existing section); no design or site assumptions.

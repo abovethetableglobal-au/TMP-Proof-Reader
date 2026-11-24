@@ -16,3 +16,7 @@ Note: the SU025 report and annotated PDF were produced outside the repository; n
 - If F-001/F-002 were inapplicable, the engine raised Critical findings without site-context grounding → breach of §2 "no unsupported Critical". Action: Criticals that depend on works location (carriageway vs verge) or traffic-volume timing must cite the TMP text establishing the condition, else downgrade to Query.
 - "Does not review for others": confirms R-20 — Tara is a self-reviewer; RTM status still unsighted.
 - Market: ~2 TMPs/week per designer; 5 h/TMP.
+
+## Addendum 2026-11-24 — further feedback
+Tara: "the most important part is the risk analysis… sort out a tool for that… what risks are expected."
+Response: pass E (risk assessment review) added to `llm_checks.py`, with draft expected-risk prompt list `compliance/risk_catalogue.yaml` (18 hazards, v0.1, unreviewed). Missing expected risks are reported as Query only, and only where the TMP states the triggering activity; inapplicable risks (her SU025 point) reported as Moderate.

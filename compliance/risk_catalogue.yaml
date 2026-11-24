@@ -1,0 +1,63 @@
+# Expected-risk catalogue for TMP risk-assessment review (pass E)
+# Status: DRAFT v0.1 — AI-PM, 2026-11-24. Not yet reviewed by accredited reviewer (Tara).
+# Purpose: prompt list of hazards a reviewer would expect to see addressed WHEN the TMP itself
+# describes the trigger. It is not a Code requirement list: a missing item is reported as a Query
+# (no clause citation), never as a compliance finding (CLAUDE.md §2).
+# Source basis: AI-PM general traffic-management knowledge — to be confirmed/edited by reviewer.
+version: 0.1
+status: draft
+risks:
+  - id: RK-01
+    hazard: Errant vehicle entering work area / striking workers
+    triggers: [workers on or adjacent to carriageway, lane or shoulder closure]
+  - id: RK-02
+    hazard: Inadequate clearance / lateral buffer between traffic and workers
+    triggers: [works within clear zone, verge works beside live lane]
+  - id: RK-03
+    hazard: Speed of passing traffic too high for arrangement
+    triggers: [posted speed >= 60 km/h, temporary speed zone proposed]
+  - id: RK-04
+    hazard: Rear-end crashes / queue extending beyond advance warning
+    triggers: [lane closure, stop/slow, peak-period works, traffic volumes stated]
+  - id: RK-05
+    hazard: Traffic controller struck by vehicle
+    triggers: [stop/slow bats, manual traffic control]
+  - id: RK-06
+    hazard: Pedestrian / cyclist conflict or loss of safe path (incl. mobility-impaired, prams)
+    triggers: [footpath or shared path affected, works near schools, shops, bus stops]
+  - id: RK-07
+    hazard: Loss of property / business access
+    triggers: [driveways, accesses within work area]
+  - id: RK-08
+    hazard: Emergency vehicle access delayed
+    triggers: [road closure, detour, lane closure on emergency route]
+  - id: RK-09
+    hazard: Plant and vehicles entering/exiting work area across traffic
+    triggers: [plant on site, truck deliveries, mobile works]
+  - id: RK-10
+    hazard: Reversing plant striking workers or public
+    triggers: [plant on site]
+  - id: RK-11
+    hazard: Reduced visibility (night, sun glare, crests, curves, weather)
+    triggers: [night works, sight distance constraint described, works at crest or bend]
+  - id: RK-12
+    hazard: Excavation / open trench / drop-off left unprotected
+    triggers: [trenching, excavation, pits, pavement removal]
+  - id: RK-13
+    hazard: Unattended site / after-hours device integrity (signs knocked down, devices displaced)
+    triggers: [devices left out of hours, multi-day works]
+  - id: RK-14
+    hazard: Detour route unsuitable (heavy vehicles, capacity, signage)
+    triggers: [road closure, detour]
+  - id: RK-15
+    hazard: Bus route / public transport disruption
+    triggers: [bus route or stop within works]
+  - id: RK-16
+    hazard: Intersection or signalised-intersection conflicts
+    triggers: [works at or near intersection or signals]
+  - id: RK-17
+    hazard: Overhead or underground services strike
+    triggers: [excavation, elevated work platform, cranes]
+  - id: RK-18
+    hazard: Installation and removal of TM devices (set-up/pack-down exposure)
+    triggers: [any TGS with signs/devices on carriageway]
