@@ -212,3 +212,8 @@ PyMuPDF only (no new dependency; WeasyPrint not needed — avoids GTK install on
 - Fix: upgrading a pre-S2 local database added the new `active` column as empty, which would have blocked sign-in. New columns now get their default; empty treated as active. Tested on a simulated old database.
 - Owner signed in to the S2 portal on Windows after upgrade (existing data intact: 5 SU026 drafts, 93 test credits). S2 user-accepted for local use pending Owner confirmation.
 - D-23 drafted: one-page reviewer test instructions for Tara (screen-share method, no data leaves Owner PC). Awaiting Owner approval to send.
+
+## 2026-11-24 — attg resumed; AI-PM review of check 8 drafts
+- Branch `claude/gifted-gauss-ciwhyy` fast-forwarded into `claude/fervent-hopper-q3h87z`.
+- Owner re-uploaded check 8 Report PDF + Annotated TMP drafts (stored in git-ignored `customer-docs/wtgtm-2026-11-24/`).
+- AI-PM review (simulated, single model): 10 defects raised (rule-tag misattribution after grouping, non-standalone finding text, Query/Potential-issue label mismatch, excluded repeated-sentence findings reappearing, truncated quotes, ghost table rows, related-note stacks obscuring TMP/TGS content). Status: Revision required. Awaiting Owner layout feedback before fixing.
