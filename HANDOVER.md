@@ -1,6 +1,6 @@
 # HANDOVER — TMP Check (current state)
 
-_Last updated: 2026-11-20 by AI-PM_
+_Last updated: 2026-11-24 by AI-PM — short-form restart notes: `handovers/attg.md`_
 
 ## Current state
 | Gate | Status |
