@@ -118,3 +118,4 @@ Adoption model (Estimate, if adopters check all TMPs as WTGTM scenario): per cus
 | 25% | 15 | ≈ $461k |
 | 50% | 30 | ≈ $923k |
 Open question: whether customers check every TMP or only complex ones.
+Answer (Owner, 2026-11-25): WTGTM intends to check **all** 8 TMPs/month. Model A (all-TMP adoption) adopted as base case for forecasting; Model B retained as downside. PROVISIONAL — single-customer evidence.
