@@ -24,7 +24,7 @@ Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `mai
 
 ## Next session — exact steps
 Branch `g4-postprocess-fixes` holds review-defect fixes D1–D5 (`src/tmpcheck/postprocess.py`); check it out.
-Owner approved up to US$5 for passes A–D on SU_025 (A-22). SU_025 is historical (A-21).
+Owner approved up to US$5 for passes A–D on SU_025 (A-29). SU_025 is historical (A-28).
 1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('ANTHROPIC_API_KEY')))"` → `True`.
 2. Owner re-uploads `SU_025_Kanimbla_Road_Nedlands.pdf`; copy to `customer-docs/wtgtm-2026-11-20/` (git-ignored).
 3. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU_025_Kanimbla_Road_Nedlands.pdf customer-docs/wtgtm-2026-11-20/out/llm.json` — stop if a pass exceeds US$2.
