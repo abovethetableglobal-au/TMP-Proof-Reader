@@ -91,6 +91,8 @@ def create_checkout(db: Session, org: Organisation, email: str, sku: str, base_u
         "client_reference_id": str(org.id),
         "success_url": f"{base_url}/billing?paid=1",
         "cancel_url": f"{base_url}/billing?cancelled=1",
+        # Managed Payments (Stripe as merchant of record) is an Owner tax/commercial decision; off until decided.
+        "managed_payments": {"enabled": bool(_cfg().get("managed_payments", False))},
     }
     if is_sub:
         params["subscription_data"] = {"metadata": meta}
