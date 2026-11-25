@@ -59,3 +59,17 @@
 | S-02 | Compliance baseline = WA Code March 2026 + its adopted AGTTM/AS editions (see COMPLIANCE_REGISTER) | G3 |
 | S-03 | Prototype is a local pipeline, no web portal until G5 | G5 |
 | S-04 | Category E delivered as a core reviewed rule set for pilot, expanded later (sequencing within approved scope; TPR-01) 
+
+## ID reconciliation (2026-11-25, Owner-approved merge of all branches into `main`)
+IDs were assigned independently on parallel branches. Portal-line IDs (`claude/fervent-hopper-q3h87z`) were kept, and the others renumbered. Commit messages on the old branches keep the old numbers.
+| Branch (old line) | Old ID | New ID |
+|---|---|---|
+| `g4-postprocess-fixes` | A-21, A-22 | A-28, A-29 |
+| `claude/blissful-davinci-884my9` | A-21 … A-31 | A-30 … A-40 |
+| `claude/blissful-davinci-884my9` | P-12 … P-15 | P-17 … P-20 |
+| `claude/blissful-davinci-884my9` | R-23, R-24 | R-26, R-27 |
+| `claude/gallant-gauss-0gunxo` | P-12 | P-21 |
+| `claude/gallant-gauss-0gunxo` | R-23 | R-28 |
+| `claude/llm-pass-ref-01-src-jys8ll` | BENCH-03, DEF-D03-* | BENCH-06, DEF-L06-* (renumbered before merge) |
+Superseded test record: `docs/reviews/BENCH-02_SU026_full_reference.md` (deterministic-only partial run, 2026-11-20) predates the portal-line BENCH-02 and is kept for history.
+

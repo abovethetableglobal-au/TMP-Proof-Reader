@@ -1,5 +1,12 @@
 # PROJECT_LOG — TMP Check
 
+## 2026-11-25 — All branches merged into `main` (Owner approved)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Merge 11 working branches into `main`; reconcile colliding IDs (DECISIONS: ID reconciliation) | AI-PM | Production complete — 53/53 tests pass | — | Owner decisions in HANDOVER |
+| Rewrite HANDOVER for the merged state; register portal-line benchmarks B-02 to B-05 in TEST_REGISTER | AI-PM | Production complete | — | — |
+Below this point, entries come from different branches, so they are grouped by branch rather than strictly by date. Old `claude/*` branches are left in place, unmodified, as history.
+
 ## 2026-11-25 — Portal output fixes from the check 14/15 review (AI-PM)
 | Task | Owner / AI | Status | Dependencies | Next step |
 |---|---|---|---|---|

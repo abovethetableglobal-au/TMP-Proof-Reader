@@ -160,7 +160,9 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
                  "title": pdf.name, "cache_control": {"type": "ephemeral"}}
     # Cloud sessions withhold ANTHROPIC_API_KEY, so TMPCHECK_ANTHROPIC_API_KEY is accepted too (Owner's PC uses the standard name)
     key = os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
-    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None))
+    # A cloud session also sets ANTHROPIC_BASE_URL for Claude Code itself, so pin the public endpoint there
+    base = "https://api.anthropic.com" if os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") else None
+    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None), base_url=base)
     out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
     for code in passes:
         name, instructions = PASSES[code]

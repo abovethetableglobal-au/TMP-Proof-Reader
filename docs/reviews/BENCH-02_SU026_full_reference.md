@@ -1,4 +1,6 @@
-# BENCH-02 — SU026 scored against the full REF-01 reference (110 rows)
+# BENCH-02 (pre) — SU026 scored against the full REF-01 reference (110 rows)
+
+> Superseded: a partial deterministic-only run from a parallel branch. The authoritative BENCH-02 is `BENCH-02_SU026_AI_passes.md`. Kept for history (DECISIONS ID reconciliation).
 
 | Field | Value |
 |---|---|

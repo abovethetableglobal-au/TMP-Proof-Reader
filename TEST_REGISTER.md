@@ -7,16 +7,18 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 |---|---|---|---|---|---|
 | PUB-01 | T-EDGE (public) | MRWA TMP template, unfilled, DOCX→PDF | 42 | n/a (all placeholders expected) | Used in S-01 |
 | T-SEED-01 | T-SEED | PUB-01 with 3 headings deleted, 1 renamed; TOC left stale | 42 | AI-PM (seeded ground truth: `T-SEED-01.expected.json`) | Used in TD-01 |
-| REF-01 | T-HIST | Proofread report (~105 findings) for a 61-pp site-specific TMP; source TMP received 2026-11-20 (REF-01-SRC) | 4 (report) | Confirmed correct by WTGTM (A-19); transcribed to 110 scored rows (BENCH-02) | Used in D-02, D-03 |
-| REF-01-SRC | T-HIST | Source TMP for REF-01 (redacted by customer), 61 pp incl. 3 TGSs | 61 | REF-01 (A-19) | Used in D-02 |
-| REF-01 | T-HIST | Proofread report (~105 findings) for a 61-pp site-specific TMP; source TMP received 2026-11-20 (REF-01-SRC) | 4 (report) | Confirmed correct by WTGTM (A-19) | Used in D-02, L-06 |
-| REF-01-SRC | T-HIST | Source TMP for REF-01 (redacted by customer), 61 pp incl. 3 TGSs | 61 | REF-01 (A-19) | Used in D-02, L-06 |
+| REF-01 | T-HIST | Proofread report (~105 findings) for a 61-pp site-specific TMP; source TMP received 2026-11-20 (REF-01-SRC) | 4 (report) | Confirmed correct by WTGTM (A-19); transcribed to 110 scored rows (BENCH-02) | Used in D-02, D-03, B-02 to B-05 (portal line), L-06 |
+| REF-01-SRC | T-HIST | Source TMP for REF-01 (redacted by customer), 61 pp incl. 3 TGSs | 61 | REF-01 (A-19) | Used in D-02, D-03, B-02 to B-05 (portal line), L-06 |
 | — | T-HIST | Further WTGTM evidence | — | — | Awaiting input |
 
 ## Runs
 | Run ID | Date | Engine ver | Rule-set ver | Docs | Recall | Precision | Unsupported Critical | Citation acc. | Review min | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
 | D-03 | 2026-11-20 | template_diff 0.1 + det_checks 0.2 + score 0.1 (LLM not run — key not loaded) | 22 core + patterns | REF-01 source TMP (61 pp) | 10/110 (9%) — A 1/52, B 0/23, C 9/26, D 0/9 | 18/18 (100%), 3 excluded | 0 | 100% | n/a | Full-reference scoring. See docs/reviews/BENCH-02 |
+| B-05 | 2026-11-20 | portal engine, two runs (A-27) | 22 core + patterns | REF-01-SRC | 92% | 152 findings, 1 FP | 0 | — | — | US$4.86. docs/reviews/BENCH-05 (registered retrospectively 2026-11-25) |
+| B-04 | 2026-11-20 | portal engine, repeat run | 22 core + patterns | REF-01-SRC | 84–88% single; 91% two-run union | — | 0 | — | — | docs/reviews/BENCH-04 |
+| B-03 | 2026-11-20 | portal engine, tuned | 22 core + patterns | REF-01-SRC | 88% | 124 findings, ~0 FP | 0 | — | 41–62 est. | US$2.75. docs/reviews/BENCH-03 |
+| B-02 | 2026-11-20 | portal engine + dedupe/grouping | 22 core + patterns | REF-01-SRC | 88% (97/110); 89% after grouping | 211 → 138 findings, 3 likely FP | 0 | — | — | US$3.33. docs/reviews/BENCH-02_SU026_AI_passes |
 | L-06 | 2026-11-25 | llm_checks untuned (claude-opus-5-5, effort high, A–D ×1) + det_checks 0.2 | 22 core + patterns | REF-01 source TMP (61 pp) | 95/110 (86%); A 41/52, B 22/23, C 24/26, D 8/9 | Not yet measured — ~55 additional findings to adjudicate | 0 | n/a (no category E) | n/a | US$2.62, 13 min. AI-PM adjudication (simulated). See docs/reviews/BENCH-06 |
 | D-02 | 2026-11-20 | template_diff 0.1 + det_checks 0.2 | 22 core + patterns | REF-01 source TMP (61 pp) | 9/26 leftovers (35%) | 18/21 confirmed (86%), 3 to adjudicate | 0 | 100% | n/a | No LLM. See docs/reviews/BENCH-01 |
 | TD-01 | 2026-11-20 | template_diff 0.1 | WA-COP-4.2.1-001 | PUB-01 (control), T-SEED-01 | 3/3 (100%) | 3/3 (100%); control 0 FP of 109 | 0 | 100% (rule cited on every finding) | n/a | Rename tolerated; stale TOC correctly ignored |

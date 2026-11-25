@@ -1,67 +1,52 @@
 # HANDOVER — TMP Check (current state)
 
-_Last updated: 2026-11-25 by AI-PM — short-form restart notes: `handovers/attg.md`_
-_Last updated: 2026-11-25 by AI-PM_
+_Last updated: 2026-11-25 by AI-PM. Short-form restart notes: `handovers/attg.md`_
+
+## Authoritative record
+`main` is the single authoritative line (Owner approval 2026-11-25). On 2026-11-25 all working branches were merged into `main`, and colliding record IDs were renumbered (see the ID reconciliation table in DECISIONS.md). Future sessions branch from `main` and merge back. Do not start work from an old `claude/*` branch.
 
 ## Current state
 | Gate | Status |
 |---|---|
 | G1 Initiation | User accepted (A-13) |
-| G2 Customer requirements | In progress — REF-01 report + source TMP received; analysis 01 done |
-| G3 Compliance framework | User accepted, conditional (A-17) — Tara accreditation details + review pack due 2026-11-27 |
-| G4 Working prototype | In progress — deterministic checks done; LLM passes coded; API key added (loads in a new session) |
-| G4 Working prototype | In progress — deterministic checks done (10/110 vs REF-01, BENCH-02); LLM passes coded; scorer built; awaiting API key in container |
-| G4 Working prototype | In progress — LLM passes run on REF-01-SRC: recall 86% (95/110), US$2.62/check (BENCH-06); precision not yet adjudicated |
-
-## Repository
-Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `main`). Cloud environment: **TMP-Proof-Reader** (personal).
+| G2 Customer requirements | In progress — REF-01 + SU026 source analysed; SU 025 received; Tara feedback FB-01 |
+| G3 Compliance framework | User accepted, conditional (A-17) |
+| G4 Working prototype | In progress — portal produces a report and an annotated PDF; engine 92% recall on SU026 two-run (BENCH-05); untuned single run 86% (BENCH-06); awaiting Owner review of the outputs. Not passed |
+| G5–G8 | Not started (pricing, legal and launch-plan drafts exist: A-31 to A-40) |
 
 ## Code
 | Module | Purpose |
 |---|---|
-| `src/tmpcheck/template_diff.py` | Missing Main Roads template headings (rule WA-COP-4.2.1-001) |
-| `src/tmpcheck/det_checks.py` | Placeholders, jurisdiction wording, missing headers, repeated sentences (no LLM) |
-| `src/tmpcheck/llm_checks.py` | Claude API passes A–D, structured findings, evidence validation, cost logging |
-| `src/tmpcheck/score.py` | Scores findings vs reference JSON (auto-match + adjudication) |
-| `src/spike/completeness_spike.py` | Spike S-01 (annotation prototype) |
-| `compliance/rules/*.yaml` | 22 approved WA rules |
+| `src/portal/` | Local customer portal (A-21): sign-in, roles, upload → checks → reviewer workflow → final outputs |
+| `src/tmpcheck/det_checks.py` | Rule checks: placeholders, interstate (Moderate, A-30), MRWA wording (Query), word-form, headers, repeated sentences; an action for every rule |
+| `src/tmpcheck/llm_checks.py` | Claude passes A–D (+ draft pass E risk review, not enabled in the portal); key `ANTHROPIC_API_KEY` or `TMPCHECK_ANTHROPIC_API_KEY` (cloud sessions) |
+| `src/tmpcheck/postprocess.py` | Shared word-level evidence locator, validation (unlocated → Query, VISUAL-only Critical → Query), merging |
+| `src/tmpcheck/consolidate.py` | AI grouping of duplicate issues across passes and runs |
+| `src/tmpcheck/outputs.py` | Report PDF and annotated TMP |
+| `src/tmpcheck/score.py` | Scores findings against a reference JSON |
+| `compliance/rules/*.yaml`, `compliance/risk_catalogue.yaml` | 22 WA rules plus 2 under review; expected-risk prompts for pass E |
 
-## Session 2026-11-24 — status
-- **Blocked:** `ANTHROPIC_API_KEY` not set. Anthropic hosts can't use network secrets; Owner must add it as an environment variable (env menu → Edit), then start a new session.
-- **Blocked:** source PDFs not re-uploaded (step 2).
-- **Received (not stored in Git):** two TMP Check outputs (5-pp report "FINAL", 15-pp annotated DRAFT) generated outside this repo, run on a TMP Check DRAFT report, not the TMP. Issues found: FINAL issued with placeholder reviewer "Your Name" (breaks the A-15 gate); "TEST UPDATE" reviewer note; duplicate findings; unlocated quotes not downgraded to Query; category E unlabelled; conflicting actions (F-007); evidence not matching the finding (F-008); truncated list (F-013).
-- **Open question to Owner:** which tool/platform produced those PDFs?
+Tests: `python -m pytest -q` → 53 pass.
 
-## Next session — exact steps
-Branch `g4-postprocess-fixes` holds review-defect fixes D1–D5 (`src/tmpcheck/postprocess.py`); check it out.
-Owner approved up to US$5 for passes A–D on SU_025 (A-29). SU_025 is historical (A-28).
-1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('ANTHROPIC_API_KEY')))"` → `True`.
-2. Owner re-uploads `SU_025_Kanimbla_Road_Nedlands.pdf`; copy to `customer-docs/wtgtm-2026-11-20/` (git-ignored).
-3. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU_025_Kanimbla_Road_Nedlands.pdf customer-docs/wtgtm-2026-11-20/out/llm.json` — stop if a pass exceeds US$2.
-4. Log cost per pass in COMMERCIAL_MODEL.md and PROJECT_LOG.md.
-5. Deterministic baseline on SU_025 (2026-11-25): PH-TBA 4, PH-ANGLE 3, JX-MRWA 1, PH-DATE 2, JX-QLD 1, PG-HEADER 1, DUP-SENT 3.
-6. D6 (report PDF rendering) awaits the source of the reviewed draft report.
-
-## Portal (local, A-21)
+## Portal (local)
 ```
 pip install -r requirements.txt
 export TMPCHECK_ENV=local
-python -m src.portal.devseed --org "Way to Go Traffic Management" --user "Your Name" --email you@example.com --role customer_reviewer   # prompts for a password (10+ chars)
+python -m src.portal.devseed --org "Way to Go Traffic Management" --user "<name>" --email <email> --role customer_reviewer
 uvicorn src.portal.app:app --port 8000
-python -m pytest tests/portal
-# Test states (local DB only): python -m src.portal.devtools sub active | credits 10 | use-credit | check REF-001 draft_review --findings Major=2 | reset
 ```
-Stage plan: `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` §5. S1 done; next S2 (accounts). S3 needs P-14, P-15.
-2. Customer files are **not** in Git. Owner re-uploads `SU026_redacted.pdf` and `SU026_Shoalwater_TMP_Proofread_Rev0.pdf` to the chat; copy to `customer-docs/wtgtm-2026-11-20/`. Recreate `REF-01.expected.json` and `out/adj_det.json` (also git-ignored) — row list in BENCH-02 session; if lost, re-transcribe from the report.
-3. Fetch public template: see `test-library/public/README.md`. `template_diff` takes the **.docx**, not the PDF.
-4. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU026_redacted.pdf customer-docs/wtgtm-2026-11-20/out/llm.json`
-5. Score with `src.tmpcheck.score` (commands in `docs/reviews/BENCH-02`); adjudicate unmatched findings; record in TEST_REGISTER and BENCH-02.
-6. Record actual cost per check in COMMERCIAL_MODEL.md.
-1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('TMPCHECK_ANTHROPIC_API_KEY')))"` → `True`.
-2. Customer files are not in Git: SU026 pair → `customer-docs/wtgtm-2026-11-20/`; check 14/15 outputs → `customer-docs/su025-check14/` (re-upload if needed).
-3. Owner/WTGTM: adjudicate the ~55 additional BENCH-06 findings and the disputed Note 2 cone spacing item → record precision in TEST_REGISTER L-06.
-4. Fix DEF-L06-1 (style variants downgraded), DEF-L06-3 (punctuation rules); re-run once to measure variance between runs.
-5. Portal fixes are on branch `claude/portal-postprocess-fixes` (portal + `g4-postprocess-fixes` merged); see PROJECT_LOG 2026-11-25.
+
+## Owner decisions needed
+1. **Prices in the portal:** `config/portal.yaml` still uses $149 / $745 / $1,341 (A-03, A-23). A-31 to A-33 set a $349 base price, discounted packs and tiers. Confirm that A-31 to A-33 supersede A-23's 5-pack, then update the config.
+2. **Pass E (risk review):** a draft that has not been benchmarked. Its uncited Moderate/Major findings conflict with the scope text for category E ("potential issue only where a rule is cited"). Decide on its category before it is enabled.
+3. **FB-01 (Tara, SU 025):** Criticals F-001 and F-002 may not apply (works are on the verge, R-28). The AI-PM text check found both supported by the TMP's own conflicting statements. Reviewer to rule.
+
+## Next session — exact steps
+1. Key: `python3 -c "import os;print(bool(os.environ.get('TMPCHECK_ANTHROPIC_API_KEY') or os.environ.get('ANTHROPIC_API_KEY')))"` → `True`.
+2. Customer files are not in Git (re-upload when needed): the SU026 pair → `customer-docs/wtgtm-2026-11-20/`; SU 025 and the check 14/15 outputs → `customer-docs/su025-check14/`.
+3. Owner re-runs check 14 (SU 025) in the portal on the PC with `main` to confirm DEF-C14-1 to 6 (TEST_REGISTER).
+4. Owner/WTGTM adjudicate the additional BENCH-06 findings and the TGS Note 2 cone-spacing dispute → record precision.
+5. Fix DEF-L06-1 (style-variant findings downgraded) and DEF-L06-3 (punctuation rules).
 
 ## Outstanding
-See DECISIONS.md (pending), RISKS.md, PROJECT_PLAN.md.
+See DECISIONS.md (pending), RISKS.md, PROJECT_PLAN.md, DELIVERABLES.md.
