@@ -185,8 +185,15 @@ def safe_doc_ref(filename: str) -> str:
 
 def create_check(db: Session, org_id: int, filename: str, data: bytes) -> Check:
     ext = validate_upload(filename, data)
-    if services.credit_balance(db, org_id).available < 1:
+    available = services.credit_balance(db, org_id).available
+    if available < 1:
         raise UploadError("You have no credits available. Request credits on the Credits & Billing page.")
+    # Checks already queued or running will each use a credit when their draft is ready: reserve them.
+    pending = db.query(Check).filter(Check.org_id == org_id,
+                                     Check.status.in_([CheckStatus.uploaded, CheckStatus.processing])).count()
+    if pending >= available:
+        raise UploadError(f"All {available} of your credit(s) are reserved by check(s) already in progress. "
+                          "Wait for them to finish or buy more credits.")
     chk = Check(org_id=org_id, doc_ref=safe_doc_ref(filename), filename=Path(filename).name[:300],
                 status=CheckStatus.uploaded)
     db.add(chk)
@@ -228,7 +235,8 @@ def _consume_credit(db: Session, chk: Check) -> None:
             expiry[lot] = services._aware(r.expires_at)
     usable = [lot for lot, q in remaining.items() if q > 0 and lot in expiry and expiry[lot] > now]
     if not usable:
-        raise RuntimeError("No credit available at draft delivery")
+        raise UploadError("No credit was available when the draft was ready, so no report was issued. "
+                          "No credit was used. Buy credits and upload again.")
     lot = min(usable, key=lambda x: expiry[x])
     db.add(CreditLedger(org_id=chk.org_id, lot_id=lot, type=LedgerType.consume, qty=-1, check_id=chk.id,
                         created_by="system", reason="Draft delivered to reviewer (A-24)"))

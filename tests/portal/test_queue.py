@@ -39,3 +39,19 @@ def test_failure_releases_slot(monkeypatch):
     except RuntimeError:
         pass
     assert processing._queue_running == 0
+
+
+def test_upload_reserves_credits_for_queued_checks(tmp_path, monkeypatch):
+    import pytest
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from src.portal import db as dbm
+    eng = create_engine("sqlite://"); dbm.Base.metadata.create_all(eng)
+    s = sessionmaker(bind=eng)(); org = dbm.Organisation(name="O"); s.add(org); s.commit()
+    from tests.portal.test_portal import buy
+    buy(s, org.id, 1, dbm.utcnow())          # 1 credit, already reserved by queued check A
+    s.add(dbm.Check(org_id=org.id, doc_ref="A", filename="a.pdf", status=dbm.CheckStatus.uploaded)); s.commit()
+    pdf = open("test-library/samples/SAMPLE-TMP-01.pdf", "rb").read()
+    monkeypatch.setattr(processing, "UPLOAD_DIR", tmp_path, raising=False)
+    with pytest.raises(processing.UploadError, match="reserved"):
+        processing.create_check(s, org.id, "b.pdf", pdf)
