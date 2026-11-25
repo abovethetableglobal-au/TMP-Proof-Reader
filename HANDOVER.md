@@ -1,6 +1,6 @@
 # HANDOVER — TMP Check (current state)
 
-_Last updated: 2026-11-20 by AI-PM_
+_Last updated: 2026-11-25 by AI-PM_
 
 ## Current state
 | Gate | Status |
@@ -23,12 +23,14 @@ Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `mai
 | `compliance/rules/*.yaml` | 22 approved WA rules |
 
 ## Next session — exact steps
+Branch `g4-postprocess-fixes` holds review-defect fixes D1–D5 (`src/tmpcheck/postprocess.py`); check it out.
+Owner approved up to US$5 for passes A–D on SU_025 (A-22). SU_025 is historical (A-21).
 1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('ANTHROPIC_API_KEY')))"` → `True`.
-2. Customer files are **not** in Git. Owner re-uploads `SU026_redacted.pdf` and `SU026_Shoalwater_TMP_Proofread_Rev0.pdf` to the chat; copy to `customer-docs/wtgtm-2026-11-20/`.
-3. Fetch public template: see `test-library/public/README.md`.
-4. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU026_redacted.pdf customer-docs/wtgtm-2026-11-20/out/llm.json`
-5. Score LLM + deterministic findings against REF-01 (~105 items); record in TEST_REGISTER and `docs/reviews/BENCH-02`.
-6. Record actual cost per check in COMMERCIAL_MODEL.md.
+2. Owner re-uploads `SU_025_Kanimbla_Road_Nedlands.pdf`; copy to `customer-docs/wtgtm-2026-11-20/` (git-ignored).
+3. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU_025_Kanimbla_Road_Nedlands.pdf customer-docs/wtgtm-2026-11-20/out/llm.json` — stop if a pass exceeds US$2.
+4. Log cost per pass in COMMERCIAL_MODEL.md and PROJECT_LOG.md.
+5. Deterministic baseline on SU_025 (2026-11-25): PH-TBA 4, PH-ANGLE 3, JX-MRWA 1, PH-DATE 2, JX-QLD 1, PG-HEADER 1, DUP-SENT 3.
+6. D6 (report PDF rendering) awaits the source of the reviewed draft report.
 
 ## Outstanding
 See DECISIONS.md (pending), RISKS.md, PROJECT_PLAN.md.

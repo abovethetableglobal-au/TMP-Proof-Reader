@@ -18,7 +18,7 @@ def pdf(tmp_path):
     for n in (1, 2):  # portrait TGS sheets with identical standard notes (D5)
         p = doc.new_page()
         p.insert_text((50, 60), f"TGS {n:02d}  Traffic Guidance Scheme")
-        p.insert_text((50, 80), "Drawn: AB   Checked: CD   Scale: NTS   Rev A")
+        p.insert_text((50, 80), "Drawing No : 01   Drawn by : AB   Not to scale")
         p.insert_text((50, 120), NOTE, fontsize=7)
     path = tmp_path / "synthetic.pdf"
     doc.save(path)

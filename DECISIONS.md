@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-22 | Expenditure approved: up to US$5 Claude API spend for G4 passes A–D on SU_025 | Owner approval in session | 2026-11-25 | Owner |
 | A-21 | SU_025_Kanimbla_Road_Nedlands.pdf confirmed as a WTGTM **historical** TMP; may be processed via the Claude API under A-18 | Owner confirmation in session | 2026-11-25 | Owner |
 | A-20 | Customer name is **Way to Go Traffic Management** (not 'Way Too Go'). Records corrected; erratum added to PROJECT_HANDOVER.md | Owner confirmation | 2026-11-20 | Owner |
 | A-19 | REF-01 proofread report confirmed correct by WTGTM — accepted as reference findings for benchmarking (relayed by Owner) | Owner confirmation | 2026-11-20 | Owner |

@@ -28,17 +28,18 @@ JURISDICTION = [
      "Main Roads / complex-arrangement wording — confirm it applies to this road and TMP type"),
 ]
 SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
-# TGS / drawing sheets carry title blocks and standard notes that legitimately repeat sheet to sheet
-# (D5: SU_025 TGS 01/02 are portrait, so orientation alone missed them).
-TGS_MARK = re.compile(r"\bTGS\s*[-–]?\s*\d{1,3}\b|Traffic Guidance Scheme", re.I)
-TITLE_BLOCK = re.compile(r"\b(drawn|checked|designed|scale|sheet|revision|rev\.?|dwg|drawing no)\b", re.I)
+# TGS / drawing sheets carry title blocks and standard notes that legitimately repeat sheet to sheet.
+# D5: SU_025 TGS 01/02 are portrait (US Letter inside an A4 TMP) with no "TGS" text, so orientation
+# alone missed them. A page is a drawing if landscape, or it has >= 2 distinct title-block fields.
+TITLE_BLOCK = re.compile(r"drawing\s*no|drawn\s*by|checked\s*by|designed\s*by|not\s*to\s*scale|\bscale\s*:|"
+                         r"\bsheet\s*(?:no|\d)|\brev(?:ision)?\s*:", re.I)
 
 
 def is_drawing(page) -> bool:
     if page.rect.width > page.rect.height:
         return True
-    t = page.get_text()
-    return bool(TGS_MARK.search(t)) and len(set(m.lower() for m in TITLE_BLOCK.findall(t))) >= 2
+    found = {re.sub(r"\W+", "", m.group(0).lower()) for m in TITLE_BLOCK.finditer(page.get_text())}
+    return len(found) >= 2
 
 
 def norm(s):

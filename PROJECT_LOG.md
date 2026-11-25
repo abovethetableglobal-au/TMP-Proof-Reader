@@ -11,6 +11,8 @@
   - D4 duplicate findings merged across passes/pages (`merged_from`); rule findings merge only on same rule + evidence + page.
   - D5 DUP-SENT: TGS sheets detected by title block (not only landscape) and excluded; category changed A Proofreading → C Completeness (RQ-06).
 - Tests: `tests/test_postprocess.py` (synthetic PDF), 6/6 pass.
+- SU_025 received (git-ignored). D5 refined: SU_025 TGS sheets are portrait Letter pages without 'TGS' text; detection now uses title-block fields. Deterministic run: DUP-SENT 9→3, PG-HEADER 3→1.
+- Owner approved ≤US$5 API spend (A-22). Key added by Owner but not visible in this session (env vars load at session start) — run deferred to next session.
 **Not done**
 - D6 (PDF report rendering: ghost table shading/borders, orphaned headers): no report renderer in the repository — Awaiting input (source of the reviewed draft report).
 - G4 passes A–D on SU_025 and cost per pass: Blocked (API key; PDF not yet uploaded).
