@@ -288,3 +288,7 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 ## 2026-11-20 — API key added; setup script fixed
 | `ANTHROPIC_API_KEY` env var in environment TMP-Proof-Reader | Owner | Production complete — name confirmed on environment; value not visible to this session (env vars load at session start) | — | Start a new session |
 | Setup script folder check (`tmp-proof-reader` → `TMP-Proof-Reader`; adds `anthropic`) | AI-PM | Production complete — old script never matched, so deps were missing; fixed script run manually here | — | Proven on next fresh session |
+## 2026-11-20 — BENCH-02 blocked on API key setup
+| LLM pass on REF-01-SRC (BENCH-02) | AI-PM | Blocked | Env var must be named `ANTHROPIC_API_KEY` (stored as `Anthropic_api_key`); loads only in a new session | Owner renames the variable and starts a new session |
+- Network secrets cannot be used for api.anthropic.com, so an environment variable is the only route. Note: environment variables can be read by anyone who uses the environment and by commands in its sessions.
+- Customer files re-uploaded and copied to git-ignored `customer-docs/wtgtm-2026-11-20/` (container only; re-upload needed in a new session).
