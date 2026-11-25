@@ -292,3 +292,10 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 | LLM pass on REF-01-SRC (BENCH-02) | AI-PM | Blocked | Env var must be named `ANTHROPIC_API_KEY` (stored as `Anthropic_api_key`); loads only in a new session | Owner renames the variable and starts a new session |
 - Network secrets cannot be used for api.anthropic.com, so an environment variable is the only route. Note: environment variables can be read by anyone who uses the environment and by commands in its sessions.
 - Customer files re-uploaded and copied to git-ignored `customer-docs/wtgtm-2026-11-20/` (container only; re-upload needed in a new session).
+## 2026-11-20 — BENCH-02: full-reference scoring (LLM run blocked)
+| Confirm API key loads | AI-PM | Blocked | Key is defined on the environment but not loaded in this container | Owner starts a new session (variables load at container start) |
+| REF-01 transcribed to structured ground truth (110 rows) | AI-PM | Production complete | — | Stored git-ignored in customer-docs |
+| `src/tmpcheck/score.py` scorer (auto-match + adjudication) | AI-PM | Quality checked (self-test pass) | — | Use on LLM output |
+| Deterministic engine vs full reference | AI-PM | Quality checked | — | 10/110 recall, 100% precision |
+| LLM passes A–D on SU026 + scoring + cost | AI-PM | Blocked | API key | Run commands in BENCH-02 |
+Note: network secrets cannot carry a Claude API key (Anthropic hosts excluded); environment variable is the only route.
