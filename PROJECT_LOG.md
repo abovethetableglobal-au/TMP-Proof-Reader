@@ -278,3 +278,8 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 | Realign risk catalogue to AGTTM Part 2 (AGTTM02-26 Ed 1.2) Appendix B "TMP Risk Considerations Checklist" | AI-PM | Awaiting input | Owner downloads free PDF (site blocks automated download) | Map items, cite source/edition/appendix |
 | Risk catalogue v0.2: 34 items from AGTTM02-26 Table B.1 + 8 supplementary worker-safety items | AI-PM | Ready for user review | Tara review; Ed 1.1 comparison | Owner supplies AGTTM02-21 (Ed 1.1) |
 | Ed 1.1 vs Ed 1.2 Table B1 comparison | AI-PM | Quality checked — word-for-word identical (765/765 words; layout only) | — | Catalogue v0.3 cites WA-adopted Ed 1.1 |
+## 2026-11-25 — Tara feedback: risk ratings and section references
+- Tara (relayed by Owner): check risk ratings against §3.2 and check the TMP section each risk refers to (e.g. rail crossing = TMP §4.2.8).
+- Recorded as RQ-17 (rating vs §3.2 matrix, extends RQ-03) and RQ-18 (hazard → section map, extends RQ-04) in `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md`.
+- Assumption: "3.2" = the risk matrix section of the MRWA TMP template (not the Code's §3.2). Confirm with Tara.
+- Next: build hazard→section map from the public template's §4.2.x headings; implement both checks deterministically; score in BENCH-02.

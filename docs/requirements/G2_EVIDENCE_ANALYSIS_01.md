@@ -44,6 +44,8 @@
 | RQ-14 | Printed page numbers vs PDF page numbers; report both where they differ | Output | Deterministic | New |
 | RQ-15 | Australian English spelling and style consistency list (variant spellings of the same term) | A | Dictionary + LLM | New |
 | RQ-16 | "Open questions for the designer" section in the report where facts conflict and cannot be resolved | Output | Report template | New |
+| RQ-17 | Risk ratings correct per the TMP's §3.2 risk matrix: every Likelihood × Consequence pair maps to the matrix's rating (initial and residual). Extends RQ-03 | B/E | Deterministic table parse | New — Tara 2026-11-25 |
+| RQ-18 | Risk register 'TMP section' reference matches the hazard topic (e.g. rail crossing → §4.2.8). Extends RQ-04 | B | Hazard→section map (template) + LLM | New — Tara 2026-11-25 |
 
 ## 4. Output format implications
 The reference report's structure (method table → findings by pass with Page / Section / Found / Fix → summary counts → open questions) is clear and practical. **Recommendation:** adopt it as the base layout for Output 1, adding Severity, Finding ID (linked to annotations) and Source reference columns required by Handover §6.
