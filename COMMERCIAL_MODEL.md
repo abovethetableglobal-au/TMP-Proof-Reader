@@ -11,9 +11,9 @@ Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 | Single check | P | 1 | — |
 | 5-check value pack | 5 × P × 0.95 | 5 | 5% discount |
 | 10-check value pack | 10 × P × 0.90 | 10 | 10% discount |
-| Professional subscription | ~$990/month (to be modelled) | 5/month | Extra checks ~$199 |
-| Business subscription | ~$2,490/month (to be modelled) | 15/month | Extra checks ~$169 |
-| Enterprise | Quoted | Fair-use cap (e.g. 40) | Negotiated |
+| Professional subscription | $1,495/month | 5/month ($299 each, −14%) | Extra checks $299; includes platform access |
+| Business subscription | $3,995/month | 15/month ($266.33 each, −24%) | Extra checks $269; includes platform access |
+| Enterprise | From $9,990/month (quoted) | Up to 40/month (≤$249.75 each) | Negotiated |
 
 | Item | Price | Per check |
 |---|---|---|
@@ -21,7 +21,7 @@ Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 | 5-check pack (−5%) | $1,657.75 | $331.55 |
 | 10-check pack (−10%) | $3,141.00 | $314.10 |
 
-**Open:** subscription tier prices/overage (~$990, ~$2,490, $199/$169) were drafted against a lower base and now undercut the packs — to be re-modelled (P-12).
+Ladder (per check): single $349 > 5-pack $331.55 > 10-pack $314.10 > Professional $299 > Business $266.33 > Enterprise ≤$249.75. Unused included checks do not roll over (proposed — confirm). Proposed; awaiting Owner approval (P-12).
 
 Superseded v1 (A-03–A-06): $149/check; 10-pack $1,341.
 
