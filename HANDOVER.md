@@ -22,6 +22,12 @@ Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `mai
 | `src/spike/completeness_spike.py` | Spike S-01 (annotation prototype) |
 | `compliance/rules/*.yaml` | 22 approved WA rules |
 
+## Session 2026-11-24 — status
+- **Blocked:** `ANTHROPIC_API_KEY` not set. Anthropic hosts can't use network secrets; Owner must add it as an environment variable (env menu → Edit), then start a new session.
+- **Blocked:** source PDFs not re-uploaded (step 2).
+- **Received (not stored in Git):** two TMP Check outputs (5-pp report "FINAL", 15-pp annotated DRAFT) generated outside this repo, run on a TMP Check DRAFT report, not the TMP. Issues found: FINAL issued with placeholder reviewer "Your Name" (breaks the A-15 gate); "TEST UPDATE" reviewer note; duplicate findings; unlocated quotes not downgraded to Query; category E unlabelled; conflicting actions (F-007); evidence not matching the finding (F-008); truncated list (F-013).
+- **Open question to Owner:** which tool/platform produced those PDFs?
+
 ## Next session — exact steps
 Branch `g4-postprocess-fixes` holds review-defect fixes D1–D5 (`src/tmpcheck/postprocess.py`); check it out.
 Owner approved up to US$5 for passes A–D on SU_025 (A-29). SU_025 is historical (A-28).

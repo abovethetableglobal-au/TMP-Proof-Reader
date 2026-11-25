@@ -283,3 +283,5 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 - Recorded as RQ-17 (rating vs §3.2 matrix, extends RQ-03) and RQ-18 (hazard → section map, extends RQ-04) in `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md`.
 - Assumption: "3.2" = the risk matrix section of the MRWA TMP template (not the Code's §3.2). Confirm with Tara.
 - Next: build hazard→section map from the public template's §4.2.x headings; implement both checks deterministically; score in BENCH-02.
+## 2026-11-24 — Resume attempt
+- BENCH-02 Blocked: API key env var + source PDF re-upload. External TMP Check outputs reviewed; issues in HANDOVER.md. Awaiting Owner: origin of those outputs.
