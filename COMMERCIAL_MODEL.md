@@ -119,3 +119,13 @@ Adoption model (Estimate, if adopters check all TMPs as WTGTM scenario): per cus
 | 50% | 30 | ≈ $923k |
 Open question: whether customers check every TMP or only complex ones.
 Answer (Owner, 2026-11-25): WTGTM intends to check **all** 8 TMPs/month. Model A (all-TMP adoption) adopted as base case for forecasting; Model B retained as downside. PROVISIONAL — single-customer evidence.
+
+## MKT-04 — firm-size segmentation (2026-11-25)
+WTGTM is a 1-person business (Owner fact) → 8 TMPs/month is a small-firm benchmark, not an average. Hypothesis (unverified) mix of 60 WA TMCs and volume: small 50% (30 firms, ~8/mo), medium 35% (21, ~30/mo), large 15% (9, ~100/mo) → weighted ≈ 30/mo/firm; WA ≈ 20,000–25,000 TMPs/yr incl. councils/utilities.
+| Segment | Likely plan | $/month per customer | Adoption (Estimate) | Customers | Revenue/yr |
+|---|---|---|---|---|---|
+| Small (~8/mo) | Professional | $2,392 | 25% | 8 | ≈ $230k |
+| Medium (~30/mo) | Business ($3,995 + 15 × $269) | $8,030 | 15% | 3 | ≈ $289k |
+| Large (~100/mo) | Enterprise (from $9,990 + 60 × ≤$249.75) | ≈ $24,975 | 10% | 1 | ≈ $300k |
+| Total | | | | ≈ 12 | ≈ $819k |
+Small 1-person firms are the strongest fit (no in-house peer reviewer). Large firms may have in-house checking and check only complex TMPs. Validate firm-size mix against the Main Roads list.
