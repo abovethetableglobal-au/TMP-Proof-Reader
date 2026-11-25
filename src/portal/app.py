@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 
 from urllib.parse import quote
 
-from . import auth, processing, services
+from . import auth, payments, processing, services
 from .config import RULES_DIR, money, price_label, settings
 from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
 
@@ -41,7 +41,8 @@ app = FastAPI(title="TMP Check", docs_url=None, redoc_url=None, lifespan=lifespa
 
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 templates = Jinja2Templates(directory=HERE / "templates")
-templates.env.globals.update(money=money, price_label=price_label, cfg=settings)
+templates.env.globals.update(money=money, price_label=price_label, cfg=settings,
+                             stripe_sandbox=payments.sandbox_enabled)
 # Portable date format (strftime "%-d" is not supported on Windows)
 templates.env.filters["dmy"] = lambda d: f"{d.day} {d:%b %Y}" if d else ""
 templates.env.filters["duration"] = processing.fmt_duration
@@ -180,7 +181,32 @@ def billing(request: Request, ctx: Ctx = Depends(current), db: Session = Depends
     products = [p for p in settings()["credit_products"] if p["offered"]]
     return render(request, "pages/billing.html", "billing", ctx,
                   credits=services.credit_balance(db, ctx.org.id), products=products,
-                  history=services.ledger_history(db, ctx.org.id))
+                  history=services.ledger_history(db, ctx.org.id),
+                  paid=request.query_params.get("paid") == "1")
+
+
+@app.post("/billing/checkout")
+def billing_checkout(request: Request, sku: str = Form(...), ctx: Ctx = Depends(checked),
+                     db: Session = Depends(get_db)):
+    """A-46: Stripe Checkout in test mode only. Live payments wait for G5 (A-09)."""
+    if not payments.sandbox_enabled():
+        raise HTTPException(404, "Online payment is not available.")
+    if payments.product(sku) is None:
+        raise HTTPException(400, "Unknown product.")
+    url = payments.create_checkout(db, ctx.org, ctx.user.email, sku, str(request.base_url).rstrip("/"))
+    log(db, ctx, "stripe_checkout_started", sku)
+    return RedirectResponse(url, status_code=303)
+
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
+    try:
+        event = payments.parse_event(await request.body(), request.headers.get("stripe-signature"))
+    except payments.PaymentsUnavailable:
+        raise HTTPException(503, "Webhook not configured.")
+    except Exception:
+        raise HTTPException(400, "Invalid signature.")
+    return {"result": payments.handle_event(db, event)}
 
 
 def load_rules() -> list[dict]:

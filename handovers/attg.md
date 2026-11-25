@@ -13,10 +13,10 @@
 **In progress**
 - Owner re-running BC 016 with AI passes A–D ×2 on the PC portal (`python -m uvicorn src.portal.app:app --port 8000`).
 
-**Stripe (A-46) — start here in the next session**
-1. Stripe plugin is installed (user scope). Confirm the `stripe_implementation_planner` tool; if missing, add the MCP server https://mcp.stripe.com and authenticate.
-2. Run the planner with: Payments + Billing; AUD; GST not registered (A-04); Starter $49.95/mo; single check $349, 5-pack $1,657.75, 10-pack $3,141.00 (A-32/A-33); credits valid 12 months; append-only ledger; failed check = no charge; Python/FastAPI portal.
-3. Request the sandbox secret key (`sk_test_…`) for api.stripe.com via the secure credential form. Never live keys before G5.
+**Stripe (A-46) — sandbox code built, not yet run live**
+- Built: `src/portal/payments.py`, `/billing/checkout`, `/stripe/webhook`, tests `tests/portal/test_payments.py` (66 pass). Stripe MCP planner could not connect (proxy), so the SDK was used directly.
+- To run against the sandbox: save the `sk_test_` key for api.stripe.com (secure form), set `STRIPE_SECRET_KEY` (sk_test_… ) and `STRIPE_WEBHOOK_SECRET` (from `stripe listen --forward-to localhost:8000/stripe/webhook`), buy with card 4242 4242 4242 4242.
+- Open: refund → admin adjustment process; Stripe tax/invoice wording while GST not registered (A-04).
 
 **Next 3 steps**
 1. Owner: when BC 016 finishes, send the findings.json, report and annotated PDFs, then `Remove-Item Env:TMPCHECK_AI_PASSES`.

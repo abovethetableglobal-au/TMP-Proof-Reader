@@ -54,6 +54,7 @@ class Organisation(Base):
     subscription_status: Mapped[SubscriptionStatus] = mapped_column(
         Enum(SubscriptionStatus), default=SubscriptionStatus.none)
     subscription_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(64))   # A-46, test mode only before G5
 
 
 class User(Base):

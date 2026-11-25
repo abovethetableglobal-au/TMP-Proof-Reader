@@ -41,6 +41,13 @@ credits:
 # credit request; an administrator records the ledger purchase after payment.
 payments_enabled: false
 
+# A-46 Option A: Stripe sandbox build (account acct_1UfZfBGdViWULINo "TMP Proof Reader").
+# Test mode only. Key from env STRIPE_SECRET_KEY (sk_test_ only); webhook secret from env STRIPE_WEBHOOK_SECRET.
+# Live mode stays off until G5 (A-09); live keys and live-mode events are refused.
+stripe:
+  mode: test
+  sandbox_enabled: true
+
 upload:
   allowed_extensions: [".pdf", ".docx"]
   max_bytes: 20971520        # 20 MB
