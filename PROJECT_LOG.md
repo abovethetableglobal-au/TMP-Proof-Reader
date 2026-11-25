@@ -285,3 +285,6 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 - Next: build hazard→section map from the public template's §4.2.x headings; implement both checks deterministically; score in BENCH-02.
 ## 2026-11-24 — Resume attempt
 - BENCH-02 Blocked: API key env var + source PDF re-upload. External TMP Check outputs reviewed; issues in HANDOVER.md. Awaiting Owner: origin of those outputs.
+## 2026-11-20 — API key added; setup script fixed
+| `ANTHROPIC_API_KEY` env var in environment TMP-Proof-Reader | Owner | Production complete — name confirmed on environment; value not visible to this session (env vars load at session start) | — | Start a new session |
+| Setup script folder check (`tmp-proof-reader` → `TMP-Proof-Reader`; adds `anthropic`) | AI-PM | Production complete — old script never matched, so deps were missing; fixed script run manually here | — | Proven on next fresh session |

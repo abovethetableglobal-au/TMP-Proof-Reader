@@ -8,7 +8,7 @@ _Last updated: 2026-11-25 by AI-PM — short-form restart notes: `handovers/attg
 | G1 Initiation | User accepted (A-13) |
 | G2 Customer requirements | In progress — REF-01 report + source TMP received; analysis 01 done |
 | G3 Compliance framework | User accepted, conditional (A-17) — Tara accreditation details + review pack due 2026-11-27 |
-| G4 Working prototype | In progress — deterministic checks done; LLM passes coded, awaiting API key |
+| G4 Working prototype | In progress — deterministic checks done; LLM passes coded; API key added (loads in a new session) |
 
 ## Repository
 Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `main`). Cloud environment: **TMP-Proof-Reader** (personal).
