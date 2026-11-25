@@ -1,4 +1,4 @@
-# BENCH-03 — LLM passes A–D + deterministic checks vs REF-01 (110 rows)
+# BENCH-06 — LLM passes A–D + deterministic checks vs REF-01 (110 rows)
 
 | Field | Value |
 |---|---|
@@ -8,6 +8,7 @@
 | Engine | `llm_checks` (claude-opus-5-5, effort high, 1 run of passes A–D) + `det_checks` 0.2 |
 | Scoring | Manual adjudication by AI-PM — **simulated review** (§5.3), not independent. Adjudication file: `customer-docs/.../out/bench02_scoring.json` (git-ignored) |
 | Status | Quality checked (AI-PM); awaiting Owner/WTGTM adjudication of additional findings |
+| Note | Numbered BENCH-06: BENCH-02 to 05 already exist on the portal branch `claude/fervent-hopper-q3h87z` (tuned engine: 84–88% single run, 92% two-run). This run uses the **untuned** `llm_checks` on this branch and agrees with BENCH-04 single-run variance. |
 
 ## Recall vs REF-01
 | Cat | Rows | Hit | Partial | Miss | Recall (hits) |
@@ -50,11 +51,11 @@ Verified fact: one run of A–D on a 61-page TMP costs US$2.62. The portal's "×
 ## Defects
 | ID | Defect | Fix |
 |---|---|---|
-| DEF-D03-1 | All 21 style-variant findings (e.g. "car park / carpark / CarPark") are downgraded to Query, because their evidence lists variants from many pages and can't match one page | Validate each variant separately on any page, or exempt variant lists and label them "style" |
-| DEF-D03-2 | Passes overlap heavily (e.g. the vehicle count conflict is raised by A026, B005, C009 and D030), inflating the counts | De-duplicate across passes: `postprocess.py` D4 on branch `g4-postprocess-fixes` |
-| DEF-D03-3 | 10 small punctuation misses (missing full stops, spacing) | Add deterministic checks for a paragraph ending without a full stop and "No.X" spacing |
+| DEF-L06-1 | All 21 style-variant findings (e.g. "car park / carpark / CarPark") are downgraded to Query, because their evidence lists variants from many pages and can't match one page | Validate each variant separately on any page, or exempt variant lists and label them "style" |
+| DEF-L06-2 | Passes overlap heavily (e.g. the vehicle count conflict is raised by A026, B005, C009 and D030), inflating the counts | De-duplicate across passes: `postprocess.py` D4 on branch `g4-postprocess-fixes` |
+| DEF-L06-3 | 10 small punctuation misses (missing full stops, spacing) | Add deterministic checks for a paragraph ending without a full stop and "No.X" spacing |
 
 ## Conclusions
 1. **Verified:** the LLM passes lift recall from 9% (deterministic only) to 86% of REF-01 at US$2.62 per check, with no unsupported Critical.
 2. **Source-supported conclusion:** these results are measured against the provisional pilot-entry targets in TEST_METHODOLOGY (A–C ≥ 90%, D ≥ 75%). D (89%), B (96%) and C (92%) meet them. A does not: 41/52 = 79%. The A misses are mostly mechanical punctuation, which rules catch more cheaply than extra LLM effort. A single benchmark on one document, adjudicated by the AI-PM rather than blind by Tara, is not evidence for the pilot-entry gate.
-3. **Recommendation:** adjudicate the ~55 additional findings with WTGTM (precision); fix DEF-D03-1 to DEF-D03-3; re-run once to measure variance between runs.
+3. **Recommendation:** adjudicate the ~55 additional findings with WTGTM (precision); fix DEF-L06-1 to DEF-L06-3; re-run once to measure variance between runs.

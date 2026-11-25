@@ -131,13 +131,13 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
 
-## 2026-11-25 — BENCH-03: LLM passes run on REF-01-SRC
+## 2026-11-25 — BENCH-06: LLM passes run on REF-01-SRC
 | Task | Owner / AI | Status | Dependencies | Next step |
 |---|---|---|---|---|
 | Run `llm_checks` A–D on REF-01-SRC | AI-PM | Production complete | — | — |
 | Score vs REF-01 (110 rows) | AI-PM | Quality checked (simulated review) | — | Owner/WTGTM adjudicate additional findings |
 | Record actual cost | AI-PM | Production complete — US$2.62 per run (COMMERCIAL_MODEL) | — | — |
 | Review portal outputs (checks 14 and 15) | AI-PM | Quality checked | — | Fixes on `claude/portal-postprocess-fixes` |
-Results: recall 95/110 (86%): A 79%, B 96%, C 92%, D 89%. 0 Critical, 23 quotes not found → Query, 278 raw findings (duplicates across passes). Category A is below the provisional 90% target. Defects DEF-D03-1 to DEF-D03-3 logged.
+Results: recall 95/110 (86%): A 79%, B 96%, C 92%, D 89%. 0 Critical, 23 quotes not found → Query, 278 raw findings (duplicates across passes). Category A is below the provisional 90% target. Defects DEF-L06-1 to DEF-L06-3 logged.
 Check 15 was run on a TMP Check report, not a TMP (invalid as a TMP check, but useful as a self-QA of the report generator). Check 14 (SU 025, 64 pp, US$6.10): both Criticals supported by the TMP text; 167/169 quotes present; defects listed in TEST_REGISTER portal entries.
 

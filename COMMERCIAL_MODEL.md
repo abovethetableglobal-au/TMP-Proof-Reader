@@ -40,7 +40,7 @@ Assumes 10 comparable checks in one month and $405 is representative. $675 (9 hr
 ## Cost & margin assumptions (to be measured — all PROVISIONAL)
 | Cost driver per check | Assumption | Basis |
 |---|---|---|
-| AI processing | $2–$15 (measured US$2.62 for one A–D run on a 61-pp TMP; portal ×2 runs ≈ US$5–6, check 14 = US$6.10 for 64 pp) | BENCH-03 2026-11-25 (verified fact for SU026); range kept for larger TMPs |
+| AI processing | $2–$15 (measured US$2.62 for one A–D run on a 61-pp TMP; portal ×2 runs ≈ US$5–6, check 14 = US$6.10 for 64 pp) | BENCH-06 2026-11-25 (verified fact for SU026); range kept for larger TMPs |
 | Human review (pilot) | $0 to TMP Check — performed by customer's accredited reviewer (A-15) | Cost borne by customer; reduces their net saving |
 | Hosting/storage | < $1 | Small-scale cloud |
 | Payment fees | ~1.75%–2.9% + fixed | Provider TBD |
