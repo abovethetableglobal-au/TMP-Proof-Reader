@@ -11,7 +11,7 @@ from .db import Check, CheckStatus, CreditLedger, Finding, Organisation, utcnow
 SEVERITIES = ["Critical", "Major", "Moderate", "Minor", "Query"]
 
 STATUS_LABELS = {
-    CheckStatus.uploaded: ("Uploaded", "neutral"),
+    CheckStatus.uploaded: ("Queued", "neutral"),
     CheckStatus.processing: ("Processing", "info"),
     CheckStatus.draft_review: ("Draft — awaiting reviewer", "warn"),
     CheckStatus.final_issued: ("Final issued", "ok"),

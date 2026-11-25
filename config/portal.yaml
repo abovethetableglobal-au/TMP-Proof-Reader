@@ -54,6 +54,9 @@ upload:
   max_bytes: 20971520        # 20 MB
   max_total_pages: 100       # A-26 (amends A-10): one total limit, drawings included
 
+processing:
+  max_concurrent: 1         # Owner 2026-11-25: one check at a time; later uploads wait in a queue (upload order)
+
 ai:
   runs: 2                    # BENCH-04: AI passes run twice per check and results are combined (max 3)
 

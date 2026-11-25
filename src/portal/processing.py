@@ -6,6 +6,7 @@ AI passes run only when TMPCHECK_AI_PASSES is set (e.g. "A,B,C") and ANTHROPIC_A
 otherwise deterministic checks only. Approved AI use: A-16 / A-18 documents only.
 """
 import json
+import threading
 import time
 import os
 import shutil
@@ -285,7 +286,65 @@ def fmt_duration(seconds: float | None) -> str:
     return f"{h} h {m} min" if h else f"{m} min {s} s" if m else f"{s} s"
 
 
+# --- Check queue (Owner 2026-11-25): at most `processing.max_concurrent` checks run at once; the rest wait
+# in upload order (lowest check id first). Waiting checks keep status 'uploaded', shown as "Queued".
+_queue_cond = threading.Condition()
+_queue_waiting: set[int] = set()
+_queue_running = 0
+
+
+def max_concurrent() -> int:
+    return max(1, int((settings().get("processing") or {}).get("max_concurrent", 1)))
+
+
+def queue_position(check_id: int) -> int | None:
+    """1 = next to start. None when the check is not waiting."""
+    with _queue_cond:
+        if check_id not in _queue_waiting:
+            return None
+        return sorted(_queue_waiting).index(check_id) + 1
+
+
+def _queue_enter(check_id: int) -> None:
+    global _queue_running
+    with _queue_cond:
+        _queue_waiting.add(check_id)
+        while _queue_running >= max_concurrent() or check_id != min(_queue_waiting):
+            _queue_cond.wait(timeout=5)
+        _queue_waiting.discard(check_id)
+        _queue_running += 1
+
+
+def _queue_leave() -> None:
+    global _queue_running
+    with _queue_cond:
+        _queue_running -= 1
+        _queue_cond.notify_all()
+
+
+def resume_queued() -> int:
+    """At startup: restart checks that were still waiting when the portal stopped (upload order)."""
+    db = session_factory()
+    try:
+        ids = [c.id for c in db.query(Check).filter(Check.status == CheckStatus.uploaded).order_by(Check.id)]
+    finally:
+        db.close()
+    with _queue_cond:
+        _queue_waiting.update(ids)      # reserve places before the threads start, so order holds
+    for cid in ids:
+        threading.Thread(target=run_check, args=(cid,), daemon=True).start()
+    return len(ids)
+
+
 def run_check(check_id: int) -> None:
+    _queue_enter(check_id)
+    try:
+        _run_check(check_id)
+    finally:
+        _queue_leave()
+
+
+def _run_check(check_id: int) -> None:
     db = session_factory()
     timer = Timer()
     try:

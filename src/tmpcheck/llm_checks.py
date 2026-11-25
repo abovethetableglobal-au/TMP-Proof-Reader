@@ -164,7 +164,8 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
     key = os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
     # A cloud session also sets ANTHROPIC_BASE_URL for Claude Code itself, so pin the public endpoint there
     base = "https://api.anthropic.com" if os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") else None
-    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None), base_url=base)
+    # max_retries: the SDK waits and retries on rate limits (429), overload (529) and 5xx (Owner 2026-11-25)
+    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None), base_url=base, max_retries=6)
     out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
     for code in passes:
         name, instructions = PASSES[code]

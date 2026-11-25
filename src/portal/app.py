@@ -34,6 +34,8 @@ async def lifespan(_app):
     if n := processing.recover_interrupted():
         print(f"TMP Check portal: {n} interrupted check(s) marked as failed (no credit used).", flush=True)
     print("TMP Check portal:", processing.ai_status()[1], flush=True)
+    if n := processing.resume_queued():
+        print(f"TMP Check portal: {n} queued check(s) resumed in upload order.", flush=True)
     yield
 
 
@@ -278,7 +280,8 @@ def check_detail(check_id: int, request: Request, ctx: Ctx = Depends(current), d
 
 @app.get("/checks/{check_id}/status")
 def check_status(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
-    return {"status": get_check(db, ctx, check_id).status.value}
+    chk = get_check(db, ctx, check_id)
+    return {"status": chk.status.value, "queue_position": processing.queue_position(chk.id)}
 
 
 @app.post("/checks/{check_id}/findings/{finding_id}")

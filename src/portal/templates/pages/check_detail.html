@@ -22,7 +22,8 @@
 <section class="card panel" data-poll="/checks/{{ chk.id }}/status">
   <div class="empty">
     <div class="spinner" aria-hidden="true"></div>
-    <p class="empty-title">Checking your TMP…</p>
+    <p class="empty-title" data-queue-title>{% if chk.status == CheckStatus.uploaded %}Queued — waiting for the check ahead to finish…{% else %}Checking your TMP…{% endif %}</p>
+    <p data-queue-pos></p>
     <p>This page updates automatically. No credit is used unless the draft report is produced.</p>
   </div>
 </section>

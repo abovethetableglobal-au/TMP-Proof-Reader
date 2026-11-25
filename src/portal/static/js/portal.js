@@ -108,7 +108,13 @@
   if (poll) {
     setInterval(function () {
       fetch(poll.dataset.poll).then(function (r) { return r.json(); }).then(function (d) {
-        if (d.status !== "uploaded" && d.status !== "processing") window.location.reload();
+        if (d.status !== "uploaded" && d.status !== "processing") return window.location.reload();
+        var t = poll.querySelector("[data-queue-title]"), q = poll.querySelector("[data-queue-pos]");
+        if (d.status === "processing") { t.textContent = "Checking your TMP…"; q.textContent = ""; }
+        else if (d.queue_position) {
+          t.textContent = "Queued — waiting for the check ahead to finish…";
+          q.textContent = "Place in queue: " + d.queue_position + ". Checks run one at a time.";
+        }
       });
     }, 2000);
   }
