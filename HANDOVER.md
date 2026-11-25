@@ -23,7 +23,7 @@ Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `mai
 | `compliance/rules/*.yaml` | 22 approved WA rules |
 
 ## Next session — exact steps
-1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('ANTHROPIC_API_KEY')))"` → `True`.
+1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('TMPCHECK_ANTHROPIC_API_KEY')))"` (ANTHROPIC_API_KEY is withheld by the cloud runtime) → `True`.
 2. Customer files are **not** in Git. Owner re-uploads `SU026_redacted.pdf` and `SU026_Shoalwater_TMP_Proofread_Rev0.pdf` to the chat; copy to `customer-docs/wtgtm-2026-11-20/`.
 3. Fetch public template: see `test-library/public/README.md`.
 4. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU026_redacted.pdf customer-docs/wtgtm-2026-11-20/out/llm.json`

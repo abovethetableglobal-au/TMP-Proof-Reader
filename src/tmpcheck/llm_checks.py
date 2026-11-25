@@ -8,12 +8,13 @@ Design
   downgraded to a Query (never silently released as a confirmed issue — CLAUDE.md §2).
 - Server-side refusal fallback enabled; usage and cost recorded per pass.
 
-Requires ANTHROPIC_API_KEY. Approved use: A-16 / A-18 (historical WTGTM documents).
+Requires TMPCHECK_ANTHROPIC_API_KEY (cloud sessions withhold ANTHROPIC_API_KEY). Approved use: A-16 / A-18 (historical WTGTM documents).
 Usage: python -m src.tmpcheck.llm_checks <tmp.pdf> <out.json> [--passes A,B,C,D] [--dry-run]
 """
 import argparse
 import base64
 import json
+import os
 import re
 import sys
 import time
@@ -125,7 +126,12 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
     page_text = [p.get_text() for p in pymupdf.open(pdf)]
     doc_block = {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data},
                  "title": pdf.name, "cache_control": {"type": "ephemeral"}}
-    client = anthropic.Anthropic()
+    # Cloud sessions withhold ANTHROPIC_API_KEY and set ANTHROPIC_BASE_URL for Claude Code itself,
+    # so read our own variable and pin the public API endpoint.
+    key = os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+    if not key and not dry_run:
+        sys.exit("Set TMPCHECK_ANTHROPIC_API_KEY in the environment settings, then start a new session.")
+    client = anthropic.Anthropic(api_key=key or "dry-run", base_url="https://api.anthropic.com")
     out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
     for code in passes:
         name, instructions = PASSES[code]

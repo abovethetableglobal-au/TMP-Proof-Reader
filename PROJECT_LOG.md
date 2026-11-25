@@ -121,7 +121,7 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 |---|---|---|---|---|
 | Deterministic checks v0.2 on REF-01 source TMP | AI-PM | Quality checked | — | — |
 | Adjudicate 3 repeated-sentence findings | Owner | User accepted — ignore (excluded from scoring) | — | — |
-| LLM pass (categories A, B, D) | AI-PM | Blocked | ANTHROPIC_API_KEY env var + new session | Owner adds key |
+| LLM pass (categories A, B, D) | AI-PM | Blocked | TMPCHECK_ANTHROPIC_API_KEY env var + new session (ANTHROPIC_API_KEY is withheld by cloud runtime) | Owner adds key |
 Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~95 of ~105 reference items need the LLM pass.
 
 ## 2026-11-20 — LLM checking passes coded (G4)
