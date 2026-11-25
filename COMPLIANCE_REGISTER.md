@@ -11,6 +11,8 @@ Status legend: **V** verified against primary source by AI-PM · **AI-X** extrac
 | SRC-AS1742.3 | AS 1742.3:2019 Manual of uniform traffic control devices — Part 3: Traffic control for works on roads | 2019 | Standards Australia (adopted by MRWA) | Licensed purchase required (P-06) | — | — |
 | SRC-WA-TMP-TPL | MRWA TMP template; Basic TMP template | Current on MRWA site | Main Roads WA | https://www.mainroads.wa.gov.au/technical-commercial/working-on-roads/ | V (exists) | 2026-11-20 |
 | SRC-WA-GEN-CHK | Checklist to Determine the Need for Generic or Site Specific TMP | Current on MRWA site | Main Roads WA | as above | V (exists) | 2026-11-20 |
+| SRC-WA-GEN-TGS | MRWA Generic workzone TGSs (AS 1742.3 and MMS series) + Example Generic TGSs (Mar 2026) | Current on MRWA site | Main Roads WA | https://www.mainroads.wa.gov.au/technical-commercial/working-on-roads/ | V (read 2026-11-25) | 2026-11-25 |
+| SRC-WA-GEN-TGS-SA | Generic TGS Site Suitability Assessment Template (Proposed update) | Proposed — in-force status unverified | Main Roads WA | as above | V (exists) | 2026-11-25 |
 | SRC-WA-TGS-CHK | Example Onsite TGS Selection Checklist | Current on MRWA site | Main Roads WA | as above | V (exists) | 2026-11-20 |
 | SRC-WA-SPEC202 | MRWA Specification 202 — Traffic Management | Check edition | Main Roads WA | https://www.mainroads.wa.gov.au/globalassets/technical-commercial/technical-library/specifications/200-series-management-requirements/specification-202-traffic-management-pdf.pdf | — | — |
 | SRC-WA-TMA | Requirements for the use of TMAs in WA — Code of Practice | Check edition | Main Roads WA | https://www.mainroads.wa.gov.au/globalassets/technical-commercial/working-on-roads/traffic-management/requirements-for-the-use-of-TMAs-WA.pdf | — | — |

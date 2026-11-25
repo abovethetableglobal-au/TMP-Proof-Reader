@@ -17,11 +17,14 @@ PLACEHOLDERS = [
     ("PH-TBA", re.compile(r"\bTB[AC]\b"), "'TBA/TBC' entry — confirm or complete before issue", "Minor"),
     ("PH-DATE", re.compile(r"(?<![\d])(?<!\d/)/\d{1,2}/20\d\d|(?<=\s)/20\d\d\b"), "Incomplete date (day or month missing)", "Moderate"),
 ]
-# Wording that may not belong in a WA local-government-road TMP (RQ-05). Raised as Query: context decides.
-JURISDICTION = [
+# Interstate agencies/standards must never appear in a WA TMP (Tara, 2026-11-25, A-21): definite Moderate finding.
+INTERSTATE = [
     ("JX-QLD", re.compile(r"\bTMR\b|Transport and Main Roads|\bQGTTM\b"), "Queensland agency/standard referenced (TMR/QGTTM) in a WA TMP"),
     ("JX-NSW", re.compile(r"\bTfNSW\b|Transport for NSW|\bRMS\b"), "NSW agency referenced in a WA TMP"),
     ("JX-VIC", re.compile(r"VicRoads|Department of Transport and Planning"), "Victorian agency referenced in a WA TMP"),
+]
+# Wording that may not belong in a WA local-government-road TMP (RQ-05). Raised as Query: context decides.
+JURISDICTION = [
     ("JX-MRWA", re.compile(r"complex traffic management arrangements|Road Infrastructure Manager|State Roads?", re.I),
      "Main Roads / complex-arrangement wording — confirm it applies to this road and TMP type"),
 ]
@@ -47,6 +50,10 @@ def run(pdf: Path) -> dict:
         for rule, rx, issue, sev in PLACEHOLDERS:
             for m in rx.finditer(text):
                 add(rule, pno, m.group(0), issue, sev, "C Completeness")
+        for rule, rx, issue in INTERSTATE:
+            for m in rx.finditer(text):
+                add(rule, pno, text[max(0, m.start() - 40):m.end() + 40], issue + " — replace with the WA (Main Roads WA) "
+                    "equivalent", "Moderate", "C Completeness", "Potential issue")
         for rule, rx, issue in JURISDICTION:
             for m in rx.finditer(text):
                 add(rule, pno, text[max(0, m.start() - 40):m.end() + 40], issue, "Query", "E Compliance", "Unable to verify")

@@ -1,0 +1,31 @@
+rule_id: WA-GEN-CHK-001
+source_id: SRC-WA-GEN-CHK
+source_name: Checklist to Determine the Need for Generic or Site Specific TMP
+source_url: https://assets.mainroads.wa.gov.au/download/assets/Checklist+to+Determine+the+Need+for+Generic+or+Site+Specific+TMP/63d869d06bc611f19c207a19facb0753
+edition: Current on MRWA site (Word file dated 2020-01-07; edition to be confirmed)
+publication_date: '2020-01'
+jurisdiction: WA
+authority: Main Roads WA
+clause: Questions 1–13
+requirement_plain: 'A generic TMP is not appropriate if any of 13 triggers applies (e.g. TM over 14 h in one shift; freeway lane affected;
+  work area over 2 km; lane closure above 1000 vph; lane closure within 200 m of an intersection above 500 vph/lane; detour on a
+  major/multi-lane road; unaddressed sight-distance, side-road/driveway or path-user issues; permanent signals affected; turning
+  lanes fully closed; rail-crossing impacts within 300 m). Any "yes" requires a site-specific TMP. Generic TMPs reviewed at least every 12 months.'
+applicability: TMPs presented as generic
+evidence_required:
+- TMP states generic or site-specific
+- hours, length, volumes, intersections, rail, signals, detours, path users described
+- review date within 12 months for generic TMPs
+check_method: consistency
+expected_result: No trigger present in a generic TMP; or TMP is site-specific
+category: E
+default_severity: Major
+human_review: true
+status: draft-unverified
+verification_date: ''
+verified_by: ''
+reviewer: ''
+change_history:
+- date: '2026-11-25'
+  by: AI-PM
+  change: Drafted from MRWA checklist (paraphrased); awaiting Tara review

@@ -130,3 +130,12 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-25 — Tara feedback; MRWA sources; workflow
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Interstate-reference fix (A-21): det_checks INTERSTATE → Moderate; LLM prompt bans interstate citations; output jurisdiction_guard | AI-PM | Quality checked (unit test on synthetic findings; REF-01 re-run pending — source TMP not in this container) | REF-01-SRC upload | Re-run and confirm p7 |
+| 7 MRWA links downloaded and assessed | AI-PM | Production complete | — | — |
+| Rules WA-GEN-CHK-001, WA-GEN-TGS-001 | AI-PM | Under review | Tara | Review |
+| docs/requirements/MRWA_SOURCES_AND_WORKFLOW.md v0.1 | AI-PM | Ready for user review | Owner | Approve workflow |
+Feedback recorded: Tara fully supports the product and would use it; says $149 undersells (5+ h manual) → P-12.

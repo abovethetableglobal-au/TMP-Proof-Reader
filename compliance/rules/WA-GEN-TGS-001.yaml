@@ -1,0 +1,29 @@
+rule_id: WA-GEN-TGS-001
+source_id: SRC-WA-GEN-TGS-SA
+source_name: Generic TGS Site Suitability Assessment Template (proposed update)
+source_url: https://assets.mainroads.wa.gov.au/download/assets/Generic+TGS+Suitability+Assessment+Template+%28Proposed+update%29/4f0633aee4af11f19bf062d403932447
+edition: Proposed update (status to be confirmed — may not be in force)
+publication_date: ''
+jurisdiction: WA
+authority: Main Roads WA
+clause: Whole form
+requirement_plain: 'Where a generic TGS is used, a site suitability assessment confirms it fits the site: activity fully covered;
+  intersections/driveways; pedestrians, cyclists, public transport; nearby land uses and events; rail crossings; permanent signals;
+  site features not addressed; queues. Used with the Daily Traffic Management Diary.'
+applicability: TMPs that use MRWA generic TGSs (AS 1742.3 or MMS series)
+evidence_required:
+- suitability assessment completed or referenced
+- generic TGS number and issue date match the MRWA library
+check_method: presence
+expected_result: Assessment present/referenced; TGS numbers valid
+category: E
+default_severity: Moderate
+human_review: true
+status: draft-unverified
+verification_date: ''
+verified_by: ''
+reviewer: ''
+change_history:
+- date: '2026-11-25'
+  by: AI-PM
+  change: Drafted (paraphrased). Source marked "Proposed update" — Tara to confirm whether in force before approval
