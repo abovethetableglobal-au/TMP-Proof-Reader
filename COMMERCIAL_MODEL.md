@@ -2,8 +2,8 @@
 
 All prices AUD. Approved by Owner 2026-11-20 (DECISIONS A-02–A-06).
 
-## Price list — v2 structure (Owner approved 2026-11-25, A-22). Per-check base price pending P-12
-Base per-check price `P` is configuration (`pricing.base_check`), not yet set: recommended range $249–$299.
+## Price list — v2 structure (Owner approved 2026-11-25, A-22). Base price set 2026-11-25 (A-23)
+Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 
 | SKU | Price | Included checks | Notes |
 |---|---|---|---|
@@ -15,17 +15,19 @@ Base per-check price `P` is configuration (`pricing.base_check`), not yet set: r
 | Business subscription | ~$2,490/month (to be modelled) | 15/month | Extra checks ~$169 |
 | Enterprise | Quoted | Fair-use cap (e.g. 40) | Negotiated |
 
-Illustration (estimate):
-| P | Single | 5-pack (per check) | 10-pack (per check) |
-|---|---|---|---|
-| $249 | $249 | $1,182.75 ($236.55) | $2,241.00 ($224.10) |
-| $299 | $299 | $1,420.25 ($284.05) | $2,691.00 ($269.10) |
+| Item | Price | Per check |
+|---|---|---|
+| Single check | $349.00 | $349.00 |
+| 5-check pack (−5%) | $1,657.75 | $331.55 |
+| 10-check pack (−10%) | $3,141.00 | $314.10 |
+
+**Open:** subscription tier prices/overage (~$990, ~$2,490, $199/$169) were drafted against a lower base and now undercut the packs — to be re-modelled (P-12).
 
 Superseded v1 (A-03–A-06): $149/check; 10-pack $1,341.
 
 ```yaml
 pricing:
-  base_check: null          # set on P-12 decision
+  base_check: 349.00        # A-23
   packs: {5: 0.05, 10: 0.10}
 ```
 

@@ -3,6 +3,7 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
+| A-23 | Base per-check price set at **$349** (5-pack $1,657.75; 10-pack $3,141.00) | Tara: manual check 5+ h | 2026-11-25 | Owner |
 | A-22 | Pricing structure v2: tiered subscriptions with included checks + overage; value packs 5 checks −5%, 10 checks −10%. Supersedes $149 list (A-03–A-06). Base per-check price and tier prices still to be set (P-12) | Tara value feedback; margin protection vs unlimited | 2026-11-25 | Owner |
 | A-21 | Interstate (QLD/NSW/VIC) references are never acceptable in a WA TMP or in TMP Check output: in-document = Moderate finding; in our wording = blocked to Query | Tara feedback 2026-11-25 (p7 Queensland reference) | 2026-11-25 | Owner (relaying Tara) |
 | A-01 | Claude Code appointed sole AI-PM | Handover §1 | 2026-11-20 | Owner |
@@ -33,7 +34,7 @@
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
-| P-12 | Set base per-check price and tier prices under A-22 structure | Recommend $249–$299/check; needs WTGTM monthly volume + measured AI cost | G5 |
+| P-12 | Set subscription tier prices and overage under A-22 (base $349 set, A-23) | Re-model so tiers sit below pack rates but above cost; needs WTGTM monthly volume + measured AI cost | G5 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
 
 ## Provisional assumptions (AI-PM, non-material)

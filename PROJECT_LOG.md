@@ -142,3 +142,4 @@ Feedback recorded: Tara fully supports the product and would use it; says $149 u
 
 ## 2026-11-25 — Pricing structure v2 approved (A-22)
 Tiered subscriptions + value packs (5 = −5%, 10 = −10%). COMMERCIAL_MODEL.md updated. Base price open (P-12).
+A-23: base price $349 set; packs $1,657.75 / $3,141.00. Tier prices to re-model.
