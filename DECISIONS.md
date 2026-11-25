@@ -48,6 +48,7 @@
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now; revisit after pilot benchmark. TMP generation conflicts with §2 (no design) | Post-G6 |
+| P-22 | Live TMP (BC 016 Bon Marche Arcade Perth) was sent to the Claude API on 2026-11-25 with AI passes on, before G6 (A-16). How to proceed? | **A:** rule checks only for live TMPs until G6; log the incident; add a portal guard. **B:** one-off recorded exception. **C:** bring G6 forward (data-handling statement + customer consent) | Now |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |
