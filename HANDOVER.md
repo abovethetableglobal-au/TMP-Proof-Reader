@@ -33,7 +33,7 @@ Tests: `python -m pytest -q` → 53 pass.
 pip install -r requirements.txt
 export TMPCHECK_ENV=local
 python -m src.portal.devseed --org "Way to Go Traffic Management" --user "<name>" --email <email> --role customer_reviewer
-uvicorn src.portal.app:app --port 8000
+python -m uvicorn src.portal.app:app --port 8000   # Windows: plain "uvicorn" may not be on PATH
 ```
 
 ## Owner decisions needed
