@@ -154,3 +154,4 @@ P-05 closed by A-22 (5-pack offered at 5%).
 A-25: launch plan approved as working baseline; date provisional.
 A-26: AS 1742.3 purchase deferred to G8; R-23 opened.
 A-27: quotes approved; providers shortlisted. Owner to submit quote forms (requires business details).
+Legal drafts: docs/legal/TERMS_OF_SERVICE_DRAFT.md, PRIVACY_POLICY_DRAFT.md v0.1 — Ready for user review; lawyer review required.
