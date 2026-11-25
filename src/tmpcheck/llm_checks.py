@@ -4,8 +4,9 @@ Design
 - One TMP PDF sent once as a `document` block (text + page images, so TGS drawings are seen),
   cached with `cache_control`; each pass reuses the cached prefix and adds its own instructions.
 - Structured output (Pydantic) — every finding has page, quoted evidence, issue, fix.
-- Evidence validation: a text finding's quote must exist on the cited PDF page, else it is
-  downgraded to a Query (never silently released as a confirmed issue — CLAUDE.md §2).
+- Evidence validation (postprocess.py): a quote must be locatable word-by-word on the cited page
+  (same locator as annotation), else Query / 'Unable to verify'; VISUAL-only Criticals held as Query;
+  duplicates across passes merged (CLAUDE.md §2).
 - Server-side refusal fallback enabled; usage and cost recorded per pass.
 
 Requires ANTHROPIC_API_KEY. Approved use: A-16 / A-18 (historical WTGTM documents).
@@ -14,6 +15,7 @@ Usage: python -m src.tmpcheck.llm_checks <tmp.pdf> <out.json> [--passes A,B,C,D]
 import argparse
 import base64
 import json
+import os
 import re
 import sys
 import time
@@ -23,6 +25,8 @@ from typing import List, Literal, Optional
 import anthropic
 import pymupdf
 from pydantic import BaseModel, Field
+
+from .postprocess import merge, validate
 
 MODEL = "claude-opus-5-5"
 EFFORT = "high"            # intelligence-sensitive QA work
@@ -102,31 +106,6 @@ PASSES = {
 }
 
 
-def norm(s: str) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", s.lower())).strip()
-
-
-def validate(findings: list[dict], page_text: list[str]) -> None:
-    """Evidence validation: quote must appear on the cited page (or a related page)."""
-    for f in findings:
-        ev = f["evidence"]
-        if ev.upper().startswith("VISUAL:"):
-            f["evidence_check"] = "visual — reviewer to confirm"
-            continue
-        key = norm(ev)
-        pages = [f["page"], *f.get("related_pages", [])]
-        hit = next((p for p in pages if 1 <= p <= len(page_text) and key and key in norm(page_text[p - 1])), None)
-        if hit is None:  # tolerate a short off-by-one in page attribution
-            hit = next((p for p in (f["page"] - 1, f["page"] + 1) if 1 <= p <= len(page_text) and key and key in norm(page_text[p - 1])), None)
-            if hit:
-                f["page"] = hit
-        if hit:
-            f["evidence_check"] = "verified"
-        else:
-            f["evidence_check"] = "NOT FOUND on cited page"
-            f["original_severity"], f["severity"] = f["severity"], "Query"   # never release unsupported findings as confirmed
-
-
 def cost(u) -> float:
     return ((u.input_tokens or 0) * PRICE["input"] + (u.output_tokens or 0) * PRICE["output"]
             + (getattr(u, "cache_read_input_tokens", 0) or 0) * PRICE["cache_read"]
@@ -135,10 +114,12 @@ def cost(u) -> float:
 
 def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
     data = base64.standard_b64encode(pdf.read_bytes()).decode()
-    page_text = [p.get_text() for p in pymupdf.open(pdf)]
+    doc = pymupdf.open(pdf)
     doc_block = {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data},
                  "title": pdf.name, "cache_control": {"type": "ephemeral"}}
-    client = anthropic.Anthropic()
+    # Cloud sessions withhold ANTHROPIC_API_KEY, so TMPCHECK_ANTHROPIC_API_KEY is accepted too (Owner's PC uses the standard name)
+    key = os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None))
     out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
     for code in passes:
         name, instructions = PASSES[code]
@@ -164,7 +145,9 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
         res = PassResult.model_validate_json(text).model_dump()
         for f in res["findings"]:
             f["pass"] = code
-        validate(res["findings"], page_text)
+        for i, f in enumerate(res["findings"], 1):
+            f["id"] = f"{code}-{i:03d}"
+        validate(res["findings"], doc)
         u = msg.usage
         res["usage"] = {"input": u.input_tokens, "output": u.output_tokens,
                         "cache_read": getattr(u, "cache_read_input_tokens", 0),
@@ -174,6 +157,9 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
         out["passes"][code] = res
         print(f"pass {code}: {len(res['findings'])} findings, ${res['usage']['usd']:.2f}, {res['usage']['seconds']}s, "
               f"cache read {res['usage']['cache_read']}")
+    allf = [f for r in out["passes"].values() for f in r.get("findings", [])]
+    out["findings"] = merge(allf)   # D4: one entry per distinct issue across passes
+    out["merged_count"] = len(allf) - len(out["findings"])
     return out
 
 

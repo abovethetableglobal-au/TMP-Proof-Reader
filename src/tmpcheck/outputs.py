@@ -19,6 +19,8 @@ from pathlib import Path
 
 import pymupdf
 
+from .postprocess import locate
+
 SEVERITIES = ["Critical", "Major", "Moderate", "Minor", "Query"]
 SEV_RANK = {s: i for i, s in enumerate(SEVERITIES)}
 SEV_COLOUR = {"Critical": (0.71, 0.14, 0.09), "Major": (0.88, 0.48, 0.04), "Moderate": (0.79, 0.54, 0.02),
@@ -161,6 +163,9 @@ def report_html(meta: Meta, items: list[Item], all_rows: list[dict]) -> str:
 
     h.append("<h2>4. Summary</h2><table><tr>" + "".join(f"<th>{s}</th>" for s in SEVERITIES) + "<th>Total</th></tr><tr>"
              + "".join(f"<td>{counts[s]}</td>" for s in SEVERITIES) + f"<td>{len(items)}</td></tr></table>")
+    by_cat = {c: sum(1 for i in items if (i.category or "").startswith(c + " ")) for c, _, _ in SCOPE}
+    h.append("<p class='small'>Findings by category: " + "; ".join(f"{c} {by_cat[c]}" for c, _, _ in SCOPE) + "."
+             + (" No category E rule was triggered in this check." if by_cat["E"] == 0 else "") + "</p>")
     if meta.final:
         rejected = sum(1 for r in all_rows if r.get("disposition") == "rejected")
         edited = sum(1 for i in items if i.disposition == "edited")
@@ -251,21 +256,30 @@ def build_report(meta: Meta, items: list[Item], all_rows: list[dict], out: Path)
 # ---------------------------------------------------------------------------- annotated copy (Output 2)
 
 def _locate(page: pymupdf.Page, evidence: str) -> list:
+    """Find the evidence on the page for highlighting. Uses the same word-level locator as evidence
+    validation (postprocess.locate), so a verified finding is always highlighted (check 14 review: 31 findings
+    got a page-top note although 29 of their quotes were on the page). Falls back to the quote's first line
+    or leading words for long multi-line quotes."""
     text = re.sub(r"\s+", " ", evidence or "").strip().strip("“”\"'")
     if not text or text.upper().startswith("VISUAL:"):
         return []
     if len(text) < 6:                                       # short evidence (e.g. 'TBA', '/2026'): exact only
-        return page.search_for(text, quads=True)
-    for n in (len(text), 80, 50, 30, 18):
+        return [q.rect for q in page.search_for(text, quads=True)]
+    candidates = [evidence] + [part for part in re.split(r" \| |\n", evidence or "") if len(part.strip()) >= 12]
+    words = text.split()
+    candidates += [" ".join(words[:n]) for n in (12, 8, 5) if len(words) > n]
+    for cand in candidates:
+        boxes = locate(page, cand)
+        if boxes:
+            return [pymupdf.Rect(b) for b in boxes]
+    for n in (len(text), 80, 50, 30, 18):                   # fallback: PyMuPDF phrase search on leading text
         needle = text[:n].strip()
         if len(needle) < 6:
             break
-        quads = page.search_for(needle, quads=True)
-        if quads:
-            return quads
-        for part in re.split(r" \| |\n", needle):          # multi-line quotes: try the first line on its own
-            if len(part) >= 12 and (q := page.search_for(part.strip(), quads=True)):
-                return q
+        for part in [needle] + [p.strip() for p in re.split(r" \| |\n", needle) if len(p.strip()) >= 12]:
+            quads = page.search_for(part, quads=True)
+            if quads:
+                return [q.rect for q in quads]
     return []
 
 
@@ -297,16 +311,21 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
             summary += f"\nSuggested action: {i.action}"
         if not 1 <= i.page <= doc.page_count:
             continue
-        page = doc[i.page - 1]
-        quads = _locate(page, i.evidence)
+        # The quote may sit on a related page (cross-page findings, off-by-one page attribution): try each
+        hit_pno, quads = i.page, []
+        for pno in dict.fromkeys([i.page, *i.pages]):
+            if 1 <= pno <= doc.page_count and (quads := _locate(doc[pno - 1], i.evidence)):
+                hit_pno = pno
+                break
         if quads:
+            page = doc[hit_pno - 1]
             hl = page.add_highlight_annot(quads)
             hl.set_colors(stroke=colour)
             hl.set_opacity(0.35)
             hl.set_info(title="TMP Check", content=summary)
             hl.update()
-            r = quads[0].rect
-            row = (i.page, round(r.y0 / 6))                          # labels sit in the left margin,
+            r = quads[0]
+            row = (hit_pno, round(r.y0 / 6))                         # labels sit in the left margin,
             x0 = 3 + 33 * row_count.get(row, 0)                       # side by side if a line has several
             row_count[row] = row_count.get(row, 0) + 1
             _label(page, pymupdf.Rect(x0, r.y0, x0 + 31, r.y0 + 9), i.no, colour)
@@ -314,8 +333,8 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
         else:
             margin_note(i.page, f"{i.no} {i.severity} — see report", colour)
             i.annotated = "note"
-        for p in i.pages:
-            if p != i.page and 1 <= p <= doc.page_count:
+        for p in dict.fromkeys([i.page, *i.pages]):
+            if p != hit_pno and 1 <= p <= doc.page_count:
                 margin_note(p, f"{i.no} (related) — see report", colour)
 
     first = doc[0]

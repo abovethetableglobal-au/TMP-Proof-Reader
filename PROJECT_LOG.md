@@ -1,5 +1,32 @@
 # PROJECT_LOG — TMP Check
 
+## 2026-11-25 — Portal output fixes from the check 14/15 review (AI-PM)
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| Merge `g4-postprocess-fixes` (D1–D5) into the portal line | AI-PM | Production complete | — | Owner functional test on PC |
+| Fix DEF-C14-1 to DEF-C14-6 (TEST_REGISTER) | AI-PM | Quality checked — 53/53 tests pass; check 14 data: 147/149 text findings highlighted (was 118) | — | Re-run check 14 on Owner's PC |
+| Reconcile divergent records across branches | Owner | Awaiting approval | — | See Issues |
+Branch `claude/portal-postprocess-fixes` = `claude/fervent-hopper-q3h87z` + `g4-postprocess-fixes` + these fixes.
+**Issues:** project records have diverged across branches. DECISIONS IDs A-21 and A-22 mean different things on the portal line and the g4 line (kept here as "A-21 (g4 line)" and "A-22 (g4 line)"), and `claude/blissful-davinci-884my9` uses A-21 to A-31 again. BENCH-02 to 05 exist on the portal line; BENCH-06 (an untuned engine re-run, 86% recall, US$2.62) is on `claude/llm-pass-ref-01-src-jys8ll`. One authoritative line (main) is needed (Master Prompt §11.4).
+Check 15 was run on a TMP Check report, not a TMP. Its findings 256/257 (a "FINAL" banner and mismatched margin severities) do not reproduce on check 14.
+
+## 2026-11-25 — G4 pipeline defect fixes (AI-PM)
+**Completed**
+- Key check (HANDOVER step 1): `ANTHROPIC_API_KEY` **not set** in session (`False`). Network secrets cannot be used for api.anthropic.com; Owner to enter the value as an environment variable. LLM passes A–D **Blocked**.
+- Owner confirmed SU_025 Kanimbla Road is historical (DECISIONS A-21).
+- New `src/tmpcheck/postprocess.py`, wired into `llm_checks.py` and `det_checks.py`. Fixes from the prior draft-report review:
+  - D1 validator now uses the same word-level locator as annotation; unlocatable quotes → Query / Unable to verify (bbox stored when found).
+  - D2 VISUAL-only Critical findings held as Query (`original_severity`, `hold_reason` kept for reviewer).
+  - D3 outcome derived from severity: Query → "Unable to verify", else "Potential issue".
+  - D4 duplicate findings merged across passes/pages (`merged_from`); rule findings merge only on same rule + evidence + page.
+  - D5 DUP-SENT: TGS sheets detected by title block (not only landscape) and excluded; category changed A Proofreading → C Completeness (RQ-06).
+- Tests: `tests/test_postprocess.py` (synthetic PDF), 6/6 pass.
+- SU_025 received (git-ignored). D5 refined: SU_025 TGS sheets are portrait Letter pages without 'TGS' text; detection now uses title-block fields. Deterministic run: DUP-SENT 9→3, PG-HEADER 3→1.
+- Owner approved ≤US$5 API spend (A-22). Key added by Owner but not visible in this session (env vars load at session start) — run deferred to next session.
+**Not done**
+- D6 (PDF report rendering: ghost table shading/borders, orphaned headers): no report renderer in the repository — Awaiting input (source of the reviewed draft report).
+- G4 passes A–D on SU_025 and cost per pass: Blocked (API key; PDF not yet uploaded).
+
 ## 2026-11-20 — Project initiation (AI-PM)
 **Completed**
 - Workspace `TMP-Check/` created; local git repo initialised; `customer-docs/` git-ignored.

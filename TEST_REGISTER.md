@@ -22,6 +22,12 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | Def ID | Run | Doc | Category | Description | Severity | Root cause | Resolution | Re-test |
 |---|---|---|---|---|---|---|---|---|
 | DEF-D02-1 | D-02 | REF-01 | A/B | TGS sheets flagged as missing header; title block flagged as duplicate | Minor | Drawing pages not distinguished | Landscape pages exempted | Pass |
+| DEF-C14-1 | Check 14 | SU 025 | Output | 31 findings marked with a page-top note instead of a highlight; 29 of their quotes were in the document | Major | Highlighting used exact phrase search on the cited page only (ligatures, line breaks, quote on a related page) | Word-level locator shared with validation, NFKC ligature folding, related pages tried: 147/149 text findings highlighted on check 14 data | Pass |
+| DEF-C14-2 | Checks 14, 15 | SU 025, SU 026 | All | A merged finding could carry a Major/Moderate severity with an unlocated quote as its evidence | Critical (§2) | `processing.merge` took the highest severity and longest evidence from all members | Severity and evidence taken from located members only; no located member → Query; VISUAL-only Critical → Query | Pass (unit tests) |
+| DEF-C14-3 | Check 14 | SU 025 | Output | Rule findings issued with no suggested action | Minor | No action text on rules | `det_checks.ACTIONS` for every rule | Pass |
+| DEF-C14-4 | Check 14 | SU 025 | Output | Rule evidence cut mid-word at 120 characters | Minor | Fixed-width slice | Word-boundary snippet with ellipsis | Pass |
+| DEF-C14-5 | Check 14 | SU 025 | A | 'Sentence repeated 2 times (pages 38)'; TGS title blocks flagged as repeats | Minor | Wording; portrait TGS sheets not detected | 'twice on page 38' / 'pages 35 and 36'; title-block drawing detection (postprocess D5). SU 025 DUP-SENT 9 → 3 | Pass |
+| DEF-C14-6 | Check 14 | SU 025 | Output | Category E in scope but no E result stated | Minor | Report omitted the category count | 'Findings by category' line; states when no E rule was triggered | Pass |
 | DEF-S01-1 | S-01 | PUB-01 | C | Duplicate/mis-labelled findings | Major | Substring re-search | Word-level bboxes + merge | Pass |
 | DEF-S01-2 | S-01 | PUB-01 | C | TOC leaders flagged as blanks | Major | Over-broad regex | Dots-only word rule | Pass |
 | DEF-S01-3 | S-01 | PUB-01 | Output | Annotation colour clashes with template | Minor | Highlight colour | Red outline | Pass |

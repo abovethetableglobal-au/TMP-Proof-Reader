@@ -79,18 +79,32 @@ def _pages(f: dict) -> set[int]:
     return {int(f.get("page") or 1), *(int(p) for p in f.get("related_pages") or [])}
 
 
+def _supported(f: dict) -> bool:
+    """Evidence located on the page (AI findings carry evidence_check; rule findings are located by construction)."""
+    return f.get("evidence_check", "verified") == "verified"
+
+
 def merge(items: list[tuple[str, dict]]) -> tuple[str, dict]:
-    """Merge findings that describe one problem. Keeps the most severe rating (Query only if all are Query),
-    the clearest explanation, the longest evidence, every page and every source — nothing is silently dropped."""
+    """Merge findings that describe one problem. Severity and evidence come from members whose quote was located
+    on the page; a merged finding with no located quote stays a Query (CLAUDE.md §2 — check 14/15 review: an
+    unlocated quote was being carried as the evidence of a Major finding). Every page and source is kept."""
     if len(items) == 1 and "_sources" in items[0][1]:
         return items[0]
-    sev = min((f.get("severity", "Query") for _, f in items), key=lambda s: SEV_RANK.get(s, 4))
-    best = max(items, key=lambda it: ("rules" not in _sources(*it), len(it[1].get("issue", ""))))[1]
+    fs = [f for _, f in items]
+    backed = [f for f in fs if _supported(f)] or [f for f in fs if str(f.get("evidence", "")).upper().startswith("VISUAL:")]
+    pool = backed or fs
+    sev = min((f.get("severity", "Query") for f in pool), key=lambda s: SEV_RANK.get(s, 4)) if backed else "Query"
+    if sev == "Critical" and not any(_supported(f) for f in pool):
+        sev = "Query"                       # VISUAL-only Critical is held for the reviewer (postprocess D2)
+    best = max(((s, f) for s, f in items if f in pool),
+               key=lambda it: ("rules" not in _sources(*it), len(it[1].get("issue", ""))))[1]
     merged = dict(best, severity=sev)
-    merged["evidence"] = max((f.get("evidence", "") for _, f in items), key=len)
-    merged["rule"] = next((f.get("rule") for _, f in items if f.get("rule")), None)
-    pages = set().union(*(_pages(f) for _, f in items))
-    merged["page"] = min(int(f.get("page") or 1) for _, f in items)
+    merged["evidence"] = max((f.get("evidence", "") for f in pool if _supported(f)), key=len, default=best.get("evidence", ""))
+    merged["evidence_check"] = "verified" if any(_supported(f) for f in pool) else best.get("evidence_check")
+    merged["outcome"] = "Unable to verify" if sev == "Query" else "Potential issue"
+    merged["rule"] = next((f.get("rule") for f in fs if f.get("rule")), None)
+    pages = set().union(*(_pages(f) for f in fs))
+    merged["page"] = min(int(f.get("page") or 1) for f in fs)
     merged["related_pages"] = sorted(pages - {merged["page"]})
     srcs = set().union(*(_sources(s, f) for s, f in items))
     merged["_sources"] = sorted(srcs)
