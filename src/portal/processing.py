@@ -232,6 +232,21 @@ def _consume_credit(db: Session, chk: Check) -> None:
 session_factory = SessionLocal   # replaced in tests
 
 
+def recover_interrupted() -> int:
+    """At startup: a check still 'processing' was cut off when the portal stopped (nothing is running any more).
+    Mark it failed — no credit is consumed (A-05 rule 4) — so it does not sit at 'Processing' for ever."""
+    db = session_factory()
+    try:
+        stuck = db.query(Check).filter(Check.status == CheckStatus.processing).all()
+        for chk in stuck:
+            chk.status = CheckStatus.failed
+            chk.failure_reason = "Processing was interrupted because the portal was stopped. No credit was used. Please upload again."
+        db.commit()
+        return len(stuck)
+    finally:
+        db.close()
+
+
 def run_check(check_id: int) -> None:
     db = session_factory()
     try:

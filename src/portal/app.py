@@ -30,6 +30,8 @@ async def lifespan(_app):
     if os.environ.get("TMPCHECK_ENV") != "local":
         raise RuntimeError("Local build only (hosting needs G6 approvals). Set TMPCHECK_ENV=local to run locally.")
     init_db()
+    if n := processing.recover_interrupted():
+        print(f"TMP Check portal: {n} interrupted check(s) marked as failed (no credit used).", flush=True)
     print("TMP Check portal:", processing.ai_status()[1], flush=True)
     yield
 

@@ -341,3 +341,16 @@ def test_password_rules():
         auth.hash_password("short")
     h = auth.hash_password("a-long-enough-password")
     assert auth.verify_password("a-long-enough-password", h) and not auth.verify_password("nope-nope-nope", h)
+
+
+def test_interrupted_check_marked_failed_at_startup(env):
+    c, S = env
+    add_credits(S)
+    with S() as s:
+        s.add(dbm.Check(org_id=1, doc_ref="STUCK", filename="stuck.pdf", status=dbm.CheckStatus.processing))
+        s.commit()
+    assert processing.recover_interrupted() == 1
+    with S() as s:
+        chk = s.query(dbm.Check).filter_by(doc_ref="STUCK").one()
+        assert chk.status == dbm.CheckStatus.failed and "interrupted" in chk.failure_reason
+    assert balance(S) == 2
