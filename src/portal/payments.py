@@ -110,7 +110,8 @@ def parse_event(payload: bytes, sig_header: str | None):
     secret = os.environ.get("STRIPE_WEBHOOK_SECRET")
     if not secret:
         raise PaymentsUnavailable("STRIPE_WEBHOOK_SECRET is not set.")
-    return stripe.Webhook.construct_event(payload, sig_header or "", secret)
+    event = stripe.Webhook.construct_event(payload, sig_header or "", secret)
+    return event.to_dict()   # StripeObject has no .get(); handle plain dicts
 
 
 def _org(db: Session, meta: dict | None) -> Organisation | None:

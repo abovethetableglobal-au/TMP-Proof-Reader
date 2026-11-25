@@ -122,3 +122,14 @@ def test_invalid_email_not_sent(db, monkeypatch):
     monkeypatch.setattr(payments.stripe, "StripeClient", Fake)
     payments.create_checkout(db, db.get(dbm.Organisation, 1), "stripe-test@localhost", "CR-1", "http://t")
     assert "email" not in sent
+
+
+def test_real_signed_event_credits(db, monkeypatch):
+    """Regression: a genuinely signed webhook (not a hand-made dict) must credit the ledger."""
+    monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_test")
+    body = json.dumps({"id": "evt_1", "object": "event", "type": "checkout.session.completed", "livemode": False,
+                       "data": {"object": {**paid_session("cs_test_real"), "object": "checkout.session"}}}).encode()
+    ts = int(time.time())
+    sig = stripe.WebhookSignature._compute_signature(f"{ts}.{body.decode()}", "whsec_test")
+    assert payments.handle_event(db, payments.parse_event(body, f"t={ts},v1={sig}")) == "credited"
+    assert services.credit_balance(db, 1).available == 5
