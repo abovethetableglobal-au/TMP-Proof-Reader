@@ -10,6 +10,8 @@ from pathlib import Path
 
 import pymupdf
 
+from .postprocess import locate, merge, set_outcome
+
 PLACEHOLDERS = [
     ("PH-ANGLE", re.compile(r"<[^<>]{8,300}>", re.S), "Template instruction in <…> left in document", "Moderate"),
     ("PH-X", re.compile(r"\bX{2,}\b"), "Placeholder 'XX…' not completed", "Moderate"),
@@ -26,6 +28,17 @@ JURISDICTION = [
      "Main Roads / complex-arrangement wording — confirm it applies to this road and TMP type"),
 ]
 SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
+# TGS / drawing sheets carry title blocks and standard notes that legitimately repeat sheet to sheet
+# (D5: SU_025 TGS 01/02 are portrait, so orientation alone missed them).
+TGS_MARK = re.compile(r"\bTGS\s*[-–]?\s*\d{1,3}\b|Traffic Guidance Scheme", re.I)
+TITLE_BLOCK = re.compile(r"\b(drawn|checked|designed|scale|sheet|revision|rev\.?|dwg|drawing no)\b", re.I)
+
+
+def is_drawing(page) -> bool:
+    if page.rect.width > page.rect.height:
+        return True
+    t = page.get_text()
+    return bool(TGS_MARK.search(t)) and len(set(m.lower() for m in TITLE_BLOCK.findall(t))) >= 2
 
 
 def norm(s):
@@ -36,12 +49,16 @@ def run(pdf: Path) -> dict:
     doc = pymupdf.open(pdf)
     pages = [p.get_text() for p in doc]
     # Drawing pages (TGSs, landscape) carry their own title block, not the TMP header (DEF-D02-1)
-    drawing = {i for i, p in enumerate(doc, 1) if p.rect.width > p.rect.height}
+    drawing = {i for i, p in enumerate(doc, 1) if is_drawing(p)}
     findings = []
 
-    def add(rule, page, evidence, issue, severity, category, outcome="Potential issue"):
-        findings.append({"rule": rule, "page": page, "evidence": re.sub(r"\s+", " ", evidence)[:120],
-                         "issue": issue, "severity": severity, "category": category, "outcome": outcome})
+    def add(rule, page, evidence, issue, severity, category):
+        f = {"rule": rule, "page": page, "evidence": re.sub(r"\s+", " ", evidence)[:120],
+             "issue": issue, "severity": severity, "category": category}
+        boxes = locate(doc[page - 1], f["evidence"])  # same locator as annotation (D1)
+        if boxes:
+            f["bbox"] = boxes
+        findings.append(set_outcome(f))  # D3: Query -> "Unable to verify"
 
     for pno, text in enumerate(pages, 1):
         for rule, rx, issue, sev in PLACEHOLDERS:
@@ -49,7 +66,7 @@ def run(pdf: Path) -> dict:
                 add(rule, pno, m.group(0), issue, sev, "C Completeness")
         for rule, rx, issue in JURISDICTION:
             for m in rx.finditer(text):
-                add(rule, pno, text[max(0, m.start() - 40):m.end() + 40], issue, "Query", "E Compliance", "Unable to verify")
+                add(rule, pno, text[max(0, m.start() - 40):m.end() + 40], issue, "Query", "E Compliance")
 
     # Running header: the most common first line; pages without it (RQ-14)
     first_lines = [t.strip().split("\n")[0].strip() if t.strip() else "" for t in pages]
@@ -74,10 +91,11 @@ def run(pdf: Path) -> dict:
         pgs = sorted({p for p, _ in occ})
         if len(occ) > 1 and pgs[-1] - pgs[0] <= 6:  # nearby repeats (distant ones are often legitimate boilerplate)
             add("DUP-SENT", pgs[0], occ[0][1], f"Sentence repeated {len(occ)} times (pages {', '.join(map(str, pgs))})",
-                "Minor", "A Proofreading")
+                "Minor", "C Completeness")  # D5: duplicated text is a completeness item (RQ-06), not spelling
 
     for i, f in enumerate(findings, 1):
         f["id"] = f"F-{i:03d}"
+    findings = merge(findings)  # D4
     return {"pages": len(pages), "findings": findings,
             "by_rule": dict(Counter(f["rule"] for f in findings))}
 

@@ -1,5 +1,20 @@
 # PROJECT_LOG — TMP Check
 
+## 2026-11-25 — G4 pipeline defect fixes (AI-PM)
+**Completed**
+- Key check (HANDOVER step 1): `ANTHROPIC_API_KEY` **not set** in session (`False`). Network secrets cannot be used for api.anthropic.com; Owner to enter the value as an environment variable. LLM passes A–D **Blocked**.
+- Owner confirmed SU_025 Kanimbla Road is historical (DECISIONS A-21).
+- New `src/tmpcheck/postprocess.py`, wired into `llm_checks.py` and `det_checks.py`. Fixes from the prior draft-report review:
+  - D1 validator now uses the same word-level locator as annotation; unlocatable quotes → Query / Unable to verify (bbox stored when found).
+  - D2 VISUAL-only Critical findings held as Query (`original_severity`, `hold_reason` kept for reviewer).
+  - D3 outcome derived from severity: Query → "Unable to verify", else "Potential issue".
+  - D4 duplicate findings merged across passes/pages (`merged_from`); rule findings merge only on same rule + evidence + page.
+  - D5 DUP-SENT: TGS sheets detected by title block (not only landscape) and excluded; category changed A Proofreading → C Completeness (RQ-06).
+- Tests: `tests/test_postprocess.py` (synthetic PDF), 6/6 pass.
+**Not done**
+- D6 (PDF report rendering: ghost table shading/borders, orphaned headers): no report renderer in the repository — Awaiting input (source of the reviewed draft report).
+- G4 passes A–D on SU_025 and cost per pass: Blocked (API key; PDF not yet uploaded).
+
 ## 2026-11-20 — Project initiation (AI-PM)
 **Completed**
 - Workspace `TMP-Check/` created; local git repo initialised; `customer-docs/` git-ignored.
