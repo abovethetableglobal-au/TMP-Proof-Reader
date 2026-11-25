@@ -58,6 +58,7 @@ processing:
   max_concurrent: 1         # Owner 2026-11-25: one check at a time; later uploads wait in a queue (upload order)
 
 ai:
+  parallel: 8               # Owner 2026-11-25: AI passes run in parallel after the first (cache warm-up); 1 = sequential
   runs: 2                    # BENCH-04: AI passes run twice per check and results are combined (max 3)
 
 branding:

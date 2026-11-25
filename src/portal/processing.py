@@ -384,17 +384,18 @@ def _run_check(check_id: int) -> None:
                 from src.tmpcheck import llm_checks
                 runs = ai_runs()
                 total = 0.0
-                for r in range(1, runs + 1):   # BENCH-04: repeat runs and combine (grouping removes the overlap)
-                    ai = llm_checks.run(pdf, passes.split(","))
+                # BENCH-04: repeat runs and combine; passes run in parallel after the first (Owner 2026-11-25)
+                parallel = int((settings().get("ai") or {}).get("parallel", 8))
+                for r, ai in enumerate(llm_checks.run_many(pdf, passes.split(","), runs, parallel), 1):
                     total += ai["usd_total"]
                     for code, p in ai["passes"].items():
                         if "usage" in p:
                             timer.add(f"AI run {r} pass {code}", p["usage"]["seconds"])
-                    timer.lap(f"AI run {r} (total)")
                     for p in ai["passes"].values():
                         for f in p.get("findings", []):
                             f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
                             results.append(("ai", f))
+                timer.lap("AI passes (elapsed, parallel)")
                 chk.ai_passes = passes + (f" ×{runs}" if runs > 1 else "")
                 chk.ai_cost_usd = f"{total:.2f}"
 

@@ -155,61 +155,98 @@ def cost(u) -> float:
             + (getattr(u, "cache_creation_input_tokens", 0) or 0) * PRICE["cache_write"]) / 1e6
 
 
-def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
-    data = base64.standard_b64encode(pdf.read_bytes()).decode()
-    doc = pymupdf.open(pdf)
-    doc_block = {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data},
-                 "title": pdf.name, "cache_control": {"type": "ephemeral"}}
+def _client(dry_run: bool = False):
     # Cloud sessions withhold ANTHROPIC_API_KEY, so TMPCHECK_ANTHROPIC_API_KEY is accepted too (Owner's PC uses the standard name)
     key = os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
     # A cloud session also sets ANTHROPIC_BASE_URL for Claude Code itself, so pin the public endpoint there
     base = "https://api.anthropic.com" if os.environ.get("TMPCHECK_ANTHROPIC_API_KEY") else None
     # max_retries: the SDK waits and retries on rate limits (429), overload (529) and 5xx (Owner 2026-11-25)
-    client = anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None), base_url=base, max_retries=6)
-    out = {"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0}
-    for code in passes:
-        name, instructions = PASSES[code]
-        if code == "E":
-            instructions = instructions.format(catalogue=catalogue_text())
-        req = dict(model=MODEL, max_tokens=MAX_TOKENS, system=SYSTEM,
-                   output_config={"effort": EFFORT}, output_format=PassResult,
-                   betas=BETAS, fallbacks="default",
-                   messages=[{"role": "user", "content": [doc_block, {"type": "text", "text": f"Check pass {code} — {name}.\n{instructions}"}]}])
-        if dry_run:
-            print(f"[dry-run] pass {code}: request built ({len(data)//1024} KB PDF)"); continue
-        t0 = time.time()
-        try:
-            with client.beta.messages.stream(**req) as stream:
-                msg = stream.get_final_message()
-        except anthropic.RateLimitError as e:
-            print(f"pass {code}: rate limited — {e.message}", file=sys.stderr); raise
-        except anthropic.APIStatusError as e:
-            print(f"pass {code}: API error {e.status_code} — {e.message}", file=sys.stderr); raise
-        if msg.stop_reason == "refusal":
-            out["passes"][code] = {"error": "refusal", "stop_details": str(msg.stop_details)}; continue
-        if msg.stop_reason == "max_tokens":
-            print(f"pass {code}: hit max_tokens — output may be incomplete", file=sys.stderr)
-        text = next(b.text for b in msg.content if b.type == "text")
-        res = PassResult.model_validate_json(text).model_dump()
-        for f in res["findings"]:
-            f["pass"] = code
-        for i, f in enumerate(res["findings"], 1):
-            f["id"] = f"{code}-{i:03d}"
-        validate(res["findings"], doc)
-        jurisdiction_guard(res["findings"])
-        u = msg.usage
-        res["usage"] = {"input": u.input_tokens, "output": u.output_tokens,
-                        "cache_read": getattr(u, "cache_read_input_tokens", 0),
-                        "cache_write": getattr(u, "cache_creation_input_tokens", 0),
-                        "usd": round(cost(u), 4), "seconds": round(time.time() - t0, 1), "stop_reason": msg.stop_reason}
-        out["usd_total"] += res["usage"]["usd"]
-        out["passes"][code] = res
-        print(f"pass {code}: {len(res['findings'])} findings, ${res['usage']['usd']:.2f}, {res['usage']['seconds']}s, "
-              f"cache read {res['usage']['cache_read']}")
-    allf = [f for r in out["passes"].values() for f in r.get("findings", [])]
-    out["findings"] = merge(allf)   # D4: one entry per distinct issue across passes
-    out["merged_count"] = len(allf) - len(out["findings"])
-    return out
+    return anthropic.Anthropic(api_key=key or ("dry-run" if dry_run else None), base_url=base, max_retries=6)
+
+
+def _request(doc_block: dict, code: str) -> dict:
+    name, instructions = PASSES[code]
+    if code == "E":
+        instructions = instructions.format(catalogue=catalogue_text())
+    return dict(model=MODEL, max_tokens=MAX_TOKENS, system=SYSTEM,
+                output_config={"effort": EFFORT}, output_format=PassResult,
+                betas=BETAS, fallbacks="default",
+                messages=[{"role": "user", "content": [doc_block, {"type": "text", "text": f"Check pass {code} — {name}.\n{instructions}"}]}])
+
+
+def _call(client, req: dict, code: str):
+    """One API call. Thread-safe: no PDF access here (pymupdf is not thread-safe)."""
+    t0 = time.time()
+    try:
+        with client.beta.messages.stream(**req) as stream:
+            msg = stream.get_final_message()
+    except anthropic.RateLimitError as e:
+        print(f"pass {code}: rate limited — {e.message}", file=sys.stderr); raise
+    except anthropic.APIStatusError as e:
+        print(f"pass {code}: API error {e.status_code} — {e.message}", file=sys.stderr); raise
+    return msg, round(time.time() - t0, 1)
+
+
+def _result(msg, seconds: float, code: str, doc) -> dict:
+    if msg.stop_reason == "refusal":
+        return {"error": "refusal", "stop_details": str(msg.stop_details)}
+    if msg.stop_reason == "max_tokens":
+        print(f"pass {code}: hit max_tokens — output may be incomplete", file=sys.stderr)
+    text = next(b.text for b in msg.content if b.type == "text")
+    res = PassResult.model_validate_json(text).model_dump()
+    for i, f in enumerate(res["findings"], 1):
+        f["pass"] = code
+        f["id"] = f"{code}-{i:03d}"
+    validate(res["findings"], doc)
+    jurisdiction_guard(res["findings"])
+    u = msg.usage
+    res["usage"] = {"input": u.input_tokens, "output": u.output_tokens,
+                    "cache_read": getattr(u, "cache_read_input_tokens", 0),
+                    "cache_write": getattr(u, "cache_creation_input_tokens", 0),
+                    "usd": round(cost(u), 4), "seconds": seconds, "stop_reason": msg.stop_reason}
+    print(f"pass {code}: {len(res['findings'])} findings, ${res['usage']['usd']:.2f}, {seconds}s, "
+          f"cache read {res['usage']['cache_read']}")
+    return res
+
+
+def run_many(pdf: Path, passes: list[str], runs: int = 1, parallel: int = 8, dry_run: bool = False) -> list[dict]:
+    """All passes for `runs` runs. The first pass runs alone so the PDF is cached; every other
+    pass (all runs) then runs in parallel and reads the cache — same cost as sequential, much faster
+    (Owner approval 2026-11-25). Returns one dict per run, shaped like run()."""
+    data = base64.standard_b64encode(pdf.read_bytes()).decode()
+    doc_block = {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data},
+                 "title": pdf.name, "cache_control": {"type": "ephemeral"}}
+    jobs = [(r, code) for r in range(runs) for code in passes]
+    outs = [{"model": MODEL, "effort": EFFORT, "passes": {}, "usd_total": 0.0} for _ in range(runs)]
+    if dry_run:
+        for r, code in jobs:
+            _request(doc_block, code)
+            print(f"[dry-run] run {r + 1} pass {code}: request built ({len(data)//1024} KB PDF)")
+        return outs
+    client = _client()
+    raw = {}
+    first, rest = jobs[0], jobs[1:]
+    raw[first] = _call(client, _request(doc_block, first[1]), first[1])       # warms the cache
+    if rest:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=max(1, parallel)) as ex:
+            futs = {job: ex.submit(_call, client, _request(doc_block, job[1]), job[1]) for job in rest}
+            for job, fut in futs.items():
+                raw[job] = fut.result()
+    doc = pymupdf.open(pdf)
+    for (r, code) in jobs:
+        res = _result(*raw[(r, code)], code, doc)
+        outs[r]["passes"][code] = res
+        outs[r]["usd_total"] += res.get("usage", {}).get("usd", 0.0)
+    for o in outs:
+        allf = [f for res in o["passes"].values() for f in res.get("findings", [])]
+        o["findings"] = merge(allf)   # D4: one entry per distinct issue across passes
+        o["merged_count"] = len(allf) - len(o["findings"])
+    return outs
+
+
+def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
+    return run_many(pdf, passes, runs=1, dry_run=dry_run)[0]
 
 
 if __name__ == "__main__":
