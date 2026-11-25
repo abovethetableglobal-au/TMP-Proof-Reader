@@ -332,3 +332,4 @@ DEF-L06-1 fixed (variant evidence validated per variant across pages); DEF-L06-3
 | `docs/reviews/CHECK-19_BC016_review.md` v0.1 | AI-PM | Under review (simulated) | Report + annotated PDF; Tara dispositions | Owner sends PDFs; `git pull` on PC |
 Check 19 PDFs reviewed: outputs complete; DEF-C19-5 (related-label stack) fixed.
 Owner approved merge to main 2026-11-25; fast-forwarded main to e15b142.
+Owner PC updated to main; check 19 PDFs regenerated: 268 labels (75 combined page notes), 192/192 F-numbers, 170 highlights. DEF-C19-5 confirmed fixed on PC. Residual: on dense TGS pages the top-right note can still touch drawing text (p78).
