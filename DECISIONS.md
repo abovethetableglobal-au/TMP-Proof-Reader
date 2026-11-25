@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-41 | **Exception to A-16 (resolves P-22, option B):** full AI-assisted check (passes A–D, two runs) approved for the live TMP BC 016 Bon Marche Arcade Perth only. Owner accepts that the TMP owner's consent has not been obtained and that processing is offshore (R-29). Does not extend to other live TMPs; the A-16/G6 rule still applies | Owner instruction | 2026-11-25 | Owner |
 | A-40 | Pilot (G7) price: $145 per check for WTGTM. Resolves P-09 | Owner | 2026-11-25 | Owner |
 | A-39 | Credits: if subscription **lapses** (e.g. failed payment) credits are retained and usable on reactivation (12-month expiry still runs); if customer **cancels**, unused credits are forfeited. Resolves P-07 | Owner | 2026-11-25 | Owner |
 | A-38 | Offshore AI processing disclosed in Privacy Policy §4 and ToS §6.3; customer consent given by accepting the Terms. Resolves P-08 | Owner | 2026-11-25 | Owner |
@@ -48,7 +49,6 @@
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now; revisit after pilot benchmark. TMP generation conflicts with §2 (no design) | Post-G6 |
-| P-22 | Live TMP (BC 016 Bon Marche Arcade Perth) was sent to the Claude API on 2026-11-25 with AI passes on, before G6 (A-16). How to proceed? | **A:** rule checks only for live TMPs until G6; log the incident; add a portal guard. **B:** one-off recorded exception. **C:** bring G6 forward (data-handling statement + customer consent) | Now |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |

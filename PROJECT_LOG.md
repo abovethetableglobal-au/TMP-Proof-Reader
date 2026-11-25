@@ -6,8 +6,8 @@
 | Stop processing of BC 016 (live TMP) | Owner | Production complete — portal stopped mid-run (Ctrl+C) | — | — |
 | Confirm exposure | Owner | Production complete — `TMPCHECK_AI_PASSES=A,B,C,D` and API key present → document sent to the Anthropic API for the passes that ran (3 attempts in total: 2 failed, 1 stopped) | — | — |
 | Switch the AI passes off in the portal window | Owner | Production complete (`Remove-Item Env:TMPCHECK_AI_PASSES`) | — | Keep off for live documents |
-| Decide on handling and customer notification | Owner | Awaiting approval | P-22 | Choose A/B/C |
-| Delete the BC 016 check and stored file from the local portal data | Owner | Not started | P-22 | — |
+| Decide on handling and customer notification | Owner | User accepted — A-41: full AI check approved for BC 016 only (one-off exception) | — | Owner re-runs BC 016 with AI on |
+| Delete the BC 016 check and stored file from the local portal data | Owner | Not needed (A-41) | — | — |
 Breaches A-16 and CLAUDE.md §1/§3 (live documents only after G6; no upload of live documents without explicit approval). Cause: the portal sends every upload to the AI when `TMPCHECK_AI_PASSES` is set. Nothing distinguishes live from historical documents. Risk R-29 opened.
 Facts to verify before notifying the customer (not yet verified): Anthropic's API data-retention period and no-training terms for this account.
 
