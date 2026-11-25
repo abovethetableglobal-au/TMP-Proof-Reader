@@ -330,3 +330,4 @@ Setup note: the environment setup script did not install `sqlalchemy`; installed
 DEF-L06-1 fixed (variant evidence validated per variant across pages); DEF-L06-3 'No.X' already covered by WF-NOSPACE, full-stop rule open. 56 tests pass.
 ## 2026-11-25 — Check 19 (BC 016) findings received
 | `docs/reviews/CHECK-19_BC016_review.md` v0.1 | AI-PM | Under review (simulated) | Report + annotated PDF; Tara dispositions | Owner sends PDFs; `git pull` on PC |
+Check 19 PDFs reviewed: outputs complete; DEF-C19-5 (related-label stack) fixed.

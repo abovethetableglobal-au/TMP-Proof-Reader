@@ -296,6 +296,7 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
     doc = pymupdf.open(original)
     stack: dict[int, int] = {}
     row_count: dict[tuple, int] = {}
+    related: dict[int, list[str]] = {}   # DEF-C19-5: one combined note per page, not a stack
 
     def margin_note(pno: int, text: str, colour) -> None:
         page = doc[pno - 1]
@@ -335,7 +336,14 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
             i.annotated = "note"
         for p in dict.fromkeys([i.page, *i.pages]):
             if p != hit_pno and 1 <= p <= doc.page_count:
-                margin_note(p, f"{i.no} (related) — see report", colour)
+                related.setdefault(p, []).append(i.no)
+
+    for pno, nos in related.items():
+        page, k = doc[pno - 1], stack.get(pno, 0)
+        w, text = page.rect.width, "Also affects this page (see report): " + ", ".join(nos)
+        lines = 1 + len(text) // 38
+        y0 = 8 + k * 13
+        _label(page, pymupdf.Rect(w - 150, y0, w - 6, y0 + 4 + lines * 8), text, (0.4, 0.44, 0.52))
 
     first = doc[0]
     banner = ("TMP Check annotated copy — FINAL. Annotations only; original content unchanged."

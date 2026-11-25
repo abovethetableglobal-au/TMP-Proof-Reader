@@ -1,6 +1,6 @@
 # Check 19 — TMP BC 016 (live TMP, A-41 exception): output review v0.1
 
-Review type: simulated (AI-PM only). Inputs: findings.json only. The report, annotated PDF and source PDF have not been received yet.
+Review type: simulated (AI-PM only). Inputs: findings.json, report PDF (21 pp), annotated PDF (81 pp).
 
 | Metric | Value |
 |---|---|
@@ -26,5 +26,12 @@ Review type: simulated (AI-PM only). Inputs: findings.json only. The report, ann
 | DEF-C19-3 | Repeated PH-TBA findings are not grouped | Open |
 | DEF-C19-4 | Compound findings (two issues in one) | Open: prompt rule "one issue per finding" |
 
+| DEF-C19-5 | Annotated copy: one 'F-xxx (related) — see report' label per finding per related page, stacked down the top-right corner (up to 19 on p78), covering TMP text and TGS content. 641 labels in total | Fixed: one combined 'Also affects this page' note per page (641 → 268 labels; checked on p78) |
+
+## Outputs check
+- Report: all 192 F-numbers present; summary counts match the export; the draft banner and reviewer gate are present.
+- Annotated copy: all 192 F-numbers present; 170 highlighted on the TMP text, 22 as margin notes (mostly VISUAL/TGS findings). DEF-C14 highlighting confirmed working.
+- PDF download works; on the Owner's PC Windows labels PDFs "Chrome HTML Document" (file association only).
+
 ## Still needed
-Report PDF and annotated PDF (to check highlighting and the DEF-C14 fixes); Tara's dispositions for precision.
+Tara's dispositions for precision.

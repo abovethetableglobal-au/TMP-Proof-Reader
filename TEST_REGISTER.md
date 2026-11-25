@@ -109,3 +109,4 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 | DEF-C19-2 | Check 19 | BC 016 | Portal | No timings in export: PC portal is on old code | Minor | PC not updated | Owner git pull | — |
 | DEF-C19-3 | Check 19 | BC 016 | C | 11 separate PH-TBA findings | Minor | No grouping for rule findings | Open | — |
 | DEF-C19-4 | Check 19 | BC 016 | All | Two issues combined in one finding | Minor | Prompt | Open | — |
+| DEF-C19-5 | Check 19 | BC 016 | Annotated | Stacked related-page labels cover TMP content | Moderate | One label per related finding | Fixed: one combined note per page | — |
