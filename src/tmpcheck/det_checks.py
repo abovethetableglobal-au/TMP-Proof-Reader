@@ -19,11 +19,14 @@ PLACEHOLDERS = [
     ("PH-TBA", re.compile(r"\bTB[AC]\b"), "'TBA/TBC' entry — confirm or complete before issue", "Minor"),
     ("PH-DATE", re.compile(r"(?<![\d])(?<!\d/)/\d{1,2}/20\d\d|(?<=\s)/20\d\d\b"), "Incomplete date (day or month missing)", "Moderate"),
 ]
-# Wording that may not belong in a WA local-government-road TMP (RQ-05). Raised as Query: context decides.
-JURISDICTION = [
+# Interstate agencies/standards must never appear in a WA TMP (Tara, 2026-11-25, A-30): definite Moderate finding.
+INTERSTATE = [
     ("JX-QLD", re.compile(r"\bTMR\b|Transport and Main Roads|\bQGTTM\b"), "Queensland agency/standard referenced (TMR/QGTTM) in a WA TMP"),
     ("JX-NSW", re.compile(r"\bTfNSW\b|Transport for NSW|\bRMS\b"), "NSW agency referenced in a WA TMP"),
     ("JX-VIC", re.compile(r"VicRoads|Department of Transport and Planning"), "Victorian agency referenced in a WA TMP"),
+]
+# Wording that may not belong in a WA local-government-road TMP (RQ-05). Raised as Query: context decides.
+JURISDICTION = [
     ("JX-MRWA", re.compile(r"complex traffic management arrangements|Road Infrastructure Manager|State Roads?", re.I),
      "Main Roads / complex-arrangement wording — confirm it applies to this road and TMP type"),
 ]
@@ -43,9 +46,9 @@ ACTIONS = {
     "PH-INSERT": "Replace the '[Insert …]' instruction with project-specific content.",
     "PH-TBA": "Confirm and enter the value, or state when it will be confirmed.",
     "PH-DATE": "Enter the full date (day, month and year).",
-    "JX-QLD": "Confirm the reference applies in WA; replace it with the WA equivalent or delete it.",
-    "JX-NSW": "Confirm the reference applies in WA; replace it with the WA equivalent or delete it.",
-    "JX-VIC": "Confirm the reference applies in WA; replace it with the WA equivalent or delete it.",
+    "JX-QLD": "Replace the reference with the WA (Main Roads WA) equivalent, or delete it.",
+    "JX-NSW": "Replace the reference with the WA (Main Roads WA) equivalent, or delete it.",
+    "JX-VIC": "Replace the reference with the WA (Main Roads WA) equivalent, or delete it.",
     "JX-MRWA": "Confirm the wording applies to this road and TMP type; delete it if it does not.",
     "WF-JOINED": "Separate the words (e.g. 'up to').",
     "WF-SPLIT": "Remove the stray space.",
@@ -120,6 +123,10 @@ def run(pdf: Path) -> dict:
         for rule, rx, issue in WORD_FORM:
             for m in rx.finditer(text):
                 add(rule, pno, context(text, m, 30, 30), issue, "Minor", "A Proofreading")
+        for rule, rx, issue in INTERSTATE:
+            for m in rx.finditer(text):
+                add(rule, pno, context(text, m, 40, 40), issue + " — replace with the WA (Main Roads WA) equivalent",
+                    "Moderate", "C Completeness")
         for rule, rx, issue in JURISDICTION:
             for m in rx.finditer(text):
                 add(rule, pno, context(text, m, 40, 40), issue, "Query", "E Compliance")

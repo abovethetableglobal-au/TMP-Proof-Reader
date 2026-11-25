@@ -53,7 +53,7 @@ def test_snippet_and_page_wording():
 
 
 def test_every_rule_has_an_action():
-    rules = [r for r, *_ in det_checks.PLACEHOLDERS + det_checks.JURISDICTION + det_checks.WORD_FORM]
+    rules = [r for r, *_ in det_checks.PLACEHOLDERS + det_checks.INTERSTATE + det_checks.JURISDICTION + det_checks.WORD_FORM]
     assert all(det_checks.ACTIONS.get(r) for r in rules + ["PG-HEADER", "DUP-SENT"])
 
 

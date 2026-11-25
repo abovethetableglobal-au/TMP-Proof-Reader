@@ -244,3 +244,23 @@ PyMuPDF only (no new dependency; WeasyPrint not needed — avoids GTK install on
 - Branch `claude/gifted-gauss-ciwhyy` fast-forwarded into `claude/fervent-hopper-q3h87z`.
 - Owner re-uploaded check 8 Report PDF + Annotated TMP drafts (stored in git-ignored `customer-docs/wtgtm-2026-11-24/`).
 - AI-PM review (simulated, single model): 10 defects raised (rule-tag misattribution after grouping, non-standalone finding text, Query/Potential-issue label mismatch, excluded repeated-sentence findings reappearing, truncated quotes, ghost table rows, related-note stacks obscuring TMP/TGS content). Status: Revision required. Awaiting Owner layout feedback before fixing.
+## 2026-11-25 — Tara feedback; MRWA sources; workflow
+| Interstate-reference fix (A-30): det_checks INTERSTATE → Moderate; LLM prompt bans interstate citations; output jurisdiction_guard | AI-PM | Quality checked (unit test on synthetic findings; REF-01 re-run pending — source TMP not in this container) | REF-01-SRC upload | Re-run and confirm p7 |
+| 7 MRWA links downloaded and assessed | AI-PM | Production complete | — | — |
+| Rules WA-GEN-CHK-001, WA-GEN-TGS-001 | AI-PM | Under review | Tara | Review |
+| docs/requirements/MRWA_SOURCES_AND_WORKFLOW.md v0.1 | AI-PM | Ready for user review | Owner | Approve workflow |
+Feedback recorded: Tara fully supports the product and would use it; says $149 undersells (5+ h manual) → P-17.
+## 2026-11-25 — Pricing structure v2 approved (A-31)
+Tiered subscriptions + value packs (5 = −5%, 10 = −10%). COMMERCIAL_MODEL.md updated. Base price open (P-17).
+A-32: base price $349 set; packs $1,657.75 / $3,141.00. Tier prices to re-model.
+Owner 2026-11-25: single checks (and packs) purchased within the $49.95 Starter subscription.
+A-33: subscription tiers and no-rollover approved; P-17 closed.
+## 2026-11-25 — Launch plan v0.1
+| docs/LAUNCH_PLAN.md | AI-PM | Awaiting approval | Owner | P-18–P-20 |
+P-05 closed by A-31 (5-pack offered at 5%).
+A-34: launch plan approved as working baseline; date provisional.
+A-35: AS 1742.3 purchase deferred to G8; R-26 opened.
+A-36: quotes approved; providers shortlisted. Owner to submit quote forms (requires business details).
+Legal drafts: docs/legal/TERMS_OF_SERVICE_DRAFT.md, PRIVACY_POLICY_DRAFT.md v0.1 — Ready for user review; lawyer review required.
+A-37: Australian-region hosting approved.
+A-38 offshore disclosure, A-39 credit lapse/cancel, A-40 pilot $145. R-27 opened.

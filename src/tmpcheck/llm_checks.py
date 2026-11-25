@@ -60,6 +60,9 @@ Rules:
 - 'evidence' must be copied exactly from the cited page (same spelling and punctuation), or start with 'VISUAL:' for drawing-only issues.
 - Use PDF page numbers (the first page of the file is page 1), not printed footer numbers.
 - Use Australian English.
+- This is a Western Australian document. Never cite, recommend or apply another state's agency, standard or practice
+  (e.g. Queensland TMR/MUTCD/QGTTM, Transport for NSW, VicRoads) in 'issue' or 'fix'. Cite only Main Roads WA, the WA
+  Code of Practice and the AGTTM/AS editions it adopts. Interstate wording found IN the document is itself a finding.
 - The Main Roads WA TMP template requires its section headings to be retained, including the template's own heading
   wording (e.g. 'Existing Traffic and Adverting Signs'). Do not report template-mandated heading text as an error.
 - Severity: Critical = potential serious safety or mandatory-requirement issue; Major = significant technical/completeness concern;
@@ -106,6 +109,17 @@ PASSES = {
 }
 
 
+INTERSTATE_RX = re.compile(r"Queensland|\bQLD\b|\bTMR\b|QGTTM|\bMUTCD\b|New South Wales|\bNSW\b|TfNSW|Victoria|VicRoads", re.I)
+
+
+def jurisdiction_guard(findings: list[dict]) -> None:
+    """Our own wording (issue/fix) must never reference another state (A-30). Evidence quotes are exempt."""
+    for f in findings:
+        if INTERSTATE_RX.search(f"{f.get('issue', '')} {f.get('fix', '')}") and not INTERSTATE_RX.search(f.get("evidence", "")):
+            f["jurisdiction_check"] = "FAILED: interstate reference in TMP Check wording — reviewer must rewrite"
+            f["original_severity"], f["severity"] = f.get("original_severity", f["severity"]), "Query"
+
+
 def cost(u) -> float:
     return ((u.input_tokens or 0) * PRICE["input"] + (u.output_tokens or 0) * PRICE["output"]
             + (getattr(u, "cache_read_input_tokens", 0) or 0) * PRICE["cache_read"]
@@ -148,6 +162,7 @@ def run(pdf: Path, passes: list[str], dry_run: bool = False) -> dict:
         for i, f in enumerate(res["findings"], 1):
             f["id"] = f"{code}-{i:03d}"
         validate(res["findings"], doc)
+        jurisdiction_guard(res["findings"])
         u = msg.usage
         res["usage"] = {"input": u.input_tokens, "output": u.output_tokens,
                         "cache_read": getattr(u, "cache_read_input_tokens", 0),
