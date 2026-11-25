@@ -155,3 +155,4 @@ A-25: launch plan approved as working baseline; date provisional.
 A-26: AS 1742.3 purchase deferred to G8; R-23 opened.
 A-27: quotes approved; providers shortlisted. Owner to submit quote forms (requires business details).
 Legal drafts: docs/legal/TERMS_OF_SERVICE_DRAFT.md, PRIVACY_POLICY_DRAFT.md v0.1 — Ready for user review; lawyer review required.
+A-28: Australian-region hosting approved.

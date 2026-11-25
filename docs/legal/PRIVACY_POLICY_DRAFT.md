@@ -20,7 +20,7 @@ To provide checks and reports; manage accounts, credits and billing; verify revi
 ## 4. AI processing and overseas disclosure
 4.1 Documents are analysed using AI services provided by `[Anthropic PBC (Claude API)]`. This processing may occur **outside Australia** (`[e.g. United States]`).
 4.2 We use providers' business/API terms under which customer content is not used to train their models. `[Confirm retention terms with provider]`.
-4.3 Documents and reports are stored in `[Australian-region cloud hosting — P-15]`.
+4.3 Documents and reports are stored in an Australian cloud region (`[provider]`, Sydney).
 4.4 By uploading documents you consent to this overseas processing (APP 8.2(b)) and confirm you have authority to disclose any third-party personal information they contain.
 
 ## 5. Who we share it with

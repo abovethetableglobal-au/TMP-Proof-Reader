@@ -3,6 +3,7 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
+| A-28 | Customer documents and reports hosted in an Australian cloud region (e.g. AWS ap-southeast-2 Sydney); provider selection and any spend still need approval. Resolves P-15 | Data residency (L6) | 2026-11-25 | Owner |
 | A-27 | Owner approved obtaining quotes (no commitment): legal (Sprintlaw / LegalVision — SaaS ToS + privacy, indicative from ~$1,000+GST per document) and insurance (BizCover / upcover — tech PI avg ~$83–103/mo or from ~$731/yr; cyber from ~$223/yr). Figures from provider websites 2026-11-25, indicative only. Resolves P-14 | Needed for G6 | 2026-11-25 | Owner |
 | A-26 | AS 1742.3:2019 purchase ($251.87, official store) deferred to G8. Build proceeds on WA COP + AGTTM (free). Any AS 1742.3-dependent check is raised as Query ('Unable to verify — AS 1742.3 not in rule set'); no AS clause cited. G5 benchmark scored with and without AS-dependent items. Resolves P-06 | Owner; defer spend | 2026-11-25 | Owner |
 | A-25 | Launch plan v0.1 approved as working baseline; target 2027-05-17 is provisional and may change via change control (§20.1). Resolves P-13 | Owner | 2026-11-25 | Owner |
@@ -34,7 +35,6 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-15 | Hosting in Australian cloud region | Approve | G6 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
