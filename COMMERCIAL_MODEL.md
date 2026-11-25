@@ -21,7 +21,7 @@ Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 | 5-check pack (−5%) | $1,657.75 | $331.55 |
 | 10-check pack (−10%) | $3,141.00 | $314.10 |
 
-Ladder (per check): single $349 > 5-pack $331.55 > 10-pack $314.10 > Professional $299 > Business $266.33 > Enterprise ≤$249.75. Unused included checks do not roll over (proposed — confirm). Proposed; awaiting Owner approval (P-12).
+Ladder (per check): single $349 > 5-pack $331.55 > 10-pack $314.10 > Professional $299 > Business $266.33 > Enterprise ≤$249.75. Unused included checks do not roll over. Approved 2026-11-25 (A-24).
 
 Superseded v1 (A-03–A-06): $149/check; 10-pack $1,341.
 

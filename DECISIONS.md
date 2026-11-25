@@ -3,6 +3,7 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
+| A-24 | Subscription tiers approved: Professional $1,495/mo (5 incl., extra $299); Business $3,995/mo (15 incl., extra $269); Enterprise from $9,990/mo (up to 40); no rollover of unused checks. Single checks and 5/10 packs require Starter $49.95/mo. Resolves P-12 | Per-check ladder below pack rates | 2026-11-25 | Owner |
 | A-23 | Base per-check price set at **$349** (5-pack $1,657.75; 10-pack $3,141.00) | Tara: manual check 5+ h | 2026-11-25 | Owner |
 | A-22 | Pricing structure v2: tiered subscriptions with included checks + overage; value packs 5 checks −5%, 10 checks −10%. Supersedes $149 list (A-03–A-06). Base per-check price and tier prices still to be set (P-12) | Tara value feedback; margin protection vs unlimited | 2026-11-25 | Owner |
 | A-21 | Interstate (QLD/NSW/VIC) references are never acceptable in a WA TMP or in TMP Check output: in-document = Moderate finding; in our wording = blocked to Query | Tara feedback 2026-11-25 (p7 Queensland reference) | 2026-11-25 | Owner (relaying Tara) |
@@ -34,7 +35,6 @@
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
-| P-12 | Approve tiers: Professional $1,495/mo (5 incl., extra $299); Business $3,995/mo (15 incl., extra $269); Enterprise from $9,990 (40); no rollover | Proposed 2026-11-25; needs WTGTM monthly volume + measured AI cost | G5 |
 | P-09 | Pilot commercial terms (free / discounted / full price during pilot) | Discounted pilot credits in exchange for feedback & benchmark data | G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
