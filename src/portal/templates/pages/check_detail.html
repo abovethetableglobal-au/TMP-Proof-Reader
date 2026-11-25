@@ -33,6 +33,7 @@
     <p class="empty-title">This check could not be completed</p>
     <p>{{ chk.failure_reason }}</p>
     <p><strong>No credit was used.</strong></p>
+    {% if chk.processing_seconds is not none %}<p class="small muted">Processing time: {{ chk.processing_seconds|duration }} before it stopped.</p>{% endif %}
     <a class="btn navy small" href="/checks/new">Upload again</a>
   </div>
 </section>
@@ -60,6 +61,10 @@
   {% endif %}
   <p class="note pad">{{ icon("info", "ic sm") }} TMP Check is a document quality check, not an approval, certification or safety declaration.
     {% if chk.ai_passes and not chk.ai_passes.startswith('skipped') %}AI passes run: {{ chk.ai_passes }}{% if chk.ai_cost_usd %} (US${{ chk.ai_cost_usd }}){% endif %}.{% else %}This check ran the automated rule-based checks only. {{ chk.ai_passes[9:] if chk.ai_passes else '' }}{% endif %}</p>
+  {% if chk.processing_seconds is not none %}
+  <p class="note pad small">Processing time: <strong>{{ chk.processing_seconds|duration }}</strong>
+    ({% for st, sec in chk.timings|stages %}{{ st }} {{ sec|duration }}{% if not loop.last %} · {% endif %}{% endfor %})</p>
+  {% endif %}
 </section>
 
 <section class="card panel">

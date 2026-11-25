@@ -5,6 +5,8 @@ status draft_review → 1 credit consumed (A-24). Any failure → status failed,
 AI passes run only when TMPCHECK_AI_PASSES is set (e.g. "A,B,C") and ANTHROPIC_API_KEY exists;
 otherwise deterministic checks only. Approved AI use: A-16 / A-18 documents only.
 """
+import json
+import time
 import os
 import shutil
 import subprocess
@@ -247,11 +249,47 @@ def recover_interrupted() -> int:
         db.close()
 
 
+class Timer:
+    """Records how long each processing stage takes; stored on the check as JSON (Owner request 2026-11-25)."""
+    def __init__(self):
+        self.t0 = self.last = time.monotonic()
+        self.stages: list[list] = []
+
+    def lap(self, stage: str) -> None:
+        now = time.monotonic()
+        self.stages.append([stage, round(now - self.last, 1)])
+        self.last = now
+
+    def add(self, stage: str, seconds: float) -> None:
+        self.stages.append([stage, round(float(seconds), 1)])
+
+    def total(self) -> float:
+        return round(time.monotonic() - self.t0, 1)
+
+
+def _finish_timing(chk: Check, timer: Timer) -> None:
+    chk.processing_finished_at = utcnow()
+    chk.processing_seconds = timer.total()
+    chk.timings = json.dumps(timer.stages)
+    print(f"TMP Check portal: check {chk.id} ({chk.doc_ref}) {chk.status.value} in {fmt_duration(chk.processing_seconds)}",
+          flush=True)
+
+
+def fmt_duration(seconds: float | None) -> str:
+    if seconds is None:
+        return "—"
+    m, s = divmod(int(round(seconds)), 60)
+    h, m = divmod(m, 60)
+    return f"{h} h {m} min" if h else f"{m} min {s} s" if m else f"{s} s"
+
+
 def run_check(check_id: int) -> None:
     db = session_factory()
+    timer = Timer()
     try:
         chk = db.get(Check, check_id)
         chk.status = CheckStatus.processing
+        chk.processing_started_at = utcnow()
         db.commit()
         try:
             pdf = to_pdf(Path(chk.storage_path))
@@ -264,9 +302,11 @@ def run_check(check_id: int) -> None:
             if not any(p.get_text().strip() for p in pymupdf.open(pdf)):
                 raise UploadError("No readable text was found (scanned document). Scanned TMPs are not yet supported.")
             chk.pages = n
+            timer.lap("Convert and validate")
 
             from src.tmpcheck import det_checks
             results = [("deterministic", f) for f in det_checks.run(pdf)["findings"]]
+            timer.lap("Rule checks")
 
             passes = os.environ.get("TMPCHECK_AI_PASSES", "").strip()
             state, why = ai_status()
@@ -275,9 +315,13 @@ def run_check(check_id: int) -> None:
                 from src.tmpcheck import llm_checks
                 runs = ai_runs()
                 total = 0.0
-                for _ in range(runs):   # BENCH-04: repeat runs and combine (grouping removes the overlap)
+                for r in range(1, runs + 1):   # BENCH-04: repeat runs and combine (grouping removes the overlap)
                     ai = llm_checks.run(pdf, passes.split(","))
                     total += ai["usd_total"]
+                    for code, p in ai["passes"].items():
+                        if "usage" in p:
+                            timer.add(f"AI run {r} pass {code}", p["usage"]["seconds"])
+                    timer.lap(f"AI run {r} (total)")
                     for p in ai["passes"].values():
                         for f in p.get("findings", []):
                             f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
@@ -286,6 +330,7 @@ def run_check(check_id: int) -> None:
                 chk.ai_cost_usd = f"{total:.2f}"
 
             merged = dedupe(results)
+            timer.lap("Merge duplicates")
             if state == "on":
                 try:
                     from src.tmpcheck import consolidate as cons
@@ -299,6 +344,7 @@ def run_check(check_id: int) -> None:
                     chk.ai_cost_usd = f"{float(chk.ai_cost_usd or 0) + usd[0]:.2f}"
                 except Exception:   # consolidation is an aid; never fail the check over it
                     traceback.print_exc()
+                timer.lap("AI grouping")
             for src, f in merged:
                 db.add(Finding(check_id=chk.id, severity=f.get("severity", "Query"), page=int(f.get("page") or 1),
                                section=str(f.get("section") or f.get("category") or "")[:200],
@@ -309,6 +355,8 @@ def run_check(check_id: int) -> None:
                                pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
             _consume_credit(db, chk)
             chk.status = CheckStatus.draft_review
+            timer.lap("Save findings")
+            _finish_timing(chk, timer)
             db.commit()
         except Exception as e:  # any failure: no credit (A-05 rule 4)
             db.rollback()
@@ -316,6 +364,8 @@ def run_check(check_id: int) -> None:
             chk.status = CheckStatus.failed
             chk.failure_reason = str(e) if isinstance(e, UploadError) else \
                 "Processing failed. No credit was used. Please try again or contact support."
+            timer.lap("Failed")
+            _finish_timing(chk, timer)
             db.commit()
             if not isinstance(e, UploadError):
                 traceback.print_exc()

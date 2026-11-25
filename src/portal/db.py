@@ -8,7 +8,7 @@ import os
 from datetime import datetime, timezone
 
 from sqlalchemy import (Enum, ForeignKey, Integer, String, Text,
-                        DateTime, create_engine)
+                        DateTime, Float, create_engine)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from .config import ROOT
@@ -105,6 +105,10 @@ class Check(Base):
     storage_path: Mapped[str | None] = mapped_column(String(500))
     ai_passes: Mapped[str | None] = mapped_column(String(300))      # e.g. "A,B,C" when AI checks ran
     ai_cost_usd: Mapped[str | None] = mapped_column(String(20))
+    processing_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    processing_finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    processing_seconds: Mapped[float | None] = mapped_column(Float)
+    timings: Mapped[str | None] = mapped_column(Text)   # JSON list of [stage, seconds]
 
 
 class Finding(Base):

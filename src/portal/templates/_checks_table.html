@@ -2,7 +2,7 @@
 {% if rows %}
 <div class="table-wrap">
 <table class="checks">
-  <thead><tr><th scope="col">Date</th><th scope="col">Document</th><th scope="col">Status</th><th scope="col">Findings</th><th scope="col">Actions</th></tr></thead>
+  <thead><tr><th scope="col">Date</th><th scope="col">Document</th><th scope="col">Status</th><th scope="col">Findings</th><th scope="col">Time</th><th scope="col">Actions</th></tr></thead>
   <tbody>
   {% for r in rows %}
     <tr>
@@ -10,6 +10,7 @@
       <td data-label="Document">{{ r.doc_ref }}</td>
       <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span></td>
       <td data-label="Findings">{{ r.findings }}</td>
+      <td data-label="Time">{{ r.seconds|duration if r.seconds is not none else '—' }}</td>
       <td data-label="Actions"><a class="btn small outline" href="/checks/{{ r.id }}">{{ 'View Report' if r.has_report else 'View' }}</a></td>
     </tr>
   {% endfor %}

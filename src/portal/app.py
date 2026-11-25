@@ -4,6 +4,7 @@ Run:  uvicorn src.portal.app:app --reload
 Stage S2: sign-in, roles, CSRF and audit log. Still a local build: the app refuses to start
 unless TMPCHECK_ENV=local, because hosting needs the G6 security and data-handling approvals.
 """
+import json
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -43,6 +44,8 @@ templates = Jinja2Templates(directory=HERE / "templates")
 templates.env.globals.update(money=money, price_label=price_label, cfg=settings)
 # Portable date format (strftime "%-d" is not supported on Windows)
 templates.env.filters["dmy"] = lambda d: f"{d.day} {d:%b %Y}" if d else ""
+templates.env.filters["duration"] = processing.fmt_duration
+templates.env.filters["stages"] = lambda t: json.loads(t) if t else []
 
 NAV = [
     ("dashboard", "Dashboard", "/", "home"),
@@ -285,6 +288,10 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
     rows = db.query(Finding).filter_by(check_id=chk.id).order_by(Finding.page, Finding.id).all()
     return JSONResponse({"check_id": chk.id, "doc_ref": chk.doc_ref, "pages": chk.pages, "ai_passes": chk.ai_passes,
                          "ai_cost_usd": chk.ai_cost_usd, "status": chk.status.value,
+                         "processing_started_at": chk.processing_started_at.isoformat() if chk.processing_started_at else None,
+                         "processing_finished_at": chk.processing_finished_at.isoformat() if chk.processing_finished_at else None,
+                         "processing_seconds": chk.processing_seconds,
+                         "timings": json.loads(chk.timings) if chk.timings else [],
                          "findings": [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
                                        "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
                                        "action": f.action, "disposition": f.disposition,

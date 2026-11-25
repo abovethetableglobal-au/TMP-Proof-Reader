@@ -90,6 +90,7 @@ def recent_checks(db: Session, org_id: int, limit: int = 5) -> list[dict]:
             "status": label, "tone": tone,
             "findings": findings_summary(counts.get(c.id, Counter()), c.status),
             "has_report": c.status in (CheckStatus.draft_review, CheckStatus.final_issued),
+            "seconds": c.processing_seconds,
             "link": True,
         })
     return rows

@@ -354,3 +354,16 @@ def test_interrupted_check_marked_failed_at_startup(env):
         chk = s.query(dbm.Check).filter_by(doc_ref="STUCK").one()
         assert chk.status == dbm.CheckStatus.failed and "interrupted" in chk.failure_reason
     assert balance(S) == 2
+
+
+def test_processing_time_recorded(env):
+    c, S = env
+    add_credits(S)
+    r = upload(c, "broken.pdf", b"%PDF-1.7 this is not really a pdf")
+    cid = r.json()["id"]
+    with S() as s:
+        chk = s.get(dbm.Check, cid)
+        assert chk.processing_started_at and chk.processing_finished_at and chk.processing_seconds is not None
+        assert "Failed" in chk.timings
+    assert "Processing time:" in c.get(f"/checks/{cid}").text
+    assert c.get(f"/checks/{cid}/findings.json").json()["processing_seconds"] is not None
