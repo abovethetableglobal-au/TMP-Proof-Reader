@@ -92,3 +92,10 @@ Excludes Owner time, marketing, support, and reviewer cost (borne by customer). 
 | Accredited RTMs (list as of 19 Nov 2026) | 38 people / 30 employers | Verified fact; 6 at Main Roads |
 
 Interpretation (Estimate): core addressable WA market ≈ 60 TM companies + ~10–20 TMP design consultancies not on the registration list (e.g. RTM employers) ≈ 70–90 organisations; contractors/LGs secondary. Customer forecast (Estimate, PROVISIONAL): Year 1 3–6; Year 2 8–15; WA ceiling 20–35 (25–40% share of core). Supersedes the unsourced 100–200 firm / 30–60 customer estimate given in chat. Overlap between lists not checked.
+
+## Australian and international market (MKT-02, 2026-11-25)
+- MKT-01 review: WA list types sum to 92 vs 91 total (extraction ±1). RTM list ≠ TMP writers; WA TMPs are written by AWTM-accredited people (count not published) — RTMs indicate complex-TMP capacity only.
+- QLD TMR Register of Traffic Management Organisations (as at 2 Sep 2026): ~146 entries (Verified fact, AI-extracted, ±).
+- Other states (Estimate): scaled at ~20–26 TM firms per million people (WA 60/3.0M; QLD 146/5.6M): NSW 170–220, VIC 140–180, SA 40–50, TAS/ACT/NT 25–35. Australia total ≈ 580–700 TM firms (+ design consultancies). RevenueBase lists 198 AU "traffic control companies" (database undercount).
+- Each state needs its own rule pack (AGTTM national base + state supplements, e.g. QLD QGTTM, NSW TfNSW TCAWS, VIC code of practice).
+- International (Hypothesis, unverified): NZ (NZGTTM), UK (Chapter 8 / Red Book), US (MUTCD Part 6) — different standards; competing software exists (e.g. TGS drawing tools). Defer until AU product proven.
