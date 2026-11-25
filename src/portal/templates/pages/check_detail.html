@@ -83,7 +83,7 @@
       {% if f.evidence %}<blockquote class="{{ 'list' if '\n' in f.evidence }}">{{ f.evidence }}</blockquote>{% endif %}
       {% if f.hold_reason %}<p class="muted small"><strong>Why this is a Query:</strong> {{ f.hold_reason }}</p>{% endif %}
       {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
-      <p class="muted small">Found by: {{ f.source }}</p>
+      <p class="muted small">Found by: {{ f.source }}{% if f.confidence in ("Both runs", "One run") %} · <strong>found in {{ f.confidence|lower }}</strong>{% endif %}</p>
       {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}
       {% if chk.status == CheckStatus.draft_review and ctx.reviewer %}
       <form class="f-form" method="post" action="/checks/{{ chk.id }}/findings/{{ f.id }}">

@@ -55,3 +55,14 @@ def test_upload_reserves_credits_for_queued_checks(tmp_path, monkeypatch):
     monkeypatch.setattr(processing, "UPLOAD_DIR", tmp_path, raising=False)
     with pytest.raises(processing.UploadError, match="reserved"):
         processing.create_check(s, org.id, "b.pdf", pdf)
+
+
+def test_confidence_labels():
+    a = {"page": 3, "evidence": "Signs will be installed", "issue": "x", "severity": "Minor", "pass": "A", "run": 1}
+    b = dict(a, run=2)
+    c = {"page": 9, "evidence": "Other text entirely here", "issue": "y", "severity": "Minor", "pass": "B", "run": 1}
+    merged = processing.dedupe([("ai", a), ("ai", b), ("ai", c)])
+    labels = sorted(processing.confidence(s, f, 2) for s, f in merged)
+    assert labels == ["Both runs", "One run"]
+    assert processing.confidence("deterministic", {"page": 1}, 2) == "Rule check"
+    assert processing.confidence("ai", c, 1) is None

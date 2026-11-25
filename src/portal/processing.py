@@ -113,7 +113,25 @@ def merge(items: list[tuple[str, dict]]) -> tuple[str, dict]:
     merged["related_pages"] = sorted(pages - {merged["page"]})
     srcs = set().union(*(_sources(s, f) for s, f in items))
     merged["_sources"] = sorted(srcs)
+    merged["_runs"] = sorted(set().union(*(_runs(f) for f in fs)))
     return ", ".join(sorted(srcs)), merged
+
+
+def _runs(f: dict) -> set[int]:
+    """AI run numbers that raised this finding (consistency measure, Owner 2026-11-25)."""
+    if "_runs" in f:
+        return set(f["_runs"])
+    return {int(f["run"])} if f.get("run") else set()
+
+
+def confidence(src: str, f: dict, runs: int) -> str | None:
+    """'Rule check' (identical every run), 'Both runs' / 'One run' when the AI ran twice or more."""
+    if "rules" in _sources(src, f):
+        return "Rule check"
+    if runs < 2:
+        return None
+    n = len(_runs(f))
+    return "Both runs" if n >= runs == 2 else f"{n} of {runs} runs" if runs > 2 else "One run"
 
 
 def dedupe(results: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
@@ -393,6 +411,7 @@ def _run_check(check_id: int) -> None:
                             timer.add(f"AI run {r} pass {code}", p["usage"]["seconds"])
                     for p in ai["passes"].values():
                         for f in p.get("findings", []):
+                            f["run"] = r
                             f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
                             results.append(("ai", f))
                 timer.lap("AI passes (elapsed, parallel)")
@@ -422,6 +441,7 @@ def _run_check(check_id: int) -> None:
                                action=f.get("action") or f.get("fix") or f.get("suggested_correction"),
                                category=f.get("category", ""), outcome=f.get("outcome", "Potential issue"),
                                rule=f.get("rule") or f.get("rule_id"), source=src, hold_reason=f.get("hold_reason"),
+                               confidence=confidence(src, f, ai_runs() if state == "on" else 1),
                                pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
             _consume_credit(db, chk)
             chk.status = CheckStatus.draft_review
@@ -483,7 +503,7 @@ def compliance_sources() -> list[dict]:
 def finding_rows(db: Session, chk: Check) -> list[dict]:
     return [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
              "issue": f.issue, "evidence": f.evidence, "action": f.action, "outcome": f.outcome, "rule": f.rule,
-             "source": f.source, "hold_reason": f.hold_reason, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
+             "source": f.source, "confidence": f.confidence, "hold_reason": f.hold_reason, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
             for f in db.query(Finding).filter_by(check_id=chk.id).all()]
 
 

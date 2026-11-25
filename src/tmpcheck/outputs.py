@@ -69,6 +69,7 @@ class Item:
     disposition: str
     reviewer_note: str
     hold_reason: str = ""
+    confidence: str = ""
     annotated: str = ""          # "highlighted" | "note" — set by annotate()
 
 
@@ -98,7 +99,8 @@ def number_findings(rows: list[dict], final: bool) -> list[Item]:
                           evidence=r.get("evidence") or "", action=r.get("action") or "",
                           outcome=r.get("outcome") or "Potential issue", rule=r.get("rule") or "",
                           source=r.get("source") or "", disposition=r.get("disposition") or "pending",
-                          reviewer_note=r.get("reviewer_note") or "", hold_reason=r.get("hold_reason") or ""))
+                          reviewer_note=r.get("reviewer_note") or "", hold_reason=r.get("hold_reason") or "",
+                          confidence=r.get("confidence") or ""))
     return items
 
 
@@ -167,6 +169,11 @@ def report_html(meta: Meta, items: list[Item], all_rows: list[dict]) -> str:
     by_cat = {c: sum(1 for i in items if (i.category or "").startswith(c + " ")) for c, _, _ in SCOPE}
     h.append("<p class='small'>Findings by category: " + "; ".join(f"{c} {by_cat[c]}" for c, _, _ in SCOPE) + "."
              + (" No category E rule was triggered in this check." if by_cat["E"] == 0 else "") + "</p>")
+    conf = {k: sum(1 for i in items if i.confidence == k) for k in ("Both runs", "One run", "Rule check")}
+    if conf["Both runs"] or conf["One run"]:
+        h.append(f"<p class='small'>Consistency: the AI checks ran twice. {conf['Both runs']} finding(s) were raised in both "
+                 f"runs, {conf['One run']} in one run only, {conf['Rule check']} by rule checks (identical every run). "
+                 "Findings raised in one run only deserve closer review.</p>")
     if meta.final:
         rejected = sum(1 for r in all_rows if r.get("disposition") == "rejected")
         edited = sum(1 for i in items if i.disposition == "edited")
@@ -192,7 +199,8 @@ def report_html(meta: Meta, items: list[Item], all_rows: list[dict]) -> str:
         h.append(f"<h3>{_e(s)} ({len(group)})</h3><table><tr><th width='8%'>No.</th><th width='9%'>Page</th>"
                  "<th>Finding</th><th width='30%'>Suggested action</th></tr>")
         for i in group:
-            meta_line = " · ".join(x for x in [i.category, i.outcome, f"rule {i.rule}" if i.rule else ""] if x)
+            meta_line = " · ".join(x for x in [i.category, i.outcome, f"rule {i.rule}" if i.rule else "",
+                                               f"found in {i.confidence.lower()}" if i.confidence in ("Both runs", "One run") else ""] if x)
             body = f"{_e(i.issue)}"
             if i.evidence:
                 body += f"<br><span class='ev'>Evidence: “{_e(i.evidence[:600])}”</span>"
