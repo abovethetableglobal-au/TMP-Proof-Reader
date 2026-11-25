@@ -99,3 +99,12 @@ Interpretation (Estimate): core addressable WA market ≈ 60 TM companies + ~10�
 - Other states (Estimate): scaled at ~20–26 TM firms per million people (WA 60/3.0M; QLD 146/5.6M): NSW 170–220, VIC 140–180, SA 40–50, TAS/ACT/NT 25–35. Australia total ≈ 580–700 TM firms (+ design consultancies). RevenueBase lists 198 AU "traffic control companies" (database undercount).
 - Each state needs its own rule pack (AGTTM national base + state supplements, e.g. QLD QGTTM, NSW TfNSW TCAWS, VIC code of practice).
 - International (Hypothesis, unverified): NZ (NZGTTM), UK (Chapter 8 / Red Book), US (MUTCD Part 6) — different standards; competing software exists (e.g. TGS drawing tools). Defer until AU product proven.
+
+## Demand-side sizing — TMPs per year (MKT-03, 2026-11-25)
+No public count of TMPs/roadworks per year found (search 2026-11-25). Bottom-up Estimate: WA ≈ 60 TM firms × 10–25 site-specific TMPs/month + councils/utilities ≈ 10,000–20,000 site-specific TMPs/yr (generic TGS-only works excluded). Australia ≈ ×10 ≈ 100,000–200,000/yr.
+| Market | TMPs/yr | Share checked | Checks/yr | Customers (48/yr) | Revenue/yr |
+|---|---|---|---|---|---|
+| WA | 10,000 | 2% / 5% / 10% | 200 / 500 / 1,000 | 4 / 10 / 21 | $65k / $163k / $327k |
+| WA | 20,000 | 2% / 5% / 10% | 400 / 1,000 / 2,000 | 8 / 21 / 42 | $130k / $327k / $653k |
+| AU | 150,000 | 2% / 5% | 3,000 / 7,500 | 63 / 156 | $0.98M / $2.45M |
+Revenue = checks × $314.10 + subscribers × $599.40/yr. Cross-check: consistent with firm-count forecast (MKT-01/02). Validate with WTGTM monthly TMP volume and a council/Main Roads count.
