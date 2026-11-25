@@ -145,3 +145,9 @@ Tiered subscriptions + value packs (5 = −5%, 10 = −10%). COMMERCIAL_MODEL.md
 A-23: base price $349 set; packs $1,657.75 / $3,141.00. Tier prices to re-model.
 Owner 2026-11-25: single checks (and packs) purchased within the $49.95 Starter subscription.
 A-24: subscription tiers and no-rollover approved; P-12 closed.
+
+## 2026-11-25 — Launch plan v0.1
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| docs/LAUNCH_PLAN.md | AI-PM | Awaiting approval | Owner | P-13–P-15 |
+P-05 closed by A-22 (5-pack offered at 5%).

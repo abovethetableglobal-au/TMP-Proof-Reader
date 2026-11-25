@@ -31,7 +31,9 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-05 | Five-credit price shown as $745 (no discount). Confirm: is a 5-pack a product, and undiscounted? | Do not offer a 5-pack SKU; customer can buy 5 singles | G8 |
+| P-13 | Approve launch plan (docs/LAUNCH_PLAN.md), target live 2027-05-17 | Approve | G8 |
+| P-14 | Obtain quotes: lawyer (ToS/privacy), broker (PI + cyber) — no commitment | Approve | G6 |
+| P-15 | Hosting in Australian cloud region | Approve | G6 |
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
 | P-07 | Credit rule gaps: credits on subscription lapse/cancel; refunds; expiry consumption order | Credits retained but unusable while unsubscribed; oldest-first consumption; no cash refunds except our error | G8 |
 | P-08 | Data residency: AI processing may occur outside Australia. Acceptable to WTGTM? | Disclose in data-handling statement; obtain WTGTM written consent | G6 |
