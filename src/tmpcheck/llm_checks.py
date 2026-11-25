@@ -209,10 +209,29 @@ def _result(msg, seconds: float, code: str, doc) -> dict:
     return res
 
 
+def warm_cache(client, doc_block: dict) -> dict:
+    """A short request with the same prefix (system + PDF) so the PDF is cached before the parallel
+    passes start (Owner approval 2026-11-25). Its answer is discarded. Never fails the check."""
+    req = _request(doc_block, "A")
+    req["messages"] = [{"role": "user", "content": [doc_block, {"type": "text", "text":
+                        "Cache warm-up only. Return an empty findings list."}]}]
+    req["max_tokens"] = 2048
+    t0 = time.time()
+    try:
+        with client.beta.messages.stream(**req) as stream:
+            u = stream.get_final_message().usage
+        info = {"seconds": round(time.time() - t0, 1), "usd": round(cost(u), 4),
+                "cache_write": getattr(u, "cache_creation_input_tokens", 0)}
+    except Exception as e:      # the passes still work without it (each then writes its own cache)
+        info = {"seconds": round(time.time() - t0, 1), "usd": 0.0, "error": f"{type(e).__name__}: {e}"}
+    print(f"cache warm-up: {info}")
+    return info
+
+
 def run_many(pdf: Path, passes: list[str], runs: int = 1, parallel: int = 8, dry_run: bool = False) -> list[dict]:
-    """All passes for `runs` runs. The first pass runs alone so the PDF is cached; every other
-    pass (all runs) then runs in parallel and reads the cache — same cost as sequential, much faster
-    (Owner approval 2026-11-25). Returns one dict per run, shaped like run()."""
+    """All passes for `runs` runs. A short warm-up request caches the PDF; every pass (all runs)
+    then runs in parallel and reads the cache — same cost as sequential, much faster
+    (Owner approval 2026-11-25). Returns one dict per run, shaped like run(); run 1 carries 'warmup'."""
     data = base64.standard_b64encode(pdf.read_bytes()).decode()
     doc_block = {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data},
                  "title": pdf.name, "cache_control": {"type": "ephemeral"}}
@@ -225,8 +244,9 @@ def run_many(pdf: Path, passes: list[str], runs: int = 1, parallel: int = 8, dry
         return outs
     client = _client()
     raw = {}
-    first, rest = jobs[0], jobs[1:]
-    raw[first] = _call(client, _request(doc_block, first[1]), first[1])       # warms the cache
+    outs[0]["warmup"] = warm_cache(client, doc_block)
+    outs[0]["usd_total"] += outs[0]["warmup"]["usd"]
+    rest = jobs
     if rest:
         from concurrent.futures import ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=max(1, parallel)) as ex:
