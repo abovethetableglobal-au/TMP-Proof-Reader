@@ -25,7 +25,7 @@ Consolidated: launch is gated on accuracy (G5) and legal/insurance (G6), not on 
 |---|---|---|---|---|---|
 | L1 | Engine completion (G4) | Report PDF + annotated PDF generator; TGS index; first full API run on REF-01 | AI-PM | 2026-12-18 | API key in session |
 | L2 | Evidence & benchmark (G2, G5) | ≥5 WTGTM packages; Tara blind reference findings; accuracy in TEST_REGISTER | Owner/Tara/AI-PM | 2027-02-26 | WTGTM files |
-| L3 | Rule library to 30–60 (G3 close) | AGTTM/AS rules; Tara review | AI-PM/Tara | 2027-01-29 | P-06 AS 1742.3 purchase |
+| L3 | Rule library to 30–60 (G3 close) | WA COP + AGTTM rules; Tara review. AS 1742.3 rules added at G8 (A-26) | AI-PM/Tara | 2027-01-29 | — |
 | L4 | Customer portal (MVP) | Login, upload, credit balance, draft→reviewer disposition→final, download | AI-PM | 2027-03-05 | Hosting decision |
 | L5 | Payments & ledger | Stripe subscriptions + packs, append-only ledger, invoices | AI-PM | 2027-03-05 | Stripe account; GST decision |
 | L6 | Security & data handling (G6) | AU-hosted storage, encryption, retention/deletion, access logs, data-handling statement, WTGTM written consent | AI-PM/Owner | 2027-03-12 | P-08 |
@@ -39,6 +39,7 @@ Consolidated: launch is gated on accuracy (G5) and legal/insurance (G6), not on 
 - G6 SOPs, ToS, privacy policy, data-handling statement approved; PI insurance bound.
 - Pilot: ≥10 live TMPs, reviewer time ≤ 2 h median, WTGTM acceptance.
 - Payments tested end-to-end (purchase, consume, failed check = no charge, expiry).
+- AS 1742.3:2019 purchased, AS rules added and benchmark re-run (A-26).
 - Owner sign-off on G8.
 
 ## 5. Budget (estimates — not approved)
@@ -46,7 +47,7 @@ Consolidated: launch is gated on accuracy (G5) and legal/insurance (G6), not on 
 |---|---|
 | AI processing | ≤ $150/month (approved cap A-16) |
 | Hosting (AU region) + domain | $30–100/month |
-| AS 1742.3:2019 licence (P-06) | low hundreds |
+| AS 1742.3:2019 licence (at G8, A-26) | $251.87 |
 | Legal: ToS + privacy | $1,500–4,000 one-off |
 | PI + cyber insurance | $1,500–4,000/year |
 | Stripe | per-transaction fees only |
@@ -55,7 +56,6 @@ Consolidated: launch is gated on accuracy (G5) and legal/insurance (G6), not on 
 | ID | Decision | Recommendation | If declined |
 |---|---|---|---|
 | P-13 | Approve this launch plan and target date 2027-05-17 | Approve | Plan stays draft; gates continue as is |
-| P-06 | AS 1742.3 purchase | Approve | Rule library limited to COP/AGTTM; G3 can't fully close |
 | P-14 | Engage lawyer for ToS/privacy and broker for PI/cyber quotes | Approve quotes only (no commitment) | Cannot pass G6 |
 | P-15 | Hosting: Australian-region cloud (e.g. AWS Sydney) | Approve | Data residency risk for customers |
 | P-08 | Offshore AI processing disclosure + WTGTM written consent | Approve | No live documents → no pilot |
