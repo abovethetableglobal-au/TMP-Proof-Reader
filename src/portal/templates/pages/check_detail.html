@@ -80,6 +80,7 @@
       </div>
       <p class="f-issue">{{ f.issue }}</p>
       {% if f.evidence %}<blockquote class="{{ 'list' if '\n' in f.evidence }}">{{ f.evidence }}</blockquote>{% endif %}
+      {% if f.hold_reason %}<p class="muted small"><strong>Why this is a Query:</strong> {{ f.hold_reason }}</p>{% endif %}
       {% if f.action %}<p class="muted small">Suggested action: {{ f.action }}</p>{% endif %}
       <p class="muted small">Found by: {{ f.source }}</p>
       {% if f.reviewer_note %}<p class="small"><strong>Reviewer note:</strong> {{ f.reviewer_note }}</p>{% endif %}

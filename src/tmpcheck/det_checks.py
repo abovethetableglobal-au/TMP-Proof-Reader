@@ -158,6 +158,15 @@ def run(pdf: Path) -> dict:
             issue = f"Sentence repeated {len(occ)} times ({page_list(pgs)})" if len(pgs) > 1 else f"Sentence repeated {where}"
             add("DUP-SENT", pgs[0], occ[0][1], issue, "Query", "C Completeness")
 
+    # DEF-C19-3: one TBA/TBC finding listing every page, not one per occurrence
+    tba = [f for f in findings if f["rule"] == "PH-TBA"]
+    if len(tba) > 1:
+        pgs = sorted({f["page"] for f in tba})
+        first = tba[0]
+        first["related_pages"] = pgs[1:]
+        first["issue"] = f"'TBA/TBC' entries ({len(tba)}) on {page_list(pgs)} — confirm or complete before issue"
+        findings = [f for f in findings if f["rule"] != "PH-TBA" or f is first]
+
     for i, f in enumerate(findings, 1):
         f["id"] = f"F-{i:03d}"
     findings = merge(findings)  # D4

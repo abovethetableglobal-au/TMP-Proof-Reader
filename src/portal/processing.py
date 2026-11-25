@@ -104,6 +104,8 @@ def merge(items: list[tuple[str, dict]]) -> tuple[str, dict]:
     merged["evidence"] = max((f.get("evidence", "") for f in pool if _supported(f)), key=len, default=best.get("evidence", ""))
     merged["evidence_check"] = "verified" if any(_supported(f) for f in pool) else best.get("evidence_check")
     merged["outcome"] = "Unable to verify" if sev == "Query" else "Potential issue"
+    held = [f.get("hold_reason") for f in fs if f.get("hold_reason")]
+    merged["hold_reason"] = (held[0] if held else None) if sev == "Query" and not any(_supported(f) for f in fs) else None
     merged["rule"] = next((f.get("rule") for f in fs if f.get("rule")), None)
     pages = set().union(*(_pages(f) for f in fs))
     merged["page"] = min(int(f.get("page") or 1) for f in fs)
@@ -351,7 +353,7 @@ def run_check(check_id: int) -> None:
                                evidence=f.get("evidence", ""), issue=f.get("issue", ""),
                                action=f.get("action") or f.get("fix") or f.get("suggested_correction"),
                                category=f.get("category", ""), outcome=f.get("outcome", "Potential issue"),
-                               rule=f.get("rule") or f.get("rule_id"), source=src,
+                               rule=f.get("rule") or f.get("rule_id"), source=src, hold_reason=f.get("hold_reason"),
                                pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
             _consume_credit(db, chk)
             chk.status = CheckStatus.draft_review
@@ -401,7 +403,7 @@ def compliance_sources() -> list[dict]:
 def finding_rows(db: Session, chk: Check) -> list[dict]:
     return [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
              "issue": f.issue, "evidence": f.evidence, "action": f.action, "outcome": f.outcome, "rule": f.rule,
-             "source": f.source, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
+             "source": f.source, "hold_reason": f.hold_reason, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
             for f in db.query(Finding).filter_by(check_id=chk.id).all()]
 
 

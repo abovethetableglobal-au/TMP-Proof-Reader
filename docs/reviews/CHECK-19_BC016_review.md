@@ -21,10 +21,10 @@ Review type: simulated (AI-PM only). Inputs: findings.json, report PDF (21 pp), 
 ## Defects
 | ID | Defect | Status |
 |---|---|---|
-| DEF-C19-1 | The export lacks `outcome`, `section` and the reason a finding was held as a Query | Partly fixed: `outcome`/`section` added to the export. The hold reason is not stored in the DB; open |
+| DEF-C19-1 | The export lacks `outcome`, `section` and the reason a finding was held as a Query | Fixed: hold reason stored, exported and shown |
 | DEF-C19-2 | The export has no `timings` / `processing_seconds`, so the PC portal is running code from before 5cfc73a | Owner: `git pull` on the PC |
-| DEF-C19-3 | Repeated PH-TBA findings are not grouped | Open |
-| DEF-C19-4 | Compound findings (two issues in one) | Open: prompt rule "one issue per finding" |
+| DEF-C19-3 | Repeated PH-TBA findings are not grouped | Fixed |
+| DEF-C19-4 | Compound findings (two issues in one) | Fixed in prompt; confirm on next AI run |
 
 | DEF-C19-5 | Annotated copy: one 'F-xxx (related) — see report' label per finding per related page, stacked down the top-right corner (up to 19 on p78), covering TMP text and TGS content. 641 labels in total | Fixed: one combined 'Also affects this page' note per page (641 → 268 labels; checked on p78) |
 

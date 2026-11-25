@@ -333,3 +333,4 @@ DEF-L06-1 fixed (variant evidence validated per variant across pages); DEF-L06-3
 Check 19 PDFs reviewed: outputs complete; DEF-C19-5 (related-label stack) fixed.
 Owner approved merge to main 2026-11-25; fast-forwarded main to e15b142.
 Owner PC updated to main; check 19 PDFs regenerated: 268 labels (75 combined page notes), 192/192 F-numbers, 170 highlights. DEF-C19-5 confirmed fixed on PC. Residual: on dense TGS pages the top-right note can still touch drawing text (p78).
+DEF-C19-1, -3, -4 fixed (hold reason persisted and shown; TBA grouped; one-issue prompt rule). 58 tests pass. New DB column added automatically at portal start.

@@ -105,8 +105,8 @@ Methodology: `docs/TEST_METHODOLOGY.md`. Test documents stored in `test-library/
 |---|---|
 | Recall | 101/110 (92%); 152 findings; 1 FP; review est. 51–76 min; US$4.86 |
 | Detail | `docs/reviews/BENCH-05_SU026_two_run.md` |
-| DEF-C19-1 | Check 19 | BC 016 | Export | Export lacks outcome/section/hold reason | Minor | Fields not exported; hold reason not stored | Partly fixed (outcome, section) | — |
+| DEF-C19-1 | Check 19 | BC 016 | Export | Export lacks outcome/section/hold reason | Minor | Fields not exported; hold reason not stored | Fixed: hold_reason stored, exported, shown in portal and report (test added) | — |
 | DEF-C19-2 | Check 19 | BC 016 | Portal | No timings in export: PC portal is on old code | Minor | PC not updated | Owner git pull | — |
-| DEF-C19-3 | Check 19 | BC 016 | C | 11 separate PH-TBA findings | Minor | No grouping for rule findings | Open | — |
-| DEF-C19-4 | Check 19 | BC 016 | All | Two issues combined in one finding | Minor | Prompt | Open | — |
+| DEF-C19-3 | Check 19 | BC 016 | C | 11 separate PH-TBA findings | Minor | No grouping for rule findings | Fixed: one PH-TBA finding listing all pages (test added) | — |
+| DEF-C19-4 | Check 19 | BC 016 | All | Two issues combined in one finding | Minor | Prompt | Fixed in prompt (one issue per finding); confirm on next AI run | — |
 | DEF-C19-5 | Check 19 | BC 016 | Annotated | Stacked related-page labels cover TMP content | Moderate | One label per related finding | Fixed and confirmed on Owner PC 2026-11-25 | — |

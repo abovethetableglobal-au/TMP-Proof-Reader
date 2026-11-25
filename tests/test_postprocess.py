@@ -96,3 +96,21 @@ def test_def_l06_1_style_variants_verified_across_pages(tmp_path):
     assert ok["evidence_check"] == "verified" and ok["severity"] == "Minor"
     assert ok["variant_pages"] == {"car park": 1, "carpark": 2}
     assert bad["severity"] == "Query"
+
+
+def test_def_c19_3_tba_grouped(tmp_path):
+    doc = pymupdf.open()
+    for t in ("Date TBA", "RTM TBA and supervisor TBC", "Hours TBA"):
+        doc.new_page().insert_text((50, 80), t)
+    path = tmp_path / "t.pdf"
+    doc.save(path)
+    tba = [f for f in det_checks.run(path)["findings"] if f["rule"] == "PH-TBA"]
+    assert len(tba) == 1 and tba[0]["page"] == 1 and set(tba[0]["related_pages"]) == {2, 3}
+    assert "(4)" in tba[0]["issue"]
+
+
+def test_def_c19_1_hold_reason_survives_merge():
+    from src.portal.processing import merge as pmerge
+    a = F(evidence="not on page", severity="Query", evidence_check="NOT FOUND on cited page", hold_reason="Quoted evidence could not be located on the cited page")
+    _, m = pmerge([("ai", a)])
+    assert m["hold_reason"].startswith("Quoted evidence")

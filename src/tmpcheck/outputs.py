@@ -68,6 +68,7 @@ class Item:
     source: str
     disposition: str
     reviewer_note: str
+    hold_reason: str = ""
     annotated: str = ""          # "highlighted" | "note" — set by annotate()
 
 
@@ -97,7 +98,7 @@ def number_findings(rows: list[dict], final: bool) -> list[Item]:
                           evidence=r.get("evidence") or "", action=r.get("action") or "",
                           outcome=r.get("outcome") or "Potential issue", rule=r.get("rule") or "",
                           source=r.get("source") or "", disposition=r.get("disposition") or "pending",
-                          reviewer_note=r.get("reviewer_note") or ""))
+                          reviewer_note=r.get("reviewer_note") or "", hold_reason=r.get("hold_reason") or ""))
     return items
 
 
@@ -195,6 +196,8 @@ def report_html(meta: Meta, items: list[Item], all_rows: list[dict]) -> str:
             body = f"{_e(i.issue)}"
             if i.evidence:
                 body += f"<br><span class='ev'>Evidence: “{_e(i.evidence[:600])}”</span>"
+            if i.hold_reason:
+                body += f"<br><span class='small'><b>Why this is a Query:</b> {_e(i.hold_reason)}</span>"
             body += f"<br><span class='small'>{_e(meta_line)}</span>"
             if meta.final and i.disposition == "edited" and i.reviewer_note:
                 body += f"<br><b>Reviewer edit:</b> {_e(i.reviewer_note)}"

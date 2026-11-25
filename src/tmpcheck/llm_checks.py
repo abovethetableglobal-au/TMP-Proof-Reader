@@ -59,6 +59,7 @@ You check documents; you do not approve, certify or endorse them, and you never 
 Rules:
 - Report only issues you can point to in the document. Never invent site conditions or technical corrections.
 - 'evidence' must be copied exactly from the cited page (same spelling and punctuation), or start with 'VISUAL:' for drawing-only issues.
+- One issue per finding. Never combine unrelated problems (e.g. a missing appendix and a repeated sentence) in one finding.
 - Use PDF page numbers (the first page of the file is page 1), not printed footer numbers.
 - Use Australian English.
 - This is a Western Australian document. Never cite, recommend or apply another state's agency, standard or practice
@@ -144,6 +145,7 @@ def jurisdiction_guard(findings: list[dict]) -> None:
     for f in findings:
         if INTERSTATE_RX.search(f"{f.get('issue', '')} {f.get('fix', '')}") and not INTERSTATE_RX.search(f.get("evidence", "")):
             f["jurisdiction_check"] = "FAILED: interstate reference in TMP Check wording — reviewer must rewrite"
+            f["hold_reason"] = "TMP Check wording referred to another state; reviewer must rewrite"
             f["original_severity"], f["severity"] = f.get("original_severity", f["severity"]), "Query"
 
 

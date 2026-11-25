@@ -293,7 +293,7 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
                          "processing_seconds": chk.processing_seconds,
                          "timings": json.loads(chk.timings) if chk.timings else [],
                          "findings": [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
-                                       "section": f.section, "outcome": f.outcome, "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
+                                       "section": f.section, "outcome": f.outcome, "hold_reason": f.hold_reason, "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
                                        "action": f.action, "disposition": f.disposition,
                                        "reviewer_note": f.reviewer_note} for f in rows]},
                         headers={"Content-Disposition": f'attachment; filename="check-{chk.id}-findings.json"'})
