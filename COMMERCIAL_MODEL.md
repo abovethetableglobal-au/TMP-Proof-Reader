@@ -2,7 +2,7 @@
 
 All prices AUD. Approved by Owner 2026-11-20 (DECISIONS A-02–A-06).
 
-## Price list — v2 structure (Owner approved 2026-11-25, A-22). Base price set 2026-11-25 (A-23)
+## Price list — v2 structure (Owner approved 2026-11-25, A-31). Base price set 2026-11-25 (A-32)
 Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 
 | SKU | Price | Included checks | Notes |
@@ -21,20 +21,20 @@ Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 | 5-check pack (−5%) | $1,657.75 | $331.55 |
 | 10-check pack (−10%) | $3,141.00 | $314.10 |
 
-Ladder (per check): single $349 > 5-pack $331.55 > 10-pack $314.10 > Professional $299 > Business $266.33 > Enterprise ≤$249.75. Unused included checks do not roll over. Approved 2026-11-25 (A-24).
+Ladder (per check): single $349 > 5-pack $331.55 > 10-pack $314.10 > Professional $299 > Business $266.33 > Enterprise ≤$249.75. Unused included checks do not roll over. Approved 2026-11-25 (A-33).
 
 Superseded v1 (A-03–A-06): $149/check; 10-pack $1,341.
 
 ```yaml
 pricing:
-  base_check: 349.00        # A-23
+  base_check: 349.00        # A-32
   packs: {5: 0.05, 10: 0.10}
 ```
 
 ## Credit rules (approved)
 1. Purchased upfront. 2. Added after successful payment. 3. 1 credit per completed check. 4. Failed upload/processing: no charge. 5. Correction of a TMP Check error: no charge. 6. Customer re-check after document changes: 1 credit. 7. Valid 12 months from purchase. 8. Balance and history visible to customer. 9. Subscription billed separately.
 
-**Approved (A-30):** lapse = credits retained; cancel = unused credits forfeited. Consumption oldest-lot-first. **Pilot price (A-31):** $145/check for WTGTM during G7.
+**Approved (A-39):** lapse = credits retained; cancel = unused credits forfeited. Consumption oldest-lot-first. **Pilot price (A-40):** $145/check for WTGTM during G7.
 
 ## Ledger design (to implement post-G5)
 Append-only `credit_ledger` rows: `id, customer_id, lot_id, type{purchase, consume, reversal, expiry, adjustment}, qty(±), check_id?, payment_ref?, expires_at, created_at, created_by, reason`. Balance = Σqty of unexpired lots. Adjustments require admin + reason (audit).

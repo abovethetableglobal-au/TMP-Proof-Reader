@@ -34,10 +34,10 @@ Not stored in the repo (MRWA copyright); the engine stores only rule paraphrases
 | 5 Draft | Engine | Draft findings report + annotated rendition (original untouched) | Watermarked DRAFT |
 | 6 Review | Client's accredited reviewer (A-15) | Accept / edit / reject each finding; add own | Every finding dispositioned; no Critical released unsupported |
 | 7 Final | Engine | Final report + annotated PDF + disposition log | Credit consumed; reviewer named on report |
-| 8 Revise loop (optional) | Client | Re-submit revised TMP → diff vs previous, confirm closures | Pricing TBD (P-12) |
+| 8 Revise loop (optional) | Client | Re-submit revised TMP → diff vs previous, confirm closures | Pricing TBD (P-17) |
 | 9 Learn | AI-PM | Reviewer edits/rejections → rule tuning, false-positive log | No training on customer data |
 
 ## 4. Open items
-- P-12 pricing (Tara: $149 undersells; checks take 5+ h manually) — Owner decision.
+- P-17 pricing (Tara: $149 undersells; checks take 5+ h manually) — Owner decision.
 - Tara to review WA-GEN-CHK-001 / WA-GEN-TGS-001 and confirm #4 is in force.
 - Build TGS index extractor from #1/#7 (Pass E support) — next G4 task.

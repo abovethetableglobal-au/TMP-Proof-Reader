@@ -3,17 +3,17 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
-| A-31 | Pilot (G7) price: $145 per check for WTGTM. Resolves P-09 | Owner | 2026-11-25 | Owner |
-| A-30 | Credits: if subscription **lapses** (e.g. failed payment) credits are retained and usable on reactivation (12-month expiry still runs); if customer **cancels**, unused credits are forfeited. Resolves P-07 | Owner | 2026-11-25 | Owner |
-| A-29 | Offshore AI processing disclosed in Privacy Policy §4 and ToS §6.3; customer consent given by accepting the Terms. Resolves P-08 | Owner | 2026-11-25 | Owner |
-| A-28 | Customer documents and reports hosted in an Australian cloud region (e.g. AWS ap-southeast-2 Sydney); provider selection and any spend still need approval. Resolves P-15 | Data residency (L6) | 2026-11-25 | Owner |
-| A-27 | Owner approved obtaining quotes (no commitment): legal (Sprintlaw / LegalVision — SaaS ToS + privacy, indicative from ~$1,000+GST per document) and insurance (BizCover / upcover — tech PI avg ~$83–103/mo or from ~$731/yr; cyber from ~$223/yr). Figures from provider websites 2026-11-25, indicative only. Resolves P-14 | Needed for G6 | 2026-11-25 | Owner |
-| A-26 | AS 1742.3:2019 purchase ($251.87, official store) deferred to G8. Build proceeds on WA COP + AGTTM (free). Any AS 1742.3-dependent check is raised as Query ('Unable to verify — AS 1742.3 not in rule set'); no AS clause cited. G5 benchmark scored with and without AS-dependent items. Resolves P-06 | Owner; defer spend | 2026-11-25 | Owner |
-| A-25 | Launch plan v0.1 approved as working baseline; target 2027-05-17 is provisional and may change via change control (§20.1). Resolves P-13 | Owner | 2026-11-25 | Owner |
-| A-24 | Subscription tiers approved: Professional $1,495/mo (5 incl., extra $299); Business $3,995/mo (15 incl., extra $269); Enterprise from $9,990/mo (up to 40); no rollover of unused checks. Single checks and 5/10 packs require Starter $49.95/mo. Resolves P-12 | Per-check ladder below pack rates | 2026-11-25 | Owner |
-| A-23 | Base per-check price set at **$349** (5-pack $1,657.75; 10-pack $3,141.00) | Tara: manual check 5+ h | 2026-11-25 | Owner |
-| A-22 | Pricing structure v2: tiered subscriptions with included checks + overage; value packs 5 checks −5%, 10 checks −10%. Supersedes $149 list (A-03–A-06). Base per-check price and tier prices still to be set (P-12) | Tara value feedback; margin protection vs unlimited | 2026-11-25 | Owner |
-| A-21 | Interstate (QLD/NSW/VIC) references are never acceptable in a WA TMP or in TMP Check output: in-document = Moderate finding; in our wording = blocked to Query | Tara feedback 2026-11-25 (p7 Queensland reference) | 2026-11-25 | Owner (relaying Tara) |
+| A-40 | Pilot (G7) price: $145 per check for WTGTM. Resolves P-09 | Owner | 2026-11-25 | Owner |
+| A-39 | Credits: if subscription **lapses** (e.g. failed payment) credits are retained and usable on reactivation (12-month expiry still runs); if customer **cancels**, unused credits are forfeited. Resolves P-07 | Owner | 2026-11-25 | Owner |
+| A-38 | Offshore AI processing disclosed in Privacy Policy §4 and ToS §6.3; customer consent given by accepting the Terms. Resolves P-08 | Owner | 2026-11-25 | Owner |
+| A-37 | Customer documents and reports hosted in an Australian cloud region (e.g. AWS ap-southeast-2 Sydney); provider selection and any spend still need approval. Resolves P-20 | Data residency (L6) | 2026-11-25 | Owner |
+| A-36 | Owner approved obtaining quotes (no commitment): legal (Sprintlaw / LegalVision — SaaS ToS + privacy, indicative from ~$1,000+GST per document) and insurance (BizCover / upcover — tech PI avg ~$83–103/mo or from ~$731/yr; cyber from ~$223/yr). Figures from provider websites 2026-11-25, indicative only. Resolves P-19 | Needed for G6 | 2026-11-25 | Owner |
+| A-35 | AS 1742.3:2019 purchase ($251.87, official store) deferred to G8. Build proceeds on WA COP + AGTTM (free). Any AS 1742.3-dependent check is raised as Query ('Unable to verify — AS 1742.3 not in rule set'); no AS clause cited. G5 benchmark scored with and without AS-dependent items. Resolves P-06 | Owner; defer spend | 2026-11-25 | Owner |
+| A-34 | Launch plan v0.1 approved as working baseline; target 2027-05-17 is provisional and may change via change control (§20.1). Resolves P-18 | Owner | 2026-11-25 | Owner |
+| A-33 | Subscription tiers approved: Professional $1,495/mo (5 incl., extra $299); Business $3,995/mo (15 incl., extra $269); Enterprise from $9,990/mo (up to 40); no rollover of unused checks. Single checks and 5/10 packs require Starter $49.95/mo. Resolves P-17 | Per-check ladder below pack rates | 2026-11-25 | Owner |
+| A-32 | Base per-check price set at **$349** (5-pack $1,657.75; 10-pack $3,141.00) | Tara: manual check 5+ h | 2026-11-25 | Owner |
+| A-31 | Pricing structure v2: tiered subscriptions with included checks + overage; value packs 5 checks −5%, 10 checks −10%. Supersedes $149 list (A-03–A-06). Base per-check price and tier prices still to be set (P-17) | Tara value feedback; margin protection vs unlimited | 2026-11-25 | Owner |
+| A-30 | Interstate (QLD/NSW/VIC) references are never acceptable in a WA TMP or in TMP Check output: in-document = Moderate finding; in our wording = blocked to Query | Tara feedback 2026-11-25 (p7 Queensland reference) | 2026-11-25 | Owner (relaying Tara) |
 | A-01 | Claude Code appointed sole AI-PM | Handover §1 | 2026-11-20 | Owner |
 | A-02 | Subscription $49.95 AUD/month, excludes credits | Handover §3 | 2026-11-20 | Owner |
 | A-03 | Credit $149; 10-pack $1,341 (10% off, $134.10 effective) | Handover §3 | 2026-11-20 | Owner |

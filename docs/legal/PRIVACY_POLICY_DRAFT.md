@@ -1,6 +1,6 @@
 # TMP Check — Privacy Policy (DRAFT v0.1, 2026-11-25)
 
-> **DRAFT — not legal advice. For lawyer review (A-27).** Written to align with the Privacy Act 1988 (Cth) and Australian Privacy Principles (APPs). `[ ]` = to complete. Whether the Act applies to a small business (< $3m turnover) is for the lawyer to confirm; we intend to comply regardless.
+> **DRAFT — not legal advice. For lawyer review (A-36).** Written to align with the Privacy Act 1988 (Cth) and Australian Privacy Principles (APPs). `[ ]` = to complete. Whether the Act applies to a small business (< $3m turnover) is for the lawyer to confirm; we intend to comply regardless.
 
 ## 1. Who we are
 `[Legal entity name]` (ABN `[ ]`), operating TMP Check ("we"). Contact: `[privacy contact email]`, `[postal address]`.

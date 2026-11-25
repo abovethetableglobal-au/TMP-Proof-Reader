@@ -1,6 +1,6 @@
 # TMP Check — Terms of Service (DRAFT v0.1, 2026-11-25)
 
-> **DRAFT — not legal advice. For review by an Australian lawyer (A-27) before use.** `[ ]` = to be completed by Owner/lawyer.
+> **DRAFT — not legal advice. For review by an Australian lawyer (A-36) before use.** `[ ]` = to be completed by Owner/lawyer.
 
 ## 1. About these Terms
 1.1 These Terms are between `[Legal entity name]` (ABN `[ ]`) ("we", "TMP Check") and the business accepting them ("you", "Customer").
