@@ -139,3 +139,6 @@ Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passe
 | Rules WA-GEN-CHK-001, WA-GEN-TGS-001 | AI-PM | Under review | Tara | Review |
 | docs/requirements/MRWA_SOURCES_AND_WORKFLOW.md v0.1 | AI-PM | Ready for user review | Owner | Approve workflow |
 Feedback recorded: Tara fully supports the product and would use it; says $149 undersells (5+ h manual) → P-12.
+
+## 2026-11-25 — Pricing structure v2 approved (A-22)
+Tiered subscriptions + value packs (5 = −5%, 10 = −10%). COMMERCIAL_MODEL.md updated. Base price open (P-12).
