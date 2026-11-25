@@ -170,7 +170,8 @@ def handle_event(db: Session, event) -> str:
     if etype == "charge.refunded":
         # Refunds never auto-remove credits: an admin reviews and records a ledger adjustment.
         org = _org(db, obj.get("metadata"))
-        auth.audit(db, None, "stripe_refund_review", obj["id"], str(obj.get("amount_refunded")),
+        auth.audit(db, None, "stripe_refund_review", obj["id"],
+                   f"amount_refunded={obj.get('amount_refunded')} payment_intent={obj.get('payment_intent')}",
                    org_id=org.id if org else None)
         return "refund flagged for admin"
 

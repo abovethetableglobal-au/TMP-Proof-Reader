@@ -133,3 +133,16 @@ def test_real_signed_event_credits(db, monkeypatch):
     sig = stripe.WebhookSignature._compute_signature(f"{ts}.{body.decode()}", "whsec_test")
     assert payments.handle_event(db, payments.parse_event(body, f"t={ts},v1={sig}")) == "credited"
     assert services.credit_balance(db, 1).available == 5
+
+
+def test_admin_refund_adjustment(db):
+    from src.portal import admin
+    payments.handle_event(db, ev("checkout.session.completed", paid_session()))
+    db.add(dbm.CreditLedger(org_id=1, lot_id=1, type=dbm.LedgerType.consume, qty=-1, created_by="sys")); db.commit()
+    with pytest.raises(ValueError):
+        admin.refund_adjust(db, "cs_test_1", 5, "Admin", "re_1")      # only 4 unused
+    with pytest.raises(ValueError):
+        admin.refund_adjust(db, "cs_test_1", 1, "", "re_1")           # who is required
+    admin.refund_adjust(db, "cs_test_1", 4, "Admin", "re_1")
+    assert services.credit_balance(db, 1).available == 0
+    assert db.execute(select(dbm.CreditLedger).where(dbm.CreditLedger.type == dbm.LedgerType.adjustment)).scalar_one().qty == -4
