@@ -139,7 +139,7 @@ Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passe
 | Ground site-dependent Criticals in TMP text (else Query) | AI-PM | Not started | Confirmation above | Change C-pass prompt + evidence validator |
 | Copilot market research (TMP volumes, RTM count) | Copilot (via Owner) | Under review | — | Verify RTM count against MRWA register |
 | BENCH-02 | AI-PM | Blocked | API key env var; re-upload SU026 files | — |
-Copilot research classification: TMP annual volume — no source (Copilot's own "20,000+" is an unverified estimate); RTM ~40–50 — source-supported, unverified by AI-PM; City of Perth ~300 permits/month — unverified. Copilot's "pivot to RTM reviewers / AI-generated TMPs" is a scope change → P-12.
+Copilot research classification: TMP annual volume — no source (Copilot's own "20,000+" is an unverified estimate); RTM ~40–50 — source-supported, unverified by AI-PM; City of Perth ~300 permits/month — unverified. Copilot's "pivot to RTM reviewers / AI-generated TMPs" is a scope change → P-21.
 
 ## 2026-11-24 — Pass E: risk assessment review
 | Task | Owner / AI | Status | Dependencies | Next step |
