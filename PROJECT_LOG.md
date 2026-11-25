@@ -335,3 +335,4 @@ Owner approved merge to main 2026-11-25; fast-forwarded main to e15b142.
 Owner PC updated to main; check 19 PDFs regenerated: 268 labels (75 combined page notes), 192/192 F-numbers, 170 highlights. DEF-C19-5 confirmed fixed on PC. Residual: on dense TGS pages the top-right note can still touch drawing text (p78).
 DEF-C19-1, -3, -4 fixed (hold reason persisted and shown; TBA grouped; one-issue prompt rule). 58 tests pass. New DB column added automatically at portal start.
 Draft email to Tara (check 19 review request): docs/comms/EMAIL_Tara_check19_BC016_DRAFT.md — Ready for user review; Owner sends.
+Tally form 'TMP Check — Reviewer Feedback' (id 4aKMkY) created as unpublished draft in Owner's Tally workspace; edit: https://tally.so/forms/4aKMkY/edit. Responses are stored by Tally (cloud, offshore) — F-numbers only, no TMP text. Owner to review and publish.

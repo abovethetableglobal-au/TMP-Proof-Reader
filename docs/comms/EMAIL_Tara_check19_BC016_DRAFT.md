@@ -14,6 +14,8 @@ Attached is the TMP Check draft for **TMP BC 016 Bon Marche Arcade, Perth** (81 
 
 This is a document check only. It is not an approval or a safety assessment, and nothing will be issued as final until you have reviewed every finding.
 
+**Feedback form:** [Tally link — add once published]
+
 **What I need from you**
 
 For each finding, please mark one of:
