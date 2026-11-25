@@ -29,7 +29,7 @@
 5.2 Single checks and packs may be bought only with an active Starter subscription.
 5.3 Checks are paid in advance. One credit is used per completed check. No credit is used for failed uploads or processing, or to correct our own error. A re-check after you change a document uses one credit.
 5.4 Purchased credits are valid for 12 months. Included subscription checks do not roll over to the next month.
-5.5 Subscriptions renew automatically each month until cancelled. Cancellation takes effect at the end of the current billing period. `[Treatment of unused purchased credits on cancellation — P-07]`.
+5.5 Subscriptions renew automatically each month until cancelled. Cancellation takes effect at the end of the current billing period. **On cancellation, unused credits are forfeited.** If a subscription lapses without cancellation (for example, a failed payment), credits are kept and can be used once the subscription is reactivated, within their 12-month validity. We will remind you of unused credits before you confirm cancellation.
 5.6 We may change prices with at least 30 days' notice. Changes do not affect credits already bought.
 5.7 Refunds: except where required by law (including the Australian Consumer Law) or where we are at fault, payments are non-refundable.
 

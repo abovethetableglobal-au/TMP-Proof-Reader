@@ -34,7 +34,7 @@ pricing:
 ## Credit rules (approved)
 1. Purchased upfront. 2. Added after successful payment. 3. 1 credit per completed check. 4. Failed upload/processing: no charge. 5. Correction of a TMP Check error: no charge. 6. Customer re-check after document changes: 1 credit. 7. Valid 12 months from purchase. 8. Balance and history visible to customer. 9. Subscription billed separately.
 
-**Pending (P-07):** behaviour on subscription lapse; refunds; consumption order (recommend oldest-lot-first).
+**Approved (A-30):** lapse = credits retained; cancel = unused credits forfeited. Consumption oldest-lot-first. **Pilot price (A-31):** $145/check for WTGTM during G7.
 
 ## Ledger design (to implement post-G5)
 Append-only `credit_ledger` rows: `id, customer_id, lot_id, type{purchase, consume, reversal, expiry, adjustment}, qty(±), check_id?, payment_ref?, expires_at, created_at, created_by, reason`. Balance = Σqty of unexpired lots. Adjustments require admin + reason (audit).
