@@ -37,7 +37,7 @@ python -m uvicorn src.portal.app:app --port 8000   # Windows: plain "uvicorn" ma
 ```
 
 ## Owner decisions needed
-1. **Prices in the portal:** `config/portal.yaml` still uses $149 / $745 / $1,341 (A-03, A-23). A-31 to A-33 set a $349 base price, discounted packs and tiers. Confirm that A-31 to A-33 supersede A-23's 5-pack, then update the config.
+1. **Prices in the portal:** done — A-44 ($349 base).
 2. **Pass E (risk review):** a draft that has not been benchmarked. Its uncited Moderate/Major findings conflict with the scope text for category E ("potential issue only where a rule is cited"). Decide on its category before it is enabled.
 3. **FB-01 (Tara, SU 025):** Criticals F-001 and F-002 may not apply (works are on the verge, R-28). The AI-PM text check found both supported by the TMP's own conflicting statements. Reviewer to rule.
 

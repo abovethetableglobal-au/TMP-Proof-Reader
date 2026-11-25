@@ -1,6 +1,6 @@
 # TMP Check customer portal configuration.
 # Prices and tax are configuration, never literals in code (CLAUDE.md §5).
-# Source of truth for prices: COMMERCIAL_MODEL.md / DECISIONS A-02, A-03, A-04.
+# Source of truth for prices: COMMERCIAL_MODEL.md / DECISIONS A-04, A-31 to A-33, A-44.
 
 currency: AUD
 
@@ -20,23 +20,24 @@ credit_products:
   - sku: CR-1
     name: Single TMP check
     credits: 1
-    price: 149.00
+    price: 349.00            # A-32
     offered: true
   - sku: CR-5
     name: Five-credit pack
     credits: 5
-    price: 745.00
-    offered: true            # A-23
+    price: 1657.75           # A-32: 5% discount
+    offered: true
   - sku: CR-10
     name: Ten-credit pack
     credits: 10
-    price: 1341.00
+    price: 3141.00           # A-32: 10% discount
     offered: true
 
 credits:
   validity_months: 12        # A-05 rule 7
 
-# Payments are not enabled before Gate 5 (A-09). Purchase buttons raise a
+# Payments are not enabled before Gate 5 (A-09). Stripe account approved (A-45); integration after G5.
+# Purchase buttons raise a
 # credit request; an administrator records the ledger purchase after payment.
 payments_enabled: false
 

@@ -88,7 +88,7 @@ def test_prices_match_approved_commercial_model():
     cfg = settings()
     assert cfg["subscription"]["price"] == 49.95
     prices = {p["sku"]: p["price"] for p in cfg["credit_products"]}
-    assert prices == {"CR-1": 149.0, "CR-5": 745.0, "CR-10": 1341.0}
+    assert prices == {"CR-1": 349.0, "CR-5": 1657.75, "CR-10": 3141.0}
     assert cfg["payments_enabled"] is False          # A-09
     assert "GST-inclusive" not in price_label() and "incl" not in price_label()
 
@@ -129,7 +129,7 @@ def test_dashboard_empty_states(client):
 
 def test_five_pack_offered_a23(client):
     html = client.get("/billing").text
-    assert "Five-credit pack" in html and "$745.00" in html
+    assert "Five-credit pack" in html and "$1,657.75" in html
 
 
 def test_library_lists_22_approved_rules(client):
