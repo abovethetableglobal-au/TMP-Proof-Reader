@@ -328,3 +328,5 @@ Check 15 was run on a TMP Check report, not a TMP (invalid as a TMP check, but u
 | `docs/requirements/TMP_DRAFT_BUILDER_OUTLINE.md` v0.1 | AI-PM | Not started (deferred) | 6 paying customers | Raise a change request at the trigger |
 Setup note: the environment setup script did not install `sqlalchemy`; installed `requirements.txt` manually (55 tests pass).
 DEF-L06-1 fixed (variant evidence validated per variant across pages); DEF-L06-3 'No.X' already covered by WF-NOSPACE, full-stop rule open. 56 tests pass.
+## 2026-11-25 — Check 19 (BC 016) findings received
+| `docs/reviews/CHECK-19_BC016_review.md` v0.1 | AI-PM | Under review (simulated) | Report + annotated PDF; Tara dispositions | Owner sends PDFs; `git pull` on PC |
