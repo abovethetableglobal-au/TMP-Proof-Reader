@@ -339,3 +339,6 @@ Tally form 'TMP Check — Reviewer Feedback' (id 4aKMkY) created as unpublished 
 A-43 insurance obtained (details to record), A-44 portal prices updated to $349/$1,657.75/$3,141.00, A-45 Stripe account approved (integration after G5). 58 tests pass.
 Stripe account supplied by Owner: acct_1UfZfBGdViWULINo "TMP Proof Reader", separate from The Long Table Company account (legal entity/ABN not yet confirmed). Integration on hold pending Option A approval (A-09 conflict).
 A-46: Stripe Option A approved (sandbox build now, live after G5). Next session runs the Stripe planner.
+
+## 2026-11-25 — MKT-01 WA market sizing
+- Counted Main Roads WA registered TM companies (60 TMCs, 20 contractors, 12 govt) and accredited RTMs (38 / 30 employers). Recorded in COMMERCIAL_MODEL.md. Status: Ready for user review.

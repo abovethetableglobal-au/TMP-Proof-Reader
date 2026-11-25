@@ -81,3 +81,14 @@ WA annual TMP volume is unverified (no public data; FB-01 triage), so three volu
 | 20,000 | 400 | 8 | 4,795 | 53,640 | 58,435 | 4,870 | 51–56k |
 | 40,000 | 800 | 17 | 10,190 | 107,280 | 117,470 | 9,789 | 102–112k |
 Excludes Owner time, marketing, support, and reviewer cost (borne by customer). Above ~$75k turnover, GST registration review is triggered (R-10).
+
+## WA market size — firm count (MKT-01, 2026-11-25)
+| Source (Main Roads WA, retrieved 2026-11-25) | Count | Evidence |
+|---|---|---|
+| Registered TM Company list — Traffic Management Companies | 60 | Verified fact (AI-extracted count from PDF; 91–92 total entries) |
+| — Contractors | 20 | Verified fact (as above) |
+| — Local Government | 11 | Verified fact |
+| — State Government | 1 | Verified fact |
+| Accredited RTMs (list as of 19 Nov 2026) | 38 people / 30 employers | Verified fact; 6 at Main Roads |
+
+Interpretation (Estimate): core addressable WA market ≈ 60 TM companies + ~10–20 TMP design consultancies not on the registration list (e.g. RTM employers) ≈ 70–90 organisations; contractors/LGs secondary. Customer forecast (Estimate, PROVISIONAL): Year 1 3–6; Year 2 8–15; WA ceiling 20–35 (25–40% share of core). Supersedes the unsourced 100–200 firm / 30–60 customer estimate given in chat. Overlap between lists not checked.
