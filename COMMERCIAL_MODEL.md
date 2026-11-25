@@ -108,3 +108,13 @@ No public count of TMPs/roadworks per year found (search 2026-11-25). Bottom-up 
 | WA | 20,000 | 2% / 5% / 10% | 400 / 1,000 / 2,000 | 8 / 21 / 42 | $130k / $327k / $653k |
 | AU | 150,000 | 2% / 5% | 3,000 / 7,500 | 63 / 156 | $0.98M / $2.45M |
 Revenue = checks × $314.10 + subscribers × $599.40/yr. Cross-check: consistent with firm-count forecast (MKT-01/02). Validate with WTGTM monthly TMP volume and a council/Main Roads count.
+
+## MKT-03 update — WTGTM volume (Owner, 2026-11-25)
+WTGTM writes 8 site-specific TMPs/month (Owner-supplied fact). Replaces 10–25/firm Estimate with ~8–12 avg (Estimate; firm sizes vary). WA ≈ 60 × 8–12 × 12 + councils/utilities ≈ 6,000–10,000 TMPs/yr; AU ≈ 60,000–100,000.
+Adoption model (Estimate, if adopters check all TMPs as WTGTM scenario): per customer 8 × $314.10 × 12 + $599.40 ≈ $30,750/yr.
+| WA adoption of 60 firms | Customers | Revenue/yr |
+|---|---|---|
+| 10% | 6 | ≈ $185k |
+| 25% | 15 | ≈ $461k |
+| 50% | 30 | ≈ $923k |
+Open question: whether customers check every TMP or only complex ones.
