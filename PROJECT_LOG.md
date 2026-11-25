@@ -153,3 +153,4 @@ A-24: subscription tiers and no-rollover approved; P-12 closed.
 P-05 closed by A-22 (5-pack offered at 5%).
 A-25: launch plan approved as working baseline; date provisional.
 A-26: AS 1742.3 purchase deferred to G8; R-23 opened.
+A-27: quotes approved; providers shortlisted. Owner to submit quote forms (requires business details).
