@@ -327,3 +327,4 @@ Check 15 was run on a TMP Check report, not a TMP (invalid as a TMP check, but u
 ## 2026-11-25 — TMP Draft Builder deferred (A-42)
 | `docs/requirements/TMP_DRAFT_BUILDER_OUTLINE.md` v0.1 | AI-PM | Not started (deferred) | 6 paying customers | Raise a change request at the trigger |
 Setup note: the environment setup script did not install `sqlalchemy`; installed `requirements.txt` manually (55 tests pass).
+DEF-L06-1 fixed (variant evidence validated per variant across pages); DEF-L06-3 'No.X' already covered by WF-NOSPACE, full-stop rule open. 56 tests pass.

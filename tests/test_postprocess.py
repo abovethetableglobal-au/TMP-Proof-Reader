@@ -81,3 +81,18 @@ def test_d5_dup_sent_ignores_repeated_tgs_notes(pdf):
     res = det_checks.run(pdf)
     assert "DUP-SENT" not in res["by_rule"]
     assert all(f["outcome"] == ("Unable to verify" if f["severity"] == "Query" else "Potential issue") for f in res["findings"])
+
+
+def test_def_l06_1_style_variants_verified_across_pages(tmp_path):
+    doc = pymupdf.open()
+    doc.new_page().insert_text((50, 80), "Access is via the car park on Hay Street.")
+    doc.new_page().insert_text((50, 80), "The carpark entry will remain open.")
+    path = tmp_path / "v.pdf"
+    doc.save(path)
+    doc = pymupdf.open(path)
+    ok = F(evidence="car park / carpark", severity="Minor")
+    bad = F(evidence="car park / car-park bay", severity="Minor")
+    validate([ok, bad], doc)
+    assert ok["evidence_check"] == "verified" and ok["severity"] == "Minor"
+    assert ok["variant_pages"] == {"car park": 1, "carpark": 2}
+    assert bad["severity"] == "Query"

@@ -65,6 +65,31 @@ def hold_as_query(f: dict, reason: str) -> None:
     f["hold_reason"] = reason
 
 
+VARIANT_SEP = re.compile(r"\s+(?:/|vs\.?|versus)\s+|\s*;\s*", re.I)
+
+
+def locate_variants(doc: pymupdf.Document, evidence: str, first: int):
+    """DEF-L06-1: style-variant evidence such as "car park / carpark / CarPark" lists forms
+    found on different pages. Each variant must be located on some page (cited page first).
+    Returns (page, boxes, {variant: page}) for the first variant, or None if any is missing."""
+    parts = [v.strip(" '\"") for v in VARIANT_SEP.split(evidence) if v.strip(" '\"")]
+    if len(parts) < 2:
+        return None
+    order = [first, *[i for i in range(1, len(doc) + 1) if i != first]]
+    found = {}
+    for v in parts:
+        for p in order:
+            if 1 <= p <= len(doc):
+                boxes = locate(doc[p - 1], v)
+                if boxes:
+                    found[v] = (p, boxes)
+                    break
+        else:
+            return None
+    p0, b0 = found[parts[0]]
+    return p0, b0, {v: pg for v, (pg, _) in found.items()}
+
+
 def validate(findings: list[dict], doc: pymupdf.Document) -> list[dict]:
     """D1 + D2 + D3. Mutates and returns `findings`."""
     npages = len(doc)
@@ -84,6 +109,10 @@ def validate(findings: list[dict], doc: pymupdf.Document) -> list[dict]:
                 if boxes:
                     hit = (p, boxes)
                     break
+        variants = None if hit else locate_variants(doc, ev, f["page"])
+        if variants:
+            hit = variants[:2]
+            f["variant_pages"] = variants[2]
         if hit:
             if hit[0] != f["page"]:
                 f.setdefault("page_as_cited", f["page"])
