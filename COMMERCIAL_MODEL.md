@@ -129,3 +129,11 @@ WTGTM is a 1-person business (Owner fact) → 8 TMPs/month is a small-firm bench
 | Large (~100/mo) | Enterprise (from $9,990 + 60 × ≤$249.75) | ≈ $24,975 | 10% | 1 | ≈ $300k |
 | Total | | | | ≈ 12 | ≈ $819k |
 Small 1-person firms are the strongest fit (no in-house peer reviewer). Large firms may have in-house checking and check only complex TMPs. Validate firm-size mix against the Main Roads list.
+
+## MKT-05 — WA firm-size investigation (2026-11-25)
+- Main Roads registered list, "Traffic Management Company" type: **56** entries extracted (earlier 60 was an AI count; 56 is the line-by-line extraction). 3 have interstate head offices (Woolloongabba, Narre Warren North, Bundoora); 20 carry "conditions applicable" (mostly 2026–27 new registrations).
+- Firmographic sample (Firecrawl enrichment, 26 credits): Altus Traffic ≈380 staff (national); Carrington's 201–500; Contraflow ≈85. 2 matches rejected (NZ firms of same name); 5 not found (likely small).
+- **Key finding (Verified fact):** WTGTM (Way to Go Traffic Management) is **not** on the registered list. Registration covers companies *implementing* TM on State roads (crews). 1-person TMP designers like WTGTM are a separate, unregistered population; their number is not published.
+- Revised segmentation (Hypothesis): registered TMCs — large (100+) ~8–12, medium (20–100) ~20–25, small (<20) ~20–25, mostly with in-house designers; plus independent 1–2 person designers ~20–60 (unverified).
+- Small-designer segment (best fit): 20–60 × 25% adoption = 5–15 customers × ≈$28.7k/yr (Professional, 8/mo) ≈ $143k–$430k/yr.
+- Next validation: AWTM-accredited designer count from Main Roads (requires Owner approval to contact a third party); ask WTGTM how many independent designers it knows.
