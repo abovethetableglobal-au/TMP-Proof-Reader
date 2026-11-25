@@ -428,6 +428,10 @@ def _run_check(check_id: int) -> None:
             _finish_timing(chk, timer)
             db.commit()
         except Exception as e:  # any failure: no credit (A-05 rule 4)
+            import traceback
+            print(f"TMP Check portal: check {check_id} FAILED after stage "
+                  f"'{timer.stages[-1][0] if timer.stages else 'start'}': {type(e).__name__}: {e}", flush=True)
+            traceback.print_exc()
             db.rollback()
             chk = db.get(Check, check_id)
             chk.status = CheckStatus.failed
