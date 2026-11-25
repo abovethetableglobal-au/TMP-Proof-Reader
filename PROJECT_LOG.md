@@ -338,3 +338,4 @@ Draft email to Tara (check 19 review request): docs/comms/EMAIL_Tara_check19_BC0
 Tally form 'TMP Check — Reviewer Feedback' (id 4aKMkY) created as unpublished draft in Owner's Tally workspace; edit: https://tally.so/forms/4aKMkY/edit. Responses are stored by Tally (cloud, offshore) — F-numbers only, no TMP text. Owner to review and publish.
 A-43 insurance obtained (details to record), A-44 portal prices updated to $349/$1,657.75/$3,141.00, A-45 Stripe account approved (integration after G5). 58 tests pass.
 Stripe account supplied by Owner: acct_1UfZfBGdViWULINo "TMP Proof Reader", separate from The Long Table Company account (legal entity/ABN not yet confirmed). Integration on hold pending Option A approval (A-09 conflict).
+A-46: Stripe Option A approved (sandbox build now, live after G5). Next session runs the Stripe planner.

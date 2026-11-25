@@ -13,6 +13,11 @@
 **In progress**
 - Owner re-running BC 016 with AI passes A–D ×2 on the PC portal (`python -m uvicorn src.portal.app:app --port 8000`).
 
+**Stripe (A-46) — start here in the next session**
+1. Stripe plugin is installed (user scope). Confirm the `stripe_implementation_planner` tool; if missing, add the MCP server https://mcp.stripe.com and authenticate.
+2. Run the planner with: Payments + Billing; AUD; GST not registered (A-04); Starter $49.95/mo; single check $349, 5-pack $1,657.75, 10-pack $3,141.00 (A-32/A-33); credits valid 12 months; append-only ledger; failed check = no charge; Python/FastAPI portal.
+3. Request the sandbox secret key (`sk_test_…`) for api.stripe.com via the secure credential form. Never live keys before G5.
+
 **Next 3 steps**
 1. Owner: when BC 016 finishes, send the findings.json, report and annotated PDFs, then `Remove-Item Env:TMPCHECK_AI_PASSES`.
 2. AI-PM: review the BC 016 outputs and timings; confirm DEF-C14 fixes; Owner re-runs check 14 (SU 025).
