@@ -193,7 +193,12 @@ def billing_checkout(request: Request, sku: str = Form(...), ctx: Ctx = Depends(
         raise HTTPException(404, "Online payment is not available.")
     if payments.product(sku) is None:
         raise HTTPException(400, "Unknown product.")
-    url = payments.create_checkout(db, ctx.org, ctx.user.email, sku, str(request.base_url).rstrip("/"))
+    try:
+        url = payments.create_checkout(db, ctx.org, ctx.user.email, sku, str(request.base_url).rstrip("/"))
+    except Exception as exc:   # Stripe/network error: log it, show a plain message
+        log(db, ctx, "stripe_checkout_failed", sku, f"{type(exc).__name__}: {exc}"[:500])
+        print(f"Stripe checkout failed: {type(exc).__name__}: {exc}", flush=True)
+        raise HTTPException(502, f"Payment page could not be opened: {getattr(exc, 'user_message', None) or type(exc).__name__}")
     log(db, ctx, "stripe_checkout_started", sku)
     return RedirectResponse(url, status_code=303)
 

@@ -105,3 +105,20 @@ def test_checkout_params(db, monkeypatch):
     assert org.stripe_customer_id == "cus_test"
     payments.create_checkout(db, org, "a@x", "SUB-MONTHLY", "http://t")
     assert seen["mode"] == "subscription" and seen["line_items"][0]["price_data"]["recurring"] == {"interval": "month"}
+
+
+def test_invalid_email_not_sent(db, monkeypatch):
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_abc")
+    sent = {}
+
+    class Fake:
+        def __init__(self, key):
+            self.v1 = self; self.customers = self; self.checkout = self; self.sessions = self
+        def create(self, params):
+            if "line_items" in params:
+                return type("S", (), {"url": "u"})
+            sent.update(params); return type("C", (), {"id": "cus_x"})
+
+    monkeypatch.setattr(payments.stripe, "StripeClient", Fake)
+    payments.create_checkout(db, db.get(dbm.Organisation, 1), "stripe-test@localhost", "CR-1", "http://t")
+    assert "email" not in sent

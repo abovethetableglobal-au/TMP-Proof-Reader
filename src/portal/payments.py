@@ -9,6 +9,7 @@ ledger (credits) or sets the organisation's subscription status. Prices come
 from ``config/portal.yaml`` (CLAUDE.md §5), sent as ``price_data``.
 """
 import os
+import re
 from datetime import timedelta
 
 import stripe
@@ -62,8 +63,10 @@ def product(sku: str) -> dict | None:
 def _customer(client: stripe.StripeClient, db: Session, org: Organisation, email: str) -> str:
     if org.stripe_customer_id:
         return org.stripe_customer_id
-    cust = client.v1.customers.create(params={"name": org.name, "email": email,
-                                              "metadata": {"org_id": str(org.id)}})
+    params = {"name": org.name, "metadata": {"org_id": str(org.id)}}
+    if re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email or ""):
+        params["email"] = email          # Stripe rejects addresses such as user@localhost
+    cust = client.v1.customers.create(params=params)
     org.stripe_customer_id = cust.id
     db.commit()
     return cust.id
