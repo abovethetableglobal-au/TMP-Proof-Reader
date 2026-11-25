@@ -1,0 +1,62 @@
+# Expected-risk catalogue for TMP risk-assessment review (pass E)
+# Version 0.2 DRAFT — AI-PM 2026-11-24. Not yet reviewed by accredited reviewer (Tara).
+# Primary source: Austroads, Guide to Temporary Traffic Management Part 2: Traffic Management Planning,
+#   AGTTM02-26, Edition 1.2 (26 May 2026), Appendix B, Table B.1 "List of common issues and associated risks", pp 51–53.
+#   Copy supplied by Owner 2026-11-24 (free public download). Items paraphrased, not reproduced.
+#   EDITION CHECK 2026-11-24: Table B.1 compared word-for-word with WA-adopted Ed 1.1 (AGTTM02-21,
+#   Sept 2021, App B Table B1, pp 49–52): content identical (layout/punctuation only). Cite Ed 1.1 (VC-01).
+#   Austroads states Table B.1 is indicative only, not exhaustive and not a minimum requirement →
+#   a missing item is a Query (citing B.1 as a prompt), never a compliance finding (CLAUDE.md §2).
+# Supplementary items (source: AI-PM) cover worker-safety hazards not in Table B.1; uncited → Query.
+version: 0.3
+status: draft
+source:
+  id: SRC-AGTTM02
+  name: Guide to Temporary Traffic Management Part 2 — Traffic Management Planning
+  edition: AGTTM02-21 Ed 1.1 (Sept 2021) — WA-adopted; identical in AGTTM02-26 Ed 1.2
+  clause: Appendix B, Table B1 (Ed 1.1 pp 49–52; Ed 1.2 pp 51–53); see also §3.3 Risk assessment, §4.5 Risk management
+risks:
+  # --- AGTTM02-26 Table B.1 ---
+  - {id: B1-01, group: Vulnerable road users, hazard: "Pedestrians, cyclists, people with disability, children, prams, mobility-aid users cannot pass the site safely on existing paths", triggers: [footpath or shared path affected, pedestrians or cyclists present], src: B.1}
+  - {id: B1-02, group: Vulnerable road users, hazard: "Detour too long for people walking or cycling", triggers: [path closure, pedestrian detour], src: B.1}
+  - {id: B1-03, group: Path users, hazard: "Temporary path direction unclear or illegible", triggers: [temporary or diverted path], src: B.1}
+  - {id: B1-04, group: Path users, hazard: "Temporary path surface unsuitable for prams, wheelchairs or vision-impaired users", triggers: [temporary path], src: B.1}
+  - {id: B1-05, group: Path users, hazard: "Pedestrian crossing relocated to an unfamiliar position", triggers: [crossing moved or affected], src: B.1}
+  - {id: B1-06, group: School crossings, hazard: "School crossing within site needs relocation; safe crossing practice compromised", triggers: [school or school crossing nearby], src: B.1}
+  - {id: B1-07, group: Site/location, hazard: "Safe access to the worksite compromised", triggers: [any worksite], src: B.1}
+  - {id: B1-08, group: Site/location, hazard: "Excessive worksite length or additional work areas (incl. rural)", triggers: [long work zone, multiple work areas], src: B.1}
+  - {id: B1-09, group: Traffic impacts, hazard: "Unacceptable queues and delays", triggers: [lane closure, stop/slow, peak-period works, traffic volumes stated], src: B.1}
+  - {id: B1-10, group: Traffic impacts, hazard: "Detour of major/multi-lane road traffic overloads surrounding network or causes delay", triggers: [road closure, detour], src: B.1}
+  - {id: B1-11, group: Traffic impacts, hazard: "Works interfere with permanent traffic signals; controls illegible", triggers: [works at or near signals], src: B.1}
+  - {id: B1-12, group: Traffic impacts, hazard: "Turning lane fully closed; road layout unclear to drivers", triggers: [turning lane closure], src: B.1}
+  - {id: B1-13, group: Traffic impacts, hazard: "Low-visibility operation compromises approach sight distance", triggers: [night works, dawn/dusk works], src: B.1}
+  - {id: B1-14, group: Traffic impacts, hazard: "Incorrectly placed devices compromise approach sight distance", triggers: [any TGS with devices on road], src: B.1}
+  - {id: B1-15, group: Lane availability, hazard: "Remaining lanes cannot carry the traffic volume", triggers: [lane closure on high-volume or multi-lane road], src: B.1}
+  - {id: B1-16, group: Times of operation, hazard: "Work at inappropriate times of day", triggers: [work hours stated, peak periods, restricted hours], src: B.1}
+  - {id: B1-17, group: Times of operation, hazard: "Staff fatigue where TMP implemented >14 h in one shift", triggers: [shift or TM implementation longer than 14 hours], src: B.1}
+  - {id: B1-18, group: Speed choices, hazard: "Temporary speed limit not credible; road users travel at inappropriate speed", triggers: [temporary speed zone, posted speed stated], src: B.1}
+  - {id: B1-19, group: Specifications and standards, hazard: "Incorrect or superseded specifications, standards or policies applied", triggers: [standards cited], src: B.1}
+  - {id: B1-20, group: Stakeholders, hazard: "Stakeholders not consulted; opposition to project", triggers: [stakeholders, residents, businesses affected], src: B.1}
+  - {id: B1-21, group: Environmental, hazard: "Vegetation obscures signs and devices", triggers: [vegetation, trees, verge planting], src: B.1}
+  - {id: B1-22, group: Environmental, hazard: "Shadow, fog or sun glare (east–west roads) reduces device visibility", triggers: [east-west alignment, early morning or late afternoon works], src: B.1}
+  - {id: B1-23, group: Environmental, hazard: "Bad weather or smoke reduces visibility or changes road surface", triggers: [multi-day or outdoor works], src: B.1}
+  - {id: B1-24, group: Environmental, hazard: "Existing signs or infrastructure conflict with temporary signs", triggers: [existing signage noted], src: B.1}
+  - {id: B1-25, group: Personnel access, hazard: "Unsafe construction-vehicle exit/entry to traffic stream", triggers: [plant, trucks, deliveries], src: B.1}
+  - {id: B1-26, group: Emergency vehicle access, hazard: "Delay to emergency services through site or attending site", triggers: [any lane/road closure], src: B.1}
+  - {id: B1-27, group: Public transport, hazard: "Bus/tram stops or rail crossings within traffic control zone; services disrupted", triggers: [bus route or stop, rail crossing], src: B.1}
+  - {id: B1-28, group: Adjoining development, hazard: "Access to adjoining properties compromised", triggers: [driveways, property accesses], src: B.1}
+  - {id: B1-29, group: Rural, hazard: "Stock crossing disrupted", triggers: [rural area, stock crossing], src: B.1}
+  - {id: B1-30, group: Road surface, hazard: "Existing road surface unsafe for worksite", triggers: [poor pavement, unsealed shoulder], src: B.1}
+  - {id: B1-31, group: Parking, hazard: "Loss of parking within worksite", triggers: [parking bays within site], src: B.1}
+  - {id: B1-32, group: Adjoining road work, hazard: "Interaction with nearby works causes excessive queues/delays", triggers: [other works nearby], src: B.1}
+  - {id: B1-33, group: Heavy/oversize vehicles, hazard: "Lane width, turning or vertical clearance inadequate for trucks/oversize loads", triggers: [heavy vehicle or freight route, restricted lane width], src: B.1}
+  - {id: B1-34, group: Road manager requirements, hazard: "Date/day restrictions (school holidays, events) not addressed", triggers: [road manager restrictions, works near schools or events], src: B.1}
+  # --- Supplementary (AI-PM, uncited; for reviewer confirmation) ---
+  - {id: SUP-01, group: Worker safety, hazard: "Errant vehicle enters work area / strikes workers", triggers: [workers on or beside carriageway], src: AI-PM}
+  - {id: SUP-02, group: Worker safety, hazard: "Inadequate lateral clearance between traffic and workers", triggers: [verge works beside live lane], src: AI-PM}
+  - {id: SUP-03, group: Worker safety, hazard: "Traffic controller struck by vehicle", triggers: [stop/slow, manual traffic control], src: AI-PM}
+  - {id: SUP-04, group: Worker safety, hazard: "Reversing plant strikes workers or public", triggers: [plant on site], src: AI-PM}
+  - {id: SUP-05, group: Worker safety, hazard: "Open excavation / drop-off unprotected", triggers: [trenching, excavation, pits], src: AI-PM}
+  - {id: SUP-06, group: Worker safety, hazard: "Overhead/underground service strike", triggers: [excavation, EWP, crane], src: AI-PM}
+  - {id: SUP-07, group: Worker safety, hazard: "Exposure during device set-up and pack-down", triggers: [any TGS with devices on road], src: AI-PM}
+  - {id: SUP-08, group: After hours, hazard: "Devices displaced or site unattended out of hours", triggers: [devices left overnight, multi-day works], src: AI-PM}

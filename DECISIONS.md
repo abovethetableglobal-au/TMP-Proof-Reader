@@ -47,6 +47,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
+| P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now; revisit after pilot benchmark. TMP generation conflicts with §2 (no design) | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |

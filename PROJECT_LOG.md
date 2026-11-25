@@ -264,3 +264,17 @@ A-36: quotes approved; providers shortlisted. Owner to submit quote forms (requi
 Legal drafts: docs/legal/TERMS_OF_SERVICE_DRAFT.md, PRIVACY_POLICY_DRAFT.md v0.1 — Ready for user review; lawyer review required.
 A-37: Australian-region hosting approved.
 A-38 offshore disclosure, A-39 credit lapse/cancel, A-40 pilot $145. R-27 opened.
+## 2026-11-24 — FB-01 reviewer feedback (SU025) + external research received
+| Record Tara feedback (`docs/reviews/FB-01_Tara_SU025.md`) | AI-PM | Production complete | — | — |
+| Confirm whether Q3 answer means F-001/F-002 are wrong | Owner → Tara | Awaiting input | Tara Q5 reply | Owner asks Tara |
+| Ground site-dependent Criticals in TMP text (else Query) | AI-PM | Not started | Confirmation above | Change C-pass prompt + evidence validator |
+| Copilot market research (TMP volumes, RTM count) | Copilot (via Owner) | Under review | — | Verify RTM count against MRWA register |
+| BENCH-02 | AI-PM | Blocked | API key env var; re-upload SU026 files | — |
+Copilot research classification: TMP annual volume — no source (Copilot's own "20,000+" is an unverified estimate); RTM ~40–50 — source-supported, unverified by AI-PM; City of Perth ~300 permits/month — unverified. Copilot's "pivot to RTM reviewers / AI-generated TMPs" is a scope change → P-21.
+## 2026-11-24 — Pass E: risk assessment review
+| Pass E in `llm_checks.py` (missing / inapplicable risks, controls not carried through, rating checks) | AI-PM | Production complete — not run | API key | Run in BENCH-02 |
+| `compliance/risk_catalogue.yaml` v0.1 (18 expected hazards) | AI-PM | Ready for user review | — | Tara review: add/remove/reword hazards and triggers |
+Trigger: Tara feedback — risk analysis is the most important part. In scope (document QA of an existing section); no design or site assumptions.
+| Realign risk catalogue to AGTTM Part 2 (AGTTM02-26 Ed 1.2) Appendix B "TMP Risk Considerations Checklist" | AI-PM | Awaiting input | Owner downloads free PDF (site blocks automated download) | Map items, cite source/edition/appendix |
+| Risk catalogue v0.2: 34 items from AGTTM02-26 Table B.1 + 8 supplementary worker-safety items | AI-PM | Ready for user review | Tara review; Ed 1.1 comparison | Owner supplies AGTTM02-21 (Ed 1.1) |
+| Ed 1.1 vs Ed 1.2 Table B1 comparison | AI-PM | Quality checked — word-for-word identical (765/765 words; layout only) | — | Catalogue v0.3 cites WA-adopted Ed 1.1 |

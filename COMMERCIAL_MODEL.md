@@ -72,3 +72,12 @@ Assumes 10 comparable checks in one month and $405 is representative. $675 (9 hr
 
 **Measured 2026-11-20 (OWNER-FT-02):** AI processing US$3.33 for SU026 (61 pp, passes A–D) ≈ A$5. Within the $2–15 assumption.
 **Measured 2026-11-20 (BENCH-05, A-27 two-run default):** US$4.86 (≈ A$7.40) per 61-page TMP.
+## Revenue scenario — 2% of WA TMPs checked (ESTIMATE, 2026-11-24)
+WA annual TMP volume is unverified (no public data; FB-01 triage), so three volume assumptions are used. Each subscriber is assumed to do 4 checks/month (48/yr); credits are assumed bought as 10-packs ($134.10). Contribution per credit ≈ $115–128 after AI ($3–16) and ~2.5% payment fees.
+
+| WA TMPs/yr (assumption) | Checks/yr (2%) | Subscribers | Subscription $/yr | Credits $/yr | Total $/yr | ≈ $/month | Contribution $/yr |
+|---|---|---|---|---|---|---|---|
+| 10,000 | 200 | 4 | 2,398 | 26,820 | 29,218 | 2,435 | 25–28k |
+| 20,000 | 400 | 8 | 4,795 | 53,640 | 58,435 | 4,870 | 51–56k |
+| 40,000 | 800 | 17 | 10,190 | 107,280 | 117,470 | 9,789 | 102–112k |
+Excludes Owner time, marketing, support, and reviewer cost (borne by customer). Above ~$75k turnover, GST registration review is triggered (R-10).
