@@ -151,3 +151,4 @@ A-24: subscription tiers and no-rollover approved; P-12 closed.
 |---|---|---|---|---|
 | docs/LAUNCH_PLAN.md | AI-PM | Awaiting approval | Owner | P-13–P-15 |
 P-05 closed by A-22 (5-pack offered at 5%).
+A-25: launch plan approved as working baseline; date provisional.

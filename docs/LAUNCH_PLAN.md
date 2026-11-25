@@ -1,4 +1,4 @@
-# Launch Plan — TMP Check to live paid service · v0.1 (2026-11-25) · Status: Awaiting approval
+# Launch Plan — TMP Check to live paid service · v0.1 (2026-11-25) · Status: User accepted as working baseline (A-25) — dates provisional, changes via change control
 
 Tier: Significant. Review: simulated three-perspective (§5.3). Target live launch: **2027-05-17** (after G8), soft launch to WTGTM from G7.
 

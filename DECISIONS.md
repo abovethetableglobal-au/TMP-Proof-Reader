@@ -3,6 +3,7 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
+| A-25 | Launch plan v0.1 approved as working baseline; target 2027-05-17 is provisional and may change via change control (§20.1). Resolves P-13 | Owner | 2026-11-25 | Owner |
 | A-24 | Subscription tiers approved: Professional $1,495/mo (5 incl., extra $299); Business $3,995/mo (15 incl., extra $269); Enterprise from $9,990/mo (up to 40); no rollover of unused checks. Single checks and 5/10 packs require Starter $49.95/mo. Resolves P-12 | Per-check ladder below pack rates | 2026-11-25 | Owner |
 | A-23 | Base per-check price set at **$349** (5-pack $1,657.75; 10-pack $3,141.00) | Tara: manual check 5+ h | 2026-11-25 | Owner |
 | A-22 | Pricing structure v2: tiered subscriptions with included checks + overage; value packs 5 checks −5%, 10 checks −10%. Supersedes $149 list (A-03–A-06). Base per-check price and tier prices still to be set (P-12) | Tara value feedback; margin protection vs unlimited | 2026-11-25 | Owner |
@@ -31,7 +32,6 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-13 | Approve launch plan (docs/LAUNCH_PLAN.md), target live 2027-05-17 | Approve | G8 |
 | P-14 | Obtain quotes: lawyer (ToS/privacy), broker (PI + cyber) — no commitment | Approve | G6 |
 | P-15 | Hosting in Australian cloud region | Approve | G6 |
 | P-06 | Purchase licensed copy of AS 1742.3:2019 (and possibly AGTTM parts are free from Austroads) | Approve purchase (expected low hundreds AUD — to be quoted) | G3 |
