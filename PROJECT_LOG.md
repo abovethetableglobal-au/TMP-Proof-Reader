@@ -13,7 +13,7 @@ Check 15 was run on a TMP Check report, not a TMP. Its findings 256/257 (a "FINA
 ## 2026-11-25 — G4 pipeline defect fixes (AI-PM)
 **Completed**
 - Key check (HANDOVER step 1): `ANTHROPIC_API_KEY` **not set** in session (`False`). Network secrets cannot be used for api.anthropic.com; Owner to enter the value as an environment variable. LLM passes A–D **Blocked**.
-- Owner confirmed SU_025 Kanimbla Road is historical (DECISIONS A-21).
+- Owner confirmed SU_025 Kanimbla Road is historical (DECISIONS A-28).
 - New `src/tmpcheck/postprocess.py`, wired into `llm_checks.py` and `det_checks.py`. Fixes from the prior draft-report review:
   - D1 validator now uses the same word-level locator as annotation; unlocatable quotes → Query / Unable to verify (bbox stored when found).
   - D2 VISUAL-only Critical findings held as Query (`original_severity`, `hold_reason` kept for reviewer).
@@ -22,7 +22,7 @@ Check 15 was run on a TMP Check report, not a TMP. Its findings 256/257 (a "FINA
   - D5 DUP-SENT: TGS sheets detected by title block (not only landscape) and excluded; category changed A Proofreading → C Completeness (RQ-06).
 - Tests: `tests/test_postprocess.py` (synthetic PDF), 6/6 pass.
 - SU_025 received (git-ignored). D5 refined: SU_025 TGS sheets are portrait Letter pages without 'TGS' text; detection now uses title-block fields. Deterministic run: DUP-SENT 9→3, PG-HEADER 3→1.
-- Owner approved ≤US$5 API spend (A-22). Key added by Owner but not visible in this session (env vars load at session start) — run deferred to next session.
+- Owner approved ≤US$5 API spend (A-29). Key added by Owner but not visible in this session (env vars load at session start) — run deferred to next session.
 **Not done**
 - D6 (PDF report rendering: ghost table shading/borders, orphaned headers): no report renderer in the repository — Awaiting input (source of the reviewed draft report).
 - G4 passes A–D on SU_025 and cost per pass: Blocked (API key; PDF not yet uploaded).
