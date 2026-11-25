@@ -435,8 +435,16 @@ def _run_check(check_id: int) -> None:
             db.rollback()
             chk = db.get(Check, check_id)
             chk.status = CheckStatus.failed
-            chk.failure_reason = str(e) if isinstance(e, UploadError) else \
-                "Processing failed. No credit was used. Please try again or contact support."
+            if isinstance(e, UploadError):
+                chk.failure_reason = str(e)
+            elif type(e).__name__ == "AuthenticationError":
+                chk.failure_reason = ("The AI checking service rejected the portal's API key. No credit was used. "
+                                      "An administrator must update the key, then upload again.")
+            elif type(e).__name__ in ("RateLimitError", "OverloadedError", "InternalServerError", "APIConnectionError"):
+                chk.failure_reason = ("The AI checking service was busy or unreachable. No credit was used. "
+                                      "Please upload again in a few minutes.")
+            else:
+                chk.failure_reason = "Processing failed. No credit was used. Please try again or contact support."
             timer.lap("Failed")
             _finish_timing(chk, timer)
             db.commit()
