@@ -1,6 +1,7 @@
 # HANDOVER — TMP Check (current state)
 
 _Last updated: 2026-11-25 by AI-PM — short-form restart notes: `handovers/attg.md`_
+_Last updated: 2026-11-25 by AI-PM_
 
 ## Current state
 | Gate | Status |
@@ -10,6 +11,7 @@ _Last updated: 2026-11-25 by AI-PM — short-form restart notes: `handovers/attg
 | G3 Compliance framework | User accepted, conditional (A-17) — Tara accreditation details + review pack due 2026-11-27 |
 | G4 Working prototype | In progress — deterministic checks done; LLM passes coded; API key added (loads in a new session) |
 | G4 Working prototype | In progress — deterministic checks done (10/110 vs REF-01, BENCH-02); LLM passes coded; scorer built; awaiting API key in container |
+| G4 Working prototype | In progress — LLM passes run on REF-01-SRC: recall 86% (95/110), US$2.62/check (BENCH-06); precision not yet adjudicated |
 
 ## Repository
 Private: https://github.com/abovethetableglobal-au/TMP-Proof-Reader (branch `main`). Cloud environment: **TMP-Proof-Reader** (personal).
@@ -55,6 +57,11 @@ Stage plan: `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` §5. S1 done; next S2 (accou
 4. Run: `python3 -m src.tmpcheck.llm_checks customer-docs/wtgtm-2026-11-20/SU026_redacted.pdf customer-docs/wtgtm-2026-11-20/out/llm.json`
 5. Score with `src.tmpcheck.score` (commands in `docs/reviews/BENCH-02`); adjudicate unmatched findings; record in TEST_REGISTER and BENCH-02.
 6. Record actual cost per check in COMMERCIAL_MODEL.md.
+1. Confirm key: `python3 -c "import os;print(bool(os.environ.get('TMPCHECK_ANTHROPIC_API_KEY')))"` → `True`.
+2. Customer files are not in Git: SU026 pair → `customer-docs/wtgtm-2026-11-20/`; check 14/15 outputs → `customer-docs/su025-check14/` (re-upload if needed).
+3. Owner/WTGTM: adjudicate the ~55 additional BENCH-06 findings and the disputed Note 2 cone spacing item → record precision in TEST_REGISTER L-06.
+4. Fix DEF-L06-1 (style variants downgraded), DEF-L06-3 (punctuation rules); re-run once to measure variance between runs.
+5. Portal fixes are on branch `claude/portal-postprocess-fixes` (portal + `g4-postprocess-fixes` merged); see PROJECT_LOG 2026-11-25.
 
 ## Outstanding
 See DECISIONS.md (pending), RISKS.md, PROJECT_PLAN.md.

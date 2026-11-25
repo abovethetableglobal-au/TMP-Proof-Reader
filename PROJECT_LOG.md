@@ -148,7 +148,7 @@ Observation: the MRWA template itself contains a typo in a heading ('Existing Tr
 |---|---|---|---|---|
 | Deterministic checks v0.2 on REF-01 source TMP | AI-PM | Quality checked | — | — |
 | Adjudicate 3 repeated-sentence findings | Owner | User accepted — ignore (excluded from scoring) | — | — |
-| LLM pass (categories A, B, D) | AI-PM | Blocked | ANTHROPIC_API_KEY env var + new session | Owner adds key |
+| LLM pass (categories A, B, D) | AI-PM | Blocked | TMPCHECK_ANTHROPIC_API_KEY env var + new session (ANTHROPIC_API_KEY is withheld by cloud runtime) | Owner adds key |
 Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~95 of ~105 reference items need the LLM pass.
 
 ## 2026-11-20 — LLM checking passes coded (G4)
@@ -299,3 +299,10 @@ Trigger: Tara feedback — risk analysis is the most important part. In scope (d
 | Deterministic engine vs full reference | AI-PM | Quality checked | — | 10/110 recall, 100% precision |
 | LLM passes A–D on SU026 + scoring + cost | AI-PM | Blocked | API key | Run commands in BENCH-02 |
 Note: network secrets cannot carry a Claude API key (Anthropic hosts excluded); environment variable is the only route.
+## 2026-11-25 — BENCH-06: LLM passes run on REF-01-SRC
+| Run `llm_checks` A–D on REF-01-SRC | AI-PM | Production complete | — | — |
+| Score vs REF-01 (110 rows) | AI-PM | Quality checked (simulated review) | — | Owner/WTGTM adjudicate additional findings |
+| Record actual cost | AI-PM | Production complete — US$2.62 per run (COMMERCIAL_MODEL) | — | — |
+| Review portal outputs (checks 14 and 15) | AI-PM | Quality checked | — | Fixes on `claude/portal-postprocess-fixes` |
+Results: recall 95/110 (86%): A 79%, B 96%, C 92%, D 89%. 0 Critical, 23 quotes not found → Query, 278 raw findings (duplicates across passes). Category A is below the provisional 90% target. Defects DEF-L06-1 to DEF-L06-3 logged.
+Check 15 was run on a TMP Check report, not a TMP (invalid as a TMP check, but useful as a self-QA of the report generator). Check 14 (SU 025, 64 pp, US$6.10): both Criticals supported by the TMP text; 167/169 quotes present; defects listed in TEST_REGISTER portal entries.
