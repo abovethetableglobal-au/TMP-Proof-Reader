@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-47 | **Stripe Managed Payments off:** TMP Proof Reader remains merchant of record; Checkout sessions pass `managed_payments[enabled]=false` (`stripe.managed_payments: false`). GST position per A-04 unchanged | Owner | 2026-11-25 | Owner |
 | A-46 | **Stripe Option A:** build Payments + Billing integration in Stripe sandbox (test keys) now, on account acct_1UfZfBGdViWULINo "TMP Proof Reader". `payments_enabled: false` and no live keys until G5 (A-09 unchanged). Scope: Starter subscription, single check and 5/10 packs via Checkout, webhooks into the append-only credit ledger | Owner | 2026-11-25 | Owner |
 | A-45 | Stripe account approved; Owner opens it. Payment integration still waits for G5 (A-09). Closes the Stripe item of L5 | Owner | 2026-11-25 | Owner |
 | A-44 | Portal prices set to A-32 ($349 / $1,657.75 / $3,141.00); A-31 to A-33 supersede A-23's $745 5-pack. Manual credit invoicing (A-23) unchanged | Owner | 2026-11-25 | Owner |

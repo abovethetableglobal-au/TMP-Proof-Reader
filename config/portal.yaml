@@ -47,7 +47,7 @@ payments_enabled: false
 stripe:
   mode: test
   sandbox_enabled: true
-  managed_payments: false   # provisional; Owner decision pending (Stripe as merchant of record)
+  managed_payments: false   # A-47: TMP Proof Reader is merchant of record
 
 upload:
   allowed_extensions: [".pdf", ".docx"]
