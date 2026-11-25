@@ -130,3 +130,9 @@ Result: 9/26 template leftovers found, 0 false positives, 1 extra valid issue. ~
 | `src/tmpcheck/llm_checks.py` — passes A (proofreading), B (consistency), C (semantic leftovers), D (TGS drawings, vision) | AI-PM | Production complete — request accepted by SDK and API (401 with dummy key) | API key | Run on REF-01-SRC and score vs ~105 reference findings |
 Design: claude-opus-5-5, effort high, PDF document block cached across passes, Pydantic structured output, evidence validation (unverifiable quotes downgraded to Query), server-side refusal fallback, per-pass cost logging.
 Estimated cost per 61-page TMP (estimate, to be measured): ~US$2–4 for 4 passes.
+
+## 2026-11-25 — Tara feedback: risk ratings and section references
+- Tara (relayed by Owner): check risk ratings against §3.2 and check the TMP section each risk refers to (e.g. rail crossing = TMP §4.2.8).
+- Recorded as RQ-17 (rating vs §3.2 matrix, extends RQ-03) and RQ-18 (hazard → section map, extends RQ-04) in `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md`.
+- Assumption: "3.2" = the risk matrix section of the MRWA TMP template (not the Code's §3.2). Confirm with Tara.
+- Next: build hazard→section map from the public template's §4.2.x headings; implement both checks deterministically; score in BENCH-02.
