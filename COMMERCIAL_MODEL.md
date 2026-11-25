@@ -7,8 +7,8 @@ Base per-check price `P` = **$349** (configuration `pricing.base_check`).
 
 | SKU | Price | Included checks | Notes |
 |---|---|---|---|
-| Starter subscription | $49.95/month | 0 | Platform access; buy checks singly or in packs |
-| Single check | P | 1 | — |
+| Starter subscription | $49.95/month | 0 | Required to buy single checks ($349) and 5/10 packs; platform access |
+| Single check | P | 1 | Starter subscribers only |
 | 5-check value pack | 5 × P × 0.95 | 5 | 5% discount |
 | 10-check value pack | 10 × P × 0.90 | 10 | 10% discount |
 | Professional subscription | $1,495/month | 5/month ($299 each, −14%) | Extra checks $299; includes platform access |
