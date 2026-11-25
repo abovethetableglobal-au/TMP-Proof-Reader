@@ -324,3 +324,6 @@ Note: network secrets cannot carry a Claude API key (Anthropic hosts excluded); 
 | Review portal outputs (checks 14 and 15) | AI-PM | Quality checked | — | Fixes on `claude/portal-postprocess-fixes` |
 Results: recall 95/110 (86%): A 79%, B 96%, C 92%, D 89%. 0 Critical, 23 quotes not found → Query, 278 raw findings (duplicates across passes). Category A is below the provisional 90% target. Defects DEF-L06-1 to DEF-L06-3 logged.
 Check 15 was run on a TMP Check report, not a TMP (invalid as a TMP check, but useful as a self-QA of the report generator). Check 14 (SU 025, 64 pp, US$6.10): both Criticals supported by the TMP text; 167/169 quotes present; defects listed in TEST_REGISTER portal entries.
+## 2026-11-25 — TMP Draft Builder deferred (A-42)
+| `docs/requirements/TMP_DRAFT_BUILDER_OUTLINE.md` v0.1 | AI-PM | Not started (deferred) | 6 paying customers | Raise a change request at the trigger |
+Setup note: the environment setup script did not install `sqlalchemy`; installed `requirements.txt` manually (55 tests pass).

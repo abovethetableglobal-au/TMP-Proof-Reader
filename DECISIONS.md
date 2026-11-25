@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-42 | **TMP Draft Builder deferred (partly resolves P-21):** generating draft TMPs from client or tender requirements (MRWA template, approved TGS library, Canva for visual pages) is future development. Trigger: 6 paying customers. Needs before build: a change request, a liability/legal review, an MRWA copyright licence check and G6 data handling. Outline in `docs/requirements/TMP_DRAFT_BUILDER_OUTLINE.md` | Owner | 2026-11-25 | Owner |
 | A-41 | **Exception to A-16 (resolves P-22, option B):** full AI-assisted check (passes A–D, two runs) approved for the live TMP BC 016 Bon Marche Arcade Perth only. Owner accepts that the TMP owner's consent has not been obtained and that processing is offshore (R-29). Does not extend to other live TMPs; the A-16/G6 rule still applies | Owner instruction | 2026-11-25 | Owner |
 | A-40 | Pilot (G7) price: $145 per check for WTGTM. Resolves P-09 | Owner | 2026-11-25 | Owner |
 | A-39 | Credits: if subscription **lapses** (e.g. failed payment) credits are retained and usable on reactivation (12-month expiry still runs); if customer **cancels**, unused credits are forfeited. Resolves P-07 | Owner | 2026-11-25 | Owner |
@@ -48,7 +49,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now; revisit after pilot benchmark. TMP generation conflicts with §2 (no design) | Post-G6 |
+| P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
 | ID | Assumption | Revisit |
