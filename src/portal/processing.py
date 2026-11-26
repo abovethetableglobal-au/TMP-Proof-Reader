@@ -6,6 +6,7 @@ AI passes run only when TMPCHECK_AI_PASSES is set (e.g. "A,B,C") and ANTHROPIC_A
 otherwise deterministic checks only. Approved AI use: A-16 / A-18 documents only.
 """
 import json
+import threading
 import time
 import os
 import shutil
@@ -112,7 +113,25 @@ def merge(items: list[tuple[str, dict]]) -> tuple[str, dict]:
     merged["related_pages"] = sorted(pages - {merged["page"]})
     srcs = set().union(*(_sources(s, f) for s, f in items))
     merged["_sources"] = sorted(srcs)
+    merged["_runs"] = sorted(set().union(*(_runs(f) for f in fs)))
     return ", ".join(sorted(srcs)), merged
+
+
+def _runs(f: dict) -> set[int]:
+    """AI run numbers that raised this finding (consistency measure, Owner 2026-11-25)."""
+    if "_runs" in f:
+        return set(f["_runs"])
+    return {int(f["run"])} if f.get("run") else set()
+
+
+def confidence(src: str, f: dict, runs: int) -> str | None:
+    """'Rule check' (identical every run), 'Both runs' / 'One run' when the AI ran twice or more."""
+    if "rules" in _sources(src, f):
+        return "Rule check"
+    if runs < 2:
+        return None
+    n = len(_runs(f))
+    return "Both runs" if n >= runs == 2 else f"{n} of {runs} runs" if runs > 2 else "One run"
 
 
 def dedupe(results: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
@@ -184,8 +203,15 @@ def safe_doc_ref(filename: str) -> str:
 
 def create_check(db: Session, org_id: int, filename: str, data: bytes) -> Check:
     ext = validate_upload(filename, data)
-    if services.credit_balance(db, org_id).available < 1:
+    available = services.credit_balance(db, org_id).available
+    if available < 1:
         raise UploadError("You have no credits available. Request credits on the Credits & Billing page.")
+    # Checks already queued or running will each use a credit when their draft is ready: reserve them.
+    pending = db.query(Check).filter(Check.org_id == org_id,
+                                     Check.status.in_([CheckStatus.uploaded, CheckStatus.processing])).count()
+    if pending >= available:
+        raise UploadError(f"All {available} of your credit(s) are reserved by check(s) already in progress. "
+                          "Wait for them to finish or buy more credits.")
     chk = Check(org_id=org_id, doc_ref=safe_doc_ref(filename), filename=Path(filename).name[:300],
                 status=CheckStatus.uploaded)
     db.add(chk)
@@ -227,7 +253,8 @@ def _consume_credit(db: Session, chk: Check) -> None:
             expiry[lot] = services._aware(r.expires_at)
     usable = [lot for lot, q in remaining.items() if q > 0 and lot in expiry and expiry[lot] > now]
     if not usable:
-        raise RuntimeError("No credit available at draft delivery")
+        raise UploadError("No credit was available when the draft was ready, so no report was issued. "
+                          "No credit was used. Buy credits and upload again.")
     lot = min(usable, key=lambda x: expiry[x])
     db.add(CreditLedger(org_id=chk.org_id, lot_id=lot, type=LedgerType.consume, qty=-1, check_id=chk.id,
                         created_by="system", reason="Draft delivered to reviewer (A-24)"))
@@ -285,7 +312,65 @@ def fmt_duration(seconds: float | None) -> str:
     return f"{h} h {m} min" if h else f"{m} min {s} s" if m else f"{s} s"
 
 
+# --- Check queue (Owner 2026-11-25): at most `processing.max_concurrent` checks run at once; the rest wait
+# in upload order (lowest check id first). Waiting checks keep status 'uploaded', shown as "Queued".
+_queue_cond = threading.Condition()
+_queue_waiting: set[int] = set()
+_queue_running = 0
+
+
+def max_concurrent() -> int:
+    return max(1, int((settings().get("processing") or {}).get("max_concurrent", 1)))
+
+
+def queue_position(check_id: int) -> int | None:
+    """1 = next to start. None when the check is not waiting."""
+    with _queue_cond:
+        if check_id not in _queue_waiting:
+            return None
+        return sorted(_queue_waiting).index(check_id) + 1
+
+
+def _queue_enter(check_id: int) -> None:
+    global _queue_running
+    with _queue_cond:
+        _queue_waiting.add(check_id)
+        while _queue_running >= max_concurrent() or check_id != min(_queue_waiting):
+            _queue_cond.wait(timeout=5)
+        _queue_waiting.discard(check_id)
+        _queue_running += 1
+
+
+def _queue_leave() -> None:
+    global _queue_running
+    with _queue_cond:
+        _queue_running -= 1
+        _queue_cond.notify_all()
+
+
+def resume_queued() -> int:
+    """At startup: restart checks that were still waiting when the portal stopped (upload order)."""
+    db = session_factory()
+    try:
+        ids = [c.id for c in db.query(Check).filter(Check.status == CheckStatus.uploaded).order_by(Check.id)]
+    finally:
+        db.close()
+    with _queue_cond:
+        _queue_waiting.update(ids)      # reserve places before the threads start, so order holds
+    for cid in ids:
+        threading.Thread(target=run_check, args=(cid,), daemon=True).start()
+    return len(ids)
+
+
 def run_check(check_id: int) -> None:
+    _queue_enter(check_id)
+    try:
+        _run_check(check_id)
+    finally:
+        _queue_leave()
+
+
+def _run_check(check_id: int) -> None:
     db = session_factory()
     timer = Timer()
     try:
@@ -317,17 +402,19 @@ def run_check(check_id: int) -> None:
                 from src.tmpcheck import llm_checks
                 runs = ai_runs()
                 total = 0.0
-                for r in range(1, runs + 1):   # BENCH-04: repeat runs and combine (grouping removes the overlap)
-                    ai = llm_checks.run(pdf, passes.split(","))
+                # BENCH-04: repeat runs and combine; passes run in parallel after the first (Owner 2026-11-25)
+                parallel = int((settings().get("ai") or {}).get("parallel", 8))
+                for r, ai in enumerate(llm_checks.run_many(pdf, passes.split(","), runs, parallel), 1):
                     total += ai["usd_total"]
                     for code, p in ai["passes"].items():
                         if "usage" in p:
                             timer.add(f"AI run {r} pass {code}", p["usage"]["seconds"])
-                    timer.lap(f"AI run {r} (total)")
                     for p in ai["passes"].values():
                         for f in p.get("findings", []):
+                            f["run"] = r
                             f.setdefault("category", PASS_CATEGORY.get(f.get("pass"), ""))
                             results.append(("ai", f))
+                timer.lap("AI passes (elapsed, parallel)")
                 chk.ai_passes = passes + (f" ×{runs}" if runs > 1 else "")
                 chk.ai_cost_usd = f"{total:.2f}"
 
@@ -354,6 +441,7 @@ def run_check(check_id: int) -> None:
                                action=f.get("action") or f.get("fix") or f.get("suggested_correction"),
                                category=f.get("category", ""), outcome=f.get("outcome", "Potential issue"),
                                rule=f.get("rule") or f.get("rule_id"), source=src, hold_reason=f.get("hold_reason"),
+                               confidence=confidence(src, f, ai_runs() if state == "on" else 1),
                                pages=", ".join(map(str, sorted(_pages(f)))) if f.get("related_pages") else None))
             _consume_credit(db, chk)
             chk.status = CheckStatus.draft_review
@@ -361,11 +449,23 @@ def run_check(check_id: int) -> None:
             _finish_timing(chk, timer)
             db.commit()
         except Exception as e:  # any failure: no credit (A-05 rule 4)
+            import traceback
+            print(f"TMP Check portal: check {check_id} FAILED after stage "
+                  f"'{timer.stages[-1][0] if timer.stages else 'start'}': {type(e).__name__}: {e}", flush=True)
+            traceback.print_exc()
             db.rollback()
             chk = db.get(Check, check_id)
             chk.status = CheckStatus.failed
-            chk.failure_reason = str(e) if isinstance(e, UploadError) else \
-                "Processing failed. No credit was used. Please try again or contact support."
+            if isinstance(e, UploadError):
+                chk.failure_reason = str(e)
+            elif type(e).__name__ == "AuthenticationError":
+                chk.failure_reason = ("The AI checking service rejected the portal's API key. No credit was used. "
+                                      "An administrator must update the key, then upload again.")
+            elif type(e).__name__ in ("RateLimitError", "OverloadedError", "InternalServerError", "APIConnectionError"):
+                chk.failure_reason = ("The AI checking service was busy or unreachable. No credit was used. "
+                                      "Please upload again in a few minutes.")
+            else:
+                chk.failure_reason = "Processing failed. No credit was used. Please try again or contact support."
             timer.lap("Failed")
             _finish_timing(chk, timer)
             db.commit()
@@ -403,7 +503,7 @@ def compliance_sources() -> list[dict]:
 def finding_rows(db: Session, chk: Check) -> list[dict]:
     return [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
              "issue": f.issue, "evidence": f.evidence, "action": f.action, "outcome": f.outcome, "rule": f.rule,
-             "source": f.source, "hold_reason": f.hold_reason, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
+             "source": f.source, "confidence": f.confidence, "hold_reason": f.hold_reason, "disposition": f.disposition, "reviewer_note": f.reviewer_note}
             for f in db.query(Finding).filter_by(check_id=chk.id).all()]
 
 

@@ -54,6 +54,7 @@ class Organisation(Base):
     subscription_status: Mapped[SubscriptionStatus] = mapped_column(
         Enum(SubscriptionStatus), default=SubscriptionStatus.none)
     subscription_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(64))   # A-46, test mode only before G5
 
 
 class User(Base):
@@ -126,7 +127,8 @@ class Finding(Base):
     rule: Mapped[str | None] = mapped_column(String(60))
     source: Mapped[str] = mapped_column(String(60), default="rules")  # which checks raised it, e.g. "AI C, rules"
     pages: Mapped[str | None] = mapped_column(String(300))      # all pages the issue affects, e.g. "10, 59, 60"
-    hold_reason: Mapped[str | None] = mapped_column(Text)   # why a finding was held as Query (DEF-C19-1)
+    hold_reason: Mapped[str | None] = mapped_column(Text)
+    confidence: Mapped[str | None] = mapped_column(String(30))   # 'Both runs' | 'One run' | 'Rule check' (Owner 2026-11-25)   # why a finding was held as Query (DEF-C19-1)
     disposition: Mapped[str] = mapped_column(String(16), default="pending")   # pending|accepted|edited|rejected
     reviewer_note: Mapped[str | None] = mapped_column(Text)
     dispositioned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

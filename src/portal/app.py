@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 
 from urllib.parse import quote
 
-from . import auth, processing, services
+from . import auth, payments, processing, services
 from .config import RULES_DIR, money, price_label, settings
 from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
 
@@ -34,6 +34,8 @@ async def lifespan(_app):
     if n := processing.recover_interrupted():
         print(f"TMP Check portal: {n} interrupted check(s) marked as failed (no credit used).", flush=True)
     print("TMP Check portal:", processing.ai_status()[1], flush=True)
+    if n := processing.resume_queued():
+        print(f"TMP Check portal: {n} queued check(s) resumed in upload order.", flush=True)
     yield
 
 
@@ -41,7 +43,8 @@ app = FastAPI(title="TMP Check", docs_url=None, redoc_url=None, lifespan=lifespa
 
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 templates = Jinja2Templates(directory=HERE / "templates")
-templates.env.globals.update(money=money, price_label=price_label, cfg=settings)
+templates.env.globals.update(money=money, price_label=price_label, cfg=settings,
+                             stripe_sandbox=payments.sandbox_enabled)
 # Portable date format (strftime "%-d" is not supported on Windows)
 templates.env.filters["dmy"] = lambda d: f"{d.day} {d:%b %Y}" if d else ""
 templates.env.filters["duration"] = processing.fmt_duration
@@ -180,7 +183,37 @@ def billing(request: Request, ctx: Ctx = Depends(current), db: Session = Depends
     products = [p for p in settings()["credit_products"] if p["offered"]]
     return render(request, "pages/billing.html", "billing", ctx,
                   credits=services.credit_balance(db, ctx.org.id), products=products,
-                  history=services.ledger_history(db, ctx.org.id))
+                  history=services.ledger_history(db, ctx.org.id),
+                  paid=request.query_params.get("paid") == "1")
+
+
+@app.post("/billing/checkout")
+def billing_checkout(request: Request, sku: str = Form(...), ctx: Ctx = Depends(checked),
+                     db: Session = Depends(get_db)):
+    """A-46: Stripe Checkout in test mode only. Live payments wait for G5 (A-09)."""
+    if not payments.sandbox_enabled():
+        raise HTTPException(404, "Online payment is not available.")
+    if payments.product(sku) is None:
+        raise HTTPException(400, "Unknown product.")
+    try:
+        url = payments.create_checkout(db, ctx.org, ctx.user.email, sku, str(request.base_url).rstrip("/"))
+    except Exception as exc:   # Stripe/network error: log it, show a plain message
+        log(db, ctx, "stripe_checkout_failed", sku, f"{type(exc).__name__}: {exc}"[:500])
+        print(f"Stripe checkout failed: {type(exc).__name__}: {exc}", flush=True)
+        raise HTTPException(502, f"Payment page could not be opened: {getattr(exc, 'user_message', None) or type(exc).__name__}")
+    log(db, ctx, "stripe_checkout_started", sku)
+    return RedirectResponse(url, status_code=303)
+
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
+    try:
+        event = payments.parse_event(await request.body(), request.headers.get("stripe-signature"))
+    except payments.PaymentsUnavailable:
+        raise HTTPException(503, "Webhook not configured.")
+    except Exception:
+        raise HTTPException(400, "Invalid signature.")
+    return {"result": payments.handle_event(db, event)}
 
 
 def load_rules() -> list[dict]:
@@ -247,7 +280,8 @@ def check_detail(check_id: int, request: Request, ctx: Ctx = Depends(current), d
 
 @app.get("/checks/{check_id}/status")
 def check_status(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
-    return {"status": get_check(db, ctx, check_id).status.value}
+    chk = get_check(db, ctx, check_id)
+    return {"status": chk.status.value, "queue_position": processing.queue_position(chk.id)}
 
 
 @app.post("/checks/{check_id}/findings/{finding_id}")
@@ -293,7 +327,7 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
                          "processing_seconds": chk.processing_seconds,
                          "timings": json.loads(chk.timings) if chk.timings else [],
                          "findings": [{"id": f.id, "page": f.page, "pages": f.pages, "severity": f.severity, "category": f.category,
-                                       "section": f.section, "outcome": f.outcome, "hold_reason": f.hold_reason, "rule": f.rule, "source": f.source, "issue": f.issue, "evidence": f.evidence,
+                                       "section": f.section, "outcome": f.outcome, "hold_reason": f.hold_reason, "rule": f.rule, "source": f.source, "confidence": f.confidence, "issue": f.issue, "evidence": f.evidence,
                                        "action": f.action, "disposition": f.disposition,
                                        "reviewer_note": f.reviewer_note} for f in rows]},
                         headers={"Content-Disposition": f'attachment; filename="check-{chk.id}-findings.json"'})

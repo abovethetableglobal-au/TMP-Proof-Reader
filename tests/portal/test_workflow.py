@@ -216,13 +216,16 @@ def test_two_ai_runs_combined_and_grouped(env, monkeypatch):
     from src.tmpcheck import llm_checks, consolidate as cons
     calls = {"n": 0}
 
-    def fake_run(pdf, passes, dry_run=False):
-        calls["n"] += 1
-        f = {"page": 4, "section": "3", "evidence": "Signage will be installed in accordance with TMR requirements.",
-             "issue": f"Queensland TMR referenced (run {calls['n']})", "fix": "Use WA terms", "severity": "Moderate",
-             "related_pages": [], "pass": "C"}
-        return {"passes": {"C": {"findings": [f]}}, "usd_total": 1.25}
-    monkeypatch.setattr(llm_checks, "run", fake_run)
+    def fake_run_many(pdf, passes, runs=1, parallel=8, dry_run=False):
+        outs = []
+        for _ in range(runs):
+            calls["n"] += 1
+            f = {"page": 4, "section": "3", "evidence": "Signage will be installed in accordance with TMR requirements.",
+                 "issue": f"Queensland TMR referenced (run {calls['n']})", "fix": "Use WA terms", "severity": "Moderate",
+                 "related_pages": [], "pass": "C"}
+            outs.append({"passes": {"C": {"findings": [f]}}, "usd_total": 1.25})
+        return outs
+    monkeypatch.setattr(llm_checks, "run_many", fake_run_many)
     # grouping call returns every finding on its own (the page-level merge already combined the overlaps)
     monkeypatch.setattr(cons, "group_findings", lambda fs: ([([i], "issue") for i in range(len(fs))], 0.10))
     monkeypatch.setenv("TMPCHECK_AI_PASSES", "C")

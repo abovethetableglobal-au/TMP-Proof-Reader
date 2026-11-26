@@ -7,6 +7,8 @@
   <p>All prices {{ price_label() }}</p>
 </div>
 
+{% if stripe_sandbox() %}<p class="note pad">{{ icon("info", "ic sm") }} <strong>Stripe test mode.</strong> No real money is charged. Use card 4242 4242 4242 4242.{% if paid %} Payment received — credits appear once Stripe confirms it.{% endif %}</p>{% endif %}
+
 <div class="grid two">
   <section class="card panel" aria-labelledby="sub-h">
     <h2 id="sub-h" class="pad">Subscription</h2>
@@ -14,6 +16,10 @@
       <p class="price">{{ money(cfg().subscription.price) }} <small>/ month</small>
         {% if ctx.org.subscription_status.value == "active" %}<span class="pill ok">Active</span>{% else %}<span class="pill neutral">Not active</span>{% endif %}</p>
       <p class="muted">{{ cfg().subscription.note }}</p>
+      {% if stripe_sandbox() and ctx.org.subscription_status.value != "active" %}
+      <form method="post" action="/billing/checkout"><input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+        <input type="hidden" name="sku" value="{{ cfg().subscription.sku }}"><button class="btn orange" type="submit">Subscribe (test mode)</button></form>
+      {% endif %}
     </div>
   </section>
   <section class="card panel" aria-labelledby="bal-h">
@@ -33,15 +39,16 @@
       <div class="p-name">{{ p.name }}</div>
       <div class="p-price">{{ money(p.price) }}</div>
       <div class="muted">{{ p.credits }} credit{{ 's' if p.credits > 1 }}{% if p.credits > 1 %} · {{ money(p.price / p.credits) }} each{% endif %}</div>
-      {% if cfg().payments_enabled %}
-        <button class="btn orange" type="button">Buy</button>
+      {% if stripe_sandbox() %}
+        <form method="post" action="/billing/checkout"><input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+          <input type="hidden" name="sku" value="{{ p.sku }}"><button class="btn orange" type="submit">Buy (test mode)</button></form>
       {% else %}
         <a class="btn orange" href="/help#contact">Request {{ p.name|lower }}</a>
       {% endif %}
     </div>
   {% endfor %}
   </div>
-  {% if not cfg().payments_enabled %}
+  {% if not stripe_sandbox() %}
   <p class="note pad">{{ icon("info", "ic sm") }} Online payment is not yet available. Request credits and we will send an invoice; credits are added once payment is received.</p>
   {% endif %}
 </section>
