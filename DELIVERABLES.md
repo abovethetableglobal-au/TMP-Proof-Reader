@@ -29,3 +29,4 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-23 | Reviewer test instructions for Tara (timed review of check 8) | 0.1 | AI-PM | Awaiting approval | Owner to approve and send (CLAUDE.md §1) | `docs/outbound/TMP_Check_Reviewer_Test_Tara_v0.1.docx` | S2, check 8 |
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |
 | D-24 | BENCH-06 LLM benchmark vs REF-01 | 0.1 | AI-PM | Quality checked | Pending | `docs/reviews/BENCH-06_SU026_base_engine.md` | REF-01, API key |
+| D-25 | Go-to-market launch campaign plan | 0.1 | AI-PM | Ready for user review | Pending (P-21–P-24) | `docs/GTM_CAMPAIGN_PLAN.md` | L9, G5–G8 |

@@ -360,3 +360,9 @@ A-46: Stripe Option A approved (sandbox build now, live after G5). Next session 
 2026-11-25 — Draft email to Tara for check 15 (BC 016): docs/comms/EMAIL_Tara_check15_BC016_DRAFT.md — Ready for user review; Owner sends. Supersedes check 19 draft.
 2026-11-26 — Owner: check 15 review email sent to Tara (Tally form published). WTGTM transfer/confidentiality confirmed (A-50). Stripe entity ATTG, ABN 42 847 797 843 (A-49). Insurance held. PR #1 merge approved by Owner.
 2026-11-26 — Open: Owner queries A-17 condition (Tara's accreditation details) — onboarding should capture reviewer accreditation; clarification pending.
+
+## 2026-11-26 — Go-to-market launch campaign v0.1
+| Task | Owner / AI | Status | Dependencies | Next step |
+|---|---|---|---|---|
+| docs/GTM_CAMPAIGN_PLAN.md (L9) | AI-PM | Ready for user review | G5–G8, P-21–P-24 | Owner decides P-21–P-24 |
+Findings: "every Major confirmed by two AI runs or a rule check" is not supported (check 15: 51 findings came from one run only). The 92% figure is from one TMP (SU026). The 22-rule sign-off is conditional (A-17). Quantitative claims are held until G5 (proposed P-22).
