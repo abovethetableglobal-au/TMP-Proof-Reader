@@ -3,6 +3,10 @@
 ## Approved
 | ID | Decision | Rationale | Date | Authority |
 |---|---|---|---|---|
+| A-51 | P-21: tagline changed to "Check • Cite • Confident" (supersedes A-22 tagline; headline unchanged) | CLAUDE.md §2; R-24 | 2026-11-26 | Owner |
+| A-52 | P-22: all quantitative marketing claims held until G5 | ACL substantiation; GTM-01 | 2026-11-26 | Owner |
+| A-53 | P-23: $0 paid media until G8, then review | GTM plan §7 | 2026-11-26 | Owner |
+| A-54 | P-24: build and test rule (one-run Majors → Query) before the "every Major confirmed" claim is used | R-25, R-28 | 2026-11-26 | Owner |
 | A-01 | Claude Code appointed sole AI-PM | Handover §1 | 2026-11-20 | Owner |
 | A-02 | Subscription $49.95 AUD/month, excludes credits | Handover §3 | 2026-11-20 | Owner |
 | A-03 | Credit $149; 10-pack $1,341 (10% off, $134.10 effective) | Handover §3 | 2026-11-20 | Owner |

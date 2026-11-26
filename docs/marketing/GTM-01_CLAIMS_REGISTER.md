@@ -15,7 +15,7 @@ Status: Ready for user review. Every customer-facing claim must appear here, wit
 | C-10 | "Australian-hosted, encrypted document storage." | P-20 pending | — | Hold | G6 / P-20 approved |
 | C-11 | Prices: $49.95/month; $349; $1,657.75 (5-pack); $3,141 (10-pack); credits valid 12 months; not registered for GST | config/portal.yaml; A-31–A-33 | Verified fact | Usable | Re-pull from config at publish time |
 | C-12 | "Checks against AS 1742.3." | Deferred to G8 (A-35, R-26) | — | Hold | AS rules added and benchmark re-run |
-| C-13 | Tagline "Check • Comply • Confident" | A-22; conflicts with CLAUDE.md §2 | — | Awaiting approval (P-21) | Owner decision |
+| C-13 | Tagline "Check • Cite • Confident" | A-51 | Verified (Owner decision) | Usable | — |
 
 **Banned words (all assets):** approved, compliant, compliance-checked, certified, safe, guaranteed, 100%, error-free, "catches everything".
 **Mandatory safety line:** "TMP Check is document QA. It does not approve, certify or declare a TMP safe. Your accredited reviewer makes the final call."

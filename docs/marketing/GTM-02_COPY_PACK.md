@@ -1,12 +1,12 @@
 # GTM-02 Copy Pack · v0.1 (2026-11-26)
-Status: Ready for user review. Not for publication. Claims refer to GTM-01; `[HOLD C-xx]` marks text that must stay out until that claim is cleared. The tagline is shown as `[TAGLINE]` until P-21 is decided.
+Status: Ready for user review. Not for publication. Claims refer to GTM-01; `[HOLD C-xx]` marks text that must stay out until that claim is cleared. The tagline is shown as "Check • Cite • Confident" (A-51).
 
 ## 1. Landing page
 **Hero**
 - H1: Professional TMP Checking. Fast. Thorough. Evidence-based.
 - Sub: Upload a WA Traffic Management Plan. Get a draft QA report and an annotated copy, with every finding tied to the source, edition and clause. Your accredited reviewer makes the final call. (C-01, C-02)
 - CTA: Request a demo report → Tally form
-- Strip: [TAGLINE]
+- Strip: Check • Cite • Confident
 
 **The problem**
 Desk-checking a TMP takes hours: cross-referencing the WA Code of Practice, checking TGS sign sequences, matching risk registers to the drawings. A missed inconsistency means a resubmission, or worse.
