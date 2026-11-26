@@ -1,29 +1,26 @@
 # Handover — attg (TMP Check)
 
-**Date:** 2026-11-25
+**Date:** 2026-11-26
 **Goal:** Get TMP Check to G4/G5: a working portal plus a benchmarked engine, validated by Tara.
 
 **Done**
-- Stripe sandbox built and verified on your PC (A-46). Managed Payments off (A-47). Refunds: the admin records the credit adjustment (A-48). Live payments on hold until G5.
-- Check queue: one check at a time; uploads reserve credits.
-- Speed: BC 016 now takes about 8 min (was 36 min) and US$6 (was US$8.15), using the cache warm-up and parallel passes.
-- Consistency labels on findings. Check 15: 128 found in both runs, 51 in one run; all 12 Majors confirmed.
-- [PR #1](https://github.com/abovethetableglobal-au/TMP-Proof-Reader/pull/1) open on branch `claude/determined-curie-a43sdd`; 74 tests pass. Claude is watching it.
+- PR #1 merged into `main`: Stripe sandbox, check queue, about 8 minutes per check, consistency labels.
+- G3 conditions met (A-52): Tara's written sign-off of the 22 rules is filed; accreditation AWTM-KTS-24-8553-06, valid to 2030.
+- A-49: the Stripe entity is ATTG, ABN 42 847 797 843. A-50: WTGTM transfer and confidentiality confirmed; insurance held.
+- The check 15 review email has been sent to Tara.
 
 **In progress**
-- Email to Tara: `docs/comms/EMAIL_Tara_check15_BC016_DRAFT.md`. Attach the check 15 report (DRAFT 6) and the annotated TMP (DRAFT 5).
+- Branch `claude/determined-curie-a43sdd` is 4 commits ahead of `main` (A-49 to A-52 records). Open a PR when you resume.
 
 **Next 3 steps**
-1. Review and merge PR #1.
-2. Publish the Tally form, add its link to the email, and send it to Tara.
-3. Re-run SU 025 on the new build; then rule on the BENCH-06 findings with WTGTM.
+1. Open a PR to bring the A-49 to A-52 records into `main`.
+2. G2: analyse the WTGTM TMPs and proofreader corrections, then write the requirements document for approval.
+3. Build reviewer accreditation capture into onboarding (level, number, expiry, certificate upload, reminders).
 
 **Open questions**
-- Stripe account legal entity and ABN.
-- Insurance details for A-43.
-- G2: WTGTM transfer and confidentiality confirmation.
-- Before G6, the queue needs a proper job queue (currently in-process and SQLite).
+- Tara's rulings on the check 15 findings (needed for G5).
+- Before G6: a proper job queue and Postgres; a safeguard limiting AI use to historical or anonymised documents.
 
-**PC run notes:** run the portal from the inner folder on port 8001. Set `ANTHROPIC_API_KEY` (the `sk-ant-api03-` secret, not the `apikey_` ID), `TMPCHECK_AI_PASSES=A,B,C,D` and the Stripe `sk_test_` key.
+**Next topic (new chat):** product naming and marketing.
 
-**Previously:** 2026-11-25: Stripe Option A approved; BC 016 re-run in progress.
+**Previously:** 2026-11-25: Stripe, queue and speed work; PR #1 opened.
