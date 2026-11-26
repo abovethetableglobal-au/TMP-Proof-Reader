@@ -366,3 +366,4 @@ A-46: Stripe Option A approved (sandbox build now, live after G5). Next session 
 |---|---|---|---|---|
 | docs/GTM_CAMPAIGN_PLAN.md (L9) | AI-PM | Ready for user review | G5–G8, P-21–P-24 | Owner decides P-21–P-24 |
 Findings: "every Major confirmed by two AI runs or a rule check" is not supported (check 15: 51 findings came from one run only). The 92% figure is from one TMP (SU026). The 22-rule sign-off is conditional (A-17). Quantitative claims are held until G5 (proposed P-22).
+2026-11-26 — GTM-01 claims register and GTM-02 copy pack v0.1 drafted (docs/marketing/). Ready for user review. Held claims: C-04, C-05, C-06, C-10, C-12; C-07 banned. Next: Owner decides P-21–P-24; Tara technical review (Owner sends).

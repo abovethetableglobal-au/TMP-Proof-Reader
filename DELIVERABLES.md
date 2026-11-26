@@ -30,3 +30,5 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-13 | Data-handling statement | — | AI-PM | Not started | — | TBC | P-04, P-08 |
 | D-24 | BENCH-06 LLM benchmark vs REF-01 | 0.1 | AI-PM | Quality checked | Pending | `docs/reviews/BENCH-06_SU026_base_engine.md` | REF-01, API key |
 | D-25 | Go-to-market launch campaign plan | 0.1 | AI-PM | Ready for user review | Pending (P-21–P-24) | `docs/GTM_CAMPAIGN_PLAN.md` | L9, G5–G8 |
+| D-26 | GTM-01 Claims and substantiation register | 0.1 | AI-PM | Ready for user review | Pending | `docs/marketing/GTM-01_CLAIMS_REGISTER.md` | D-25 |
+| D-27 | GTM-02 Copy pack (landing, one-pager, emails, LinkedIn) | 0.1 | AI-PM | Ready for user review | Pending (P-21, G5) | `docs/marketing/GTM-02_COPY_PACK.md` | D-26 |
