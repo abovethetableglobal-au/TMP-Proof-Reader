@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-51 | **G3 condition (A-17) — Option A, partly met:** rule-set reviewer accreditation recorded: Way to Go Traffic Management (ABN 98 448 253 153), accreditation AWTM-KTS-24-8553-06 (level read from the number as AWTM; to confirm). Still needed: expiry date, confirmation the accreditation is Tara's, and the completed review pack. Customer reviewer accreditation to be captured at online onboarding (backlog) | Owner | 2026-11-26 | Owner |
 | A-50 | **WTGTM transfer and confidentiality confirmed** (G2 dependency cleared). Insurance held (A-43 closed without further detail recorded, per Owner) | Owner | 2026-11-26 | Owner |
 | A-49 | **Stripe account entity:** business name ATTG, ABN 42 847 797 843 (account acct_1UfZfBGdViWULINo "TMP Proof Reader") | Owner | 2026-11-26 | Owner |
 | A-48 | **Refunds:** Stripe refunds never remove credits automatically. The webhook flags them; an admin records a negative ledger `adjustment` on the purchase lot (`python -m src.portal.admin adjust`), capped at unused credits, with name and reason. Live payments on hold (A-09) | Owner | 2026-11-25 | Owner |
