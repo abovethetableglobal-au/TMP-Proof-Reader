@@ -369,3 +369,4 @@ Findings: "every Major confirmed by two AI runs or a rule check" is not supporte
 2026-11-26 — GTM-01 claims register and GTM-02 copy pack v0.1 drafted (docs/marketing/). Ready for user review. Held claims: C-04, C-05, C-06, C-10, C-12; C-07 banned. Next: Owner decides P-21–P-24; Tara technical review (Owner sends).
 2026-11-26 — Owner approved P-21–P-24 as recommended (A-51–A-54). Tara technical review of copy on hold (Owner). Mock-up content requested.
 2026-11-26 — D-28 mock-ups published to a private design canvas (4 artboards). Held claims shown as dashed placeholders. Ready for user review.
+2026-11-26 — FB/IG mock-ups added to D-28 (3 feed posts 4:5, 1 story 9:16); captions in GTM-02 §6. Ready for user review.

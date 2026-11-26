@@ -84,3 +84,15 @@ TMP Check gives your accredited reviewer a cited, prioritised findings list and 
 | Prices match config/portal.yaml | Yes |
 | Held claims are marked | Yes (C-04, C-05, C-06, C-10, C-12) |
 | Tara technical review | Not started; Owner to send |
+
+## 6. Facebook and Instagram (organic; Owner posts)
+Visuals: design canvas D-28, artboards Social1–3 (4:5 feed, 1080×1350) and Story1 (9:16, 1080×1920).
+
+| Post | Caption | Hashtags |
+|---|---|---|
+| Feed 1 — launch | Now checking WA Traffic Management Plans. Upload a TMP, get a draft QA report and an annotated copy. Every finding cites its source, edition and clause, and your accredited reviewer makes the final call. Document QA, not approval. Link in bio for a demo report. | #TrafficManagement #WATraffic #TMP #Perth #RoadSafety #Construction |
+| Feed 2 — principle | No citation, no finding. If TMP Check can't point to the clause, it raises a Query and your reviewer decides. That's how QA should work. | #TrafficManagement #TMP #QualityAssurance #WA |
+| Feed 3 — how it works | Upload → Check → Review → Issue. About 8 minutes processing for an 81-page TMP in testing, then your reviewer accepts, edits or rejects every finding. | #TrafficManagement #TMP #Perth #Construction |
+| Story — launch | (on-image text only) + link sticker → demo request form | — |
+
+Rules: on Instagram the link goes in the bio or a story link sticker, not the caption. Keep "Document QA, not approval or certification" on every image. No boosting (A-53: $0 paid media until G8).
