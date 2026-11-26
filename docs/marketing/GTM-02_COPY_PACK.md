@@ -85,14 +85,44 @@ TMP Check gives your accredited reviewer a cited, prioritised findings list and 
 | Held claims are marked | Yes (C-04, C-05, C-06, C-10, C-12) |
 | Tara technical review | Not started; Owner to send |
 
-## 6. Facebook and Instagram (organic; Owner posts)
-Visuals: design canvas D-28, artboards Social1–3 (4:5 feed, 1080×1350) and Story1 (9:16, 1080×1920).
+## 6. Facebook and Instagram (organic; Owner posts) · v0.2
+Visuals: design canvas D-28 (Social1–3 at 4:5, Story1 at 9:16). Instagram: the link goes in the bio or a story link sticker. No boosting (A-53).
 
-| Post | Caption | Hashtags |
-|---|---|---|
-| Feed 1 — launch | Now checking WA Traffic Management Plans. Upload a TMP, get a draft QA report and an annotated copy. Every finding cites its source, edition and clause, and your accredited reviewer makes the final call. Document QA, not approval. Link in bio for a demo report. | #TrafficManagement #WATraffic #TMP #Perth #RoadSafety #Construction |
-| Feed 2 — principle | No citation, no finding. If TMP Check can't point to the clause, it raises a Query and your reviewer decides. That's how QA should work. | #TrafficManagement #TMP #QualityAssurance #WA |
-| Feed 3 — how it works | Upload → Check → Review → Issue. About 8 minutes processing for an 81-page TMP in testing, then your reviewer accepts, edits or rejects every finding. | #TrafficManagement #TMP #Perth #Construction |
-| Story — launch | (on-image text only) + link sticker → demo request form | — |
+### Feed 1 — Launch
+**Hook:** Your next TMP gets a second set of eyes. And every one of them cites the clause.
+**Body:** TMP Check is now checking WA Traffic Management Plans.
+Upload a TMP → get a draft QA report + an annotated copy.
+✔ Every finding tied to source, edition and clause
+✔ Rated Critical to Minor, so you fix what matters first
+✔ Your accredited reviewer accepts, edits or rejects every finding
+Document QA, not approval. You stay in control.
+**CTA:** Want to see one? Comment "SAMPLE" or tap the link in bio for a free demo report.
+**Tags:** #TrafficManagement #TMP #WATraffic #Perth #Construction #RoadWorks
 
-Rules: on Instagram the link goes in the bio or a story link sticker, not the caption. Keep "Document QA, not approval or certification" on every image. No boosting (A-53: $0 paid media until G8).
+### Feed 2 — No citation, no finding
+**Hook:** "Looks wrong to me" isn't a finding.
+**Body:** At TMP Check, if we can't point to the clause, it isn't a finding. It's a Query, and your reviewer decides.
+No guesswork. No made-up rules. Just evidence you can check.
+**CTA:** Save this for your next desk-check, and send it to the person who reviews your TMPs.
+**Tags:** #TrafficManagement #TMP #QualityAssurance #WA #TrafficControl
+
+### Feed 3 — How it works
+**Hook:** 81 pages. About 8 minutes. Then your reviewer takes it from there.
+**Body:** 1️⃣ Upload your TMP (the original is never touched)
+2️⃣ Check — AI passes plus coded rule checks (about 8 min for an 81-page TMP in testing)
+3️⃣ Review — accept, edit or reject every finding
+4️⃣ Issue — final report + annotated TMP
+Less cross-referencing. More judgement.
+**CTA:** Got a past TMP you'd like checked? DM us "TRIAL" to set one up.
+**Tags:** #TrafficManagement #TMP #Perth #Construction #CivilWorks
+
+### Story — Launch
+**Frame text:** Your TMP. Checked. Cited.
+**Sticker:** Link → demo request form, labelled "Get a sample report"
+**Poll (optional 2nd frame):** "How long does your TMP desk-check take?" Under 2 h / 2–5 h / 5 h+
+(The poll is audience research only; do not publish the results as a claim.)
+
+### Rules
+- Keep "Document QA, not approval or certification" on every image.
+- No numbers beyond the C-03 timing until G5 (A-52).
+- Reply to "SAMPLE"/"TRIAL" comments with the demo form link; never promise that a TMP will pass.
