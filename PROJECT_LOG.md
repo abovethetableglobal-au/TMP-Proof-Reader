@@ -362,3 +362,4 @@ A-46: Stripe Option A approved (sandbox build now, live after G5). Next session 
 2026-11-26 — Open: Owner queries A-17 condition (Tara's accreditation details) — onboarding should capture reviewer accreditation; clarification pending.
 2026-11-26 — A-51: Owner chose Option A for the G3 condition; accreditation AWTM-KTS-24-8553-06 (Way to Go TM, ABN 98 448 253 153) recorded. Outstanding: expiry, holder confirmation, review pack. Backlog: reviewer accreditation capture at onboarding (level, number, expiry, certificate upload, expiry reminders).
 2026-11-26 — A-51 updated: accreditation AWTM-KTS-24-8553-06 is Tara's own, current, expires 2030. Only the completed review pack remains for the G3 condition.
+2026-11-26 — G3 review pack: Tara's review was verbal; draft sign-off email for written confirmation: docs/comms/EMAIL_Tara_G3_rule_signoff_DRAFT.md — Ready for user review; Owner sends. Her reply is filed as the completed review pack.
