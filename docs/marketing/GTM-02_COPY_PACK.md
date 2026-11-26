@@ -72,7 +72,7 @@ TMP Check gives your accredited reviewer a cited, prioritised findings list and 
 1. **Launch:** "We've launched TMP Check: document QA for WA Traffic Management Plans. Cited findings, annotated TMPs, and your accredited reviewer stays in charge. It's QA, not approval, and that's the point. [link]"
 2. **Problem:** "How long does your team spend cross-checking TGS sign sequences against the risk register? Our pilot reviewer estimated 5+ hours per TMP. [HOLD C-04 if quoting a comparison]"
 3. **Principle:** "No citation, no finding. If TMP Check can't point to the clause, it raises a Query instead. Reviewers told us that's what builds trust."
-4. **Behind the scenes:** "Every TMP runs through two independent AI passes plus coded rule checks, and each finding is labelled with where it came from. Transparency over magic numbers."
+4. **Behind the scenes:** "Every TMP runs through two separate AI runs plus coded rule checks, and each finding is labelled with where it came from. Transparency over magic numbers."
 5. **Proof:** [HOLD C-05/C-06 — benchmark results post after G5]
 6. **Customer:** [HOLD GTM-06 — WTGTM case study, with consent]
 
