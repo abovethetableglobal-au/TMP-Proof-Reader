@@ -365,3 +365,4 @@ A-46: Stripe Option A approved (sandbox build now, live after G5). Next session 
 2026-11-26 — G3 review pack: Tara's review was verbal; draft sign-off email for written confirmation: docs/comms/EMAIL_Tara_G3_rule_signoff_DRAFT.md — Ready for user review; Owner sends. Her reply is filed as the completed review pack.
 2026-11-26 — G3 conditions met (A-52): Tara's written confirmation of the 22 rules filed (docs/reviews/G3_Tara_rule_signoff_2026-11-26.md). G3 status: User accepted, conditions met.
 2026-11-26 — Stage saved (handover updated). Owner moving to product naming and marketing in a new chat.
+2026-11-26 — A-53 approved: hosted pilot preview. Built: TMPCHECK_ENV=preview, invite sign-up with accreditation fields, upload confirmation (historical/anonymised), AI monthly cap, Dockerfile + fly.toml (syd), docs/DEPLOY_PREVIEW.md, draft invite email. 83 tests pass. Next: Owner creates Fly.io account and deploys.

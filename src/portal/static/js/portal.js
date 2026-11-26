@@ -66,8 +66,13 @@
     }
 
     function upload(file) {
+      var confirmBox = document.querySelector("[data-confirm]");
+      if (confirmBox && !confirmBox.checked) {
+        return show(file, "error", "Tick the box to confirm this TMP is historical or anonymised.");
+      }
       var fd = new FormData();
       fd.append("file", file);
+      if (confirmBox) fd.append("confirm_test_doc", "1");
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "/checks/upload");
       var meta = document.querySelector('meta[name="csrf-token"]');

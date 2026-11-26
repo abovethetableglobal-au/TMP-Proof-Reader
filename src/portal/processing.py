@@ -397,6 +397,11 @@ def _run_check(check_id: int) -> None:
 
             passes = os.environ.get("TMPCHECK_AI_PASSES", "").strip()
             state, why = ai_status()
+            if state == "on":
+                from . import preview
+                capped, cap_why = preview.ai_cap_reached(db)
+                if capped:
+                    state, why = "capped", cap_why
             chk.ai_passes = None if state == "on" else f"skipped: {why}"
             if state == "on":
                 from src.tmpcheck import llm_checks

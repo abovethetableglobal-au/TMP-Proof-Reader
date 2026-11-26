@@ -1,0 +1,10 @@
+customer-docs/
+output/
+test-library/
+tests/
+docs/
+handovers/
+.git/
+*.env
+.env*
+__pycache__/

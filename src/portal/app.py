@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 
 from urllib.parse import quote
 
-from . import auth, payments, processing, services
+from . import auth, payments, preview, processing, services
 from .config import RULES_DIR, money, price_label, settings
 from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
 
@@ -28,8 +28,7 @@ HERE = Path(__file__).parent
 
 @asynccontextmanager
 async def lifespan(_app):
-    if os.environ.get("TMPCHECK_ENV") != "local":
-        raise RuntimeError("Local build only (hosting needs G6 approvals). Set TMPCHECK_ENV=local to run locally.")
+    preview.startup_guard()
     init_db()
     if n := processing.recover_interrupted():
         print(f"TMP Check portal: {n} interrupted check(s) marked as failed (no credit used).", flush=True)
@@ -43,7 +42,7 @@ app = FastAPI(title="TMP Check", docs_url=None, redoc_url=None, lifespan=lifespa
 
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 templates = Jinja2Templates(directory=HERE / "templates")
-templates.env.globals.update(money=money, price_label=price_label, cfg=settings,
+templates.env.globals.update(money=money, price_label=price_label, cfg=settings, is_preview=preview.is_preview,
                              stripe_sandbox=payments.sandbox_enabled)
 # Portable date format (strftime "%-d" is not supported on Windows)
 templates.env.filters["dmy"] = lambda d: f"{d.day} {d:%b %Y}" if d else ""
@@ -143,6 +142,33 @@ def login(request: Request, email: str = Form(...), password: str = Form(...), n
     auth.audit(db, user, "login", ip=ip)
     target = next if next.startswith("/") and not next.startswith("//") else "/"
     resp = RedirectResponse(target, status_code=303)
+    resp.set_cookie(auth.COOKIE, token, httponly=True, samesite="lax", max_age=auth.SESSION_HOURS * 3600,
+                    secure=os.environ.get("TMPCHECK_HTTPS") == "1")
+    return resp
+
+
+@app.get("/signup", response_class=HTMLResponse)
+def signup_page(request: Request, invite: str = "", error: str | None = None):
+    if not preview.is_preview():
+        raise HTTPException(404)
+    return templates.TemplateResponse(request, "pages/signup.html", {"invite": invite, "error": error})
+
+
+@app.post("/signup")
+def signup(request: Request, invite: str = Form(""), name: str = Form(""), email: str = Form(""),
+           password: str = Form(""), level: str = Form(""), number: str = Form(""), expiry: str = Form(""),
+           db: Session = Depends(get_db)):
+    if not preview.is_preview():
+        raise HTTPException(404)
+    ip = request.client.host if request.client else None
+    try:
+        user = preview.signup(db, invite, name, email, password, level, number, expiry)
+    except ValueError as e:
+        auth.audit(db, None, "signup_failed", detail=f"{email[:120]}: {e}"[:300], ip=ip)
+        return RedirectResponse(f"/signup?invite={quote(invite)}&error={quote(str(e))}", status_code=303)
+    auth.audit(db, user, "signup", detail=f"accreditation {user.accreditation_number}", ip=ip)
+    token = auth.start_session(db, user)
+    resp = RedirectResponse("/", status_code=303)
     resp.set_cookie(auth.COOKIE, token, httponly=True, samesite="lax", max_age=auth.SESSION_HOURS * 3600,
                     secure=os.environ.get("TMPCHECK_HTTPS") == "1")
     return resp
@@ -250,8 +276,11 @@ def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
 
 
 @app.post("/checks/upload")
-async def upload(background: BackgroundTasks, file: UploadFile = File(...),
+async def upload(background: BackgroundTasks, file: UploadFile = File(...), confirm_test_doc: str = Form(""),
                  ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
+    if preview.is_preview() and confirm_test_doc != "1":   # A-53: no live customer TMPs before G6
+        return JSONResponse({"error": "Confirm that this TMP is historical or anonymised before uploading."},
+                            status_code=400)
     data = await file.read(settings()["upload"]["max_bytes"] + 1)
     try:
         chk = processing.create_check(db, ctx.org.id, file.filename or "upload", data)

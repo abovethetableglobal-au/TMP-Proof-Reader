@@ -18,5 +18,9 @@
     <div class="progress" aria-hidden="true"><span></span></div>
     <p class="dz-msg"></p>
   </div>
+  {% if is_preview() %}
+  <label class="dz-confirm"><input type="checkbox" id="confirm-test-doc" data-confirm required>
+    I confirm this TMP is a <strong>historical or anonymised</strong> document, not a live customer TMP (pilot preview rule).</label>
+  {% endif %}
   <p class="dz-foot">{{ icon("info", "ic sm") }} No credit is used if an upload or processing attempt fails.</p>
 </form>

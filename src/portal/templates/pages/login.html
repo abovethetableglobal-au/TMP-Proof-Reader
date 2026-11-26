@@ -20,6 +20,7 @@
     <label for="password">Password</label>
     <input id="password" name="password" type="password" autocomplete="current-password" required>
     <button class="btn orange" type="submit">Sign in</button>
+    {% if is_preview() %}<p class="muted small" style="margin-top:12px">Invited reviewer? <a href="/signup">Create your profile</a></p>{% endif %}
   </form>
 </main>
 </body>

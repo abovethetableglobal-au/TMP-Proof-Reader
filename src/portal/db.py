@@ -66,6 +66,9 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(32), default="customer_user")   # customer_user | customer_reviewer | admin
     password_hash: Mapped[str | None] = mapped_column(String(300))
     active: Mapped[bool] = mapped_column(default=True)
+    accreditation_level: Mapped[str | None] = mapped_column(String(60))     # reviewer accreditation (A-53 onboarding)
+    accreditation_number: Mapped[str | None] = mapped_column(String(60))
+    accreditation_expiry: Mapped[str | None] = mapped_column(String(20))
 
 
 class UserSession(Base):
