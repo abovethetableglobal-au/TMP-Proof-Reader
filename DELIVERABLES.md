@@ -18,7 +18,7 @@ Repo: https://github.com/abovethetableglobal-au/TMP-Proof-Reader · Status label
 | D-11 | Report PDF (Output 1) | 0.1 | AI-PM | Quality checked (synthetic sample; 36 tests) | Not approved | `src/tmpcheck/outputs.py`; example `test-library/samples/outputs/` | D-10 |
 | D-12 | Annotated PDF (Output 2) | 0.1 | AI-PM | Quality checked (synthetic sample) | Not approved | `src/tmpcheck/outputs.py`; example `test-library/samples/outputs/` | D-10 |
 | D-14 | Spike S-01 (extraction, completeness, annotation) | 0.1 | AI-PM | Quality checked | n/a (internal) | `src/spike/`, `docs/reviews/SPIKE-S01_results.md` | — |
-| D-15 | Rule review pack for Tara | 0.1 | AI-PM | User accepted | Completed by reviewer | `docs/outbound/TMP_Check_Rule_Review_Tara_v0.1.docx` | D-09 |
+| D-15 | Rule review pack for Tara | 0.1 | AI-PM | User accepted | Completed by reviewer; written confirmation 2026-11-26 (`docs/reviews/G3_Tara_rule_signoff_2026-11-26.md`) | `docs/outbound/TMP_Check_Rule_Review_Tara_v0.1.docx` | D-09 |
 | D-16 | G2 evidence analysis 01 (REF-01) | 0.1 | AI-PM | Ready for user review | Pending | `docs/requirements/G2_EVIDENCE_ANALYSIS_01.md` | WTGTM evidence |
 | D-17 | Customer portal dashboard implementation plan | 0.1 | AI-PM | Awaiting approval | Pending (P-12–P-16) | `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` | Owner brief + mock-up 2026-11-20 |
 | D-18 | Customer portal — S1 shell + S4 upload/check + reviewer workflow | 0.2 | AI-PM | Ready for user review | Pending | `src/portal/`, `config/portal.yaml`, `tests/portal/` | A-21, A-22 |
