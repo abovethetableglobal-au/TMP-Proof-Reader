@@ -60,3 +60,22 @@ def test_other_org_cannot_download(env):
     from tests.portal.conftest import login
     login(c, "b@x")
     assert c.get(f"/checks/{cid}/download.zip").status_code == 404
+
+
+def test_annotated_copy_has_comment_column_and_original_content(env):
+    """Owner 2026-11-27: comments written out beside the original pages; original content unchanged."""
+    import pymupdf
+    from tests.portal.test_workflow import SAMPLE
+    c, S = env
+    cid = _draft(c, S)
+    ann = pymupdf.open(stream=c.get(f"/checks/{cid}/annotated.pdf").content, filetype="pdf")
+    src = pymupdf.open(SAMPLE)
+    assert ann.page_count == src.page_count
+    widened = [i for i in range(src.page_count) if ann[i].rect.width > src[i].rect.width]
+    assert widened                                                   # pages with findings get the column
+    texts = [a.info.get("content", "") for i in widened for a in ann[i].annots()]
+    assert any(t.startswith("F-0") and "[" in t for t in texts)      # finding written out in full
+    assert any("TMP Check comments" in t for t in texts)
+    for i in range(src.page_count):                                  # page content stream untouched
+        assert ann[i].get_text("text", clip=src[i].rect).strip().replace("\n", "") != "" or not src[i].get_text().strip()
+        assert ann[i].read_contents() == src[i].read_contents()

@@ -294,27 +294,43 @@ def _locate(page: pymupdf.Page, evidence: str) -> list:
     return []
 
 
-def _label(page: pymupdf.Page, rect: pymupdf.Rect, text: str, colour) -> None:
+def _label(page: pymupdf.Page, rect: pymupdf.Rect, text: str, colour, fontsize: float = 6.5) -> None:
     rect = rect * page.derotation_matrix
-    a = page.add_freetext_annot(rect, text, fontsize=6.5, text_color=colour, fill_color=(1, 1, 1))
+    a = page.add_freetext_annot(rect, text, fontsize=fontsize, text_color=colour, fill_color=(1, 1, 1))
     a.set_border(width=0.6)
     a.set_info(title="TMP Check", content=text)
     a.update()
 
 
-def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
-    """Write annotations onto a copy of the original. Returns the output path."""
-    doc = pymupdf.open(original)
-    stack: dict[int, int] = {}
-    row_count: dict[tuple, int] = {}
-    related: dict[int, list[str]] = {}   # DEF-C19-5: one combined note per page, not a stack
+COMMENT_COL = 230      # width (pt) of the comment column added to the right of annotated pages
+COMMENT_FONT = 8
 
-    def margin_note(pno: int, text: str, colour) -> None:
-        page = doc[pno - 1]
-        k = stack.get(pno, 0)
-        stack[pno] = k + 1
-        w = page.rect.width
-        _label(page, pymupdf.Rect(w - 150, 8 + k * 13, w - 6, 20 + k * 13), text, colour)
+
+def _note_height(text: str, fontsize: float = COMMENT_FONT, width: float = COMMENT_COL - 14) -> float:
+    """Height for wrapped text in a free-text box (word wrap, Helvetica)."""
+    lines = 0
+    for part in text.split("\n"):
+        line_w, n = 0.0, 1
+        for word in part.split(" "):
+            ww = pymupdf.get_text_length(word + " ", fontname="helv", fontsize=fontsize)
+            if line_w + ww > width and line_w:
+                n, line_w = n + 1, ww
+            else:
+                line_w += ww
+        lines += n
+    return 8 + lines * fontsize * 1.32
+
+
+def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
+    """Write annotations onto a copy of the original. Returns the output path.
+
+    Each annotated page gets a comment column on its right (the page is widened; original content
+    is not moved or altered). Every finding is highlighted on the quoted text, numbered in the left
+    margin, and written out in full in the comment column next to that line (Owner 2026-11-27)."""
+    doc = pymupdf.open(original)
+    row_count: dict[tuple, int] = {}
+    notes: dict[int, list[tuple[float, str, tuple]]] = {}   # page -> [(anchor y, text, colour)]
+    related: dict[int, list[str]] = {}   # DEF-C19-5: one combined note per page, not a stack
 
     for i in items:
         colour = SEV_COLOUR.get(i.severity, (0.4, 0.44, 0.52))
@@ -336,25 +352,50 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
             hl.set_opacity(0.35)
             hl.set_info(title="TMP Check", content=summary)
             hl.update()
-            r = quads[0]
+            r = quads[0].rect if hasattr(quads[0], "rect") else quads[0]
             row = (hit_pno, round(r.y0 / 6))                         # labels sit in the left margin,
             x0 = 3 + 33 * row_count.get(row, 0)                       # side by side if a line has several
             row_count[row] = row_count.get(row, 0) + 1
             _label(page, pymupdf.Rect(x0, r.y0, x0 + 31, r.y0 + 9), i.no, colour)
+            notes.setdefault(hit_pno, []).append((r.y0, summary, colour))
             i.annotated = "highlighted"
         else:
-            margin_note(i.page, f"{i.no} {i.severity} — see report", colour)
+            notes.setdefault(i.page, []).append((0.0, summary + "\n(Not tied to one passage — see report.)", colour))
             i.annotated = "note"
         for p in dict.fromkeys([i.page, *i.pages]):
             if p != hit_pno and 1 <= p <= doc.page_count:
                 related.setdefault(p, []).append(i.no)
 
     for pno, nos in related.items():
-        page, k = doc[pno - 1], stack.get(pno, 0)
-        w, text = page.rect.width, "Also affects this page (see report): " + ", ".join(nos)
-        lines = 1 + len(text) // 38
-        y0 = 8 + k * 13
-        _label(page, pymupdf.Rect(w - 150, y0, w - 6, y0 + 4 + lines * 8), text, (0.4, 0.44, 0.52))
+        notes.setdefault(pno, []).append((0.0, "Also affects this page (see report): " + ", ".join(nos), (0.4, 0.44, 0.52)))
+
+    for pno, entries in notes.items():
+        page = doc[pno - 1]
+        if page.rotation:                     # rotated sheets: keep notes on the page itself (no widening)
+            w = page.rect.width
+            y = 8
+            for _, text, colour in sorted(entries, key=lambda e: e[0]):
+                h = min(_note_height(text), 60)
+                _label(page, pymupdf.Rect(w - 160, y, w - 6, y + h), text, colour)
+                y += h + 3
+            continue
+        mb = page.mediabox
+        w = mb.width
+        page.set_mediabox(pymupdf.Rect(mb.x0, mb.y0, mb.x1 + COMMENT_COL, mb.y1))
+        head = pymupdf.Rect(w + 6, 6, w + COMMENT_COL - 6, 20)
+        _label(page, head, "TMP Check comments — numbers match the report", (0.08, 0.14, 0.25), fontsize=COMMENT_FONT)
+        y_cursor = head.y1 + 4
+        for anchor, text, colour in sorted(entries, key=lambda e: e[0]):
+            h = _note_height(text)
+            y0 = max(anchor - 2, y_cursor)
+            box = pymupdf.Rect(w + 8, y0, w + COMMENT_COL - 6, y0 + h)
+            _label(page, box, text, colour, fontsize=COMMENT_FONT)
+            if anchor:                                     # leader line from the text's line to its note
+                ln = page.add_line_annot(pymupdf.Point(w - 4, anchor + 4), pymupdf.Point(w + 8, y0 + 5))
+                ln.set_colors(stroke=colour)
+                ln.set_border(width=0.5)
+                ln.update()
+            y_cursor = box.y1 + 3
 
     first = doc[0]
     banner = ("TMP Check annotated copy — FINAL. Annotations only; original content unchanged."

@@ -7,7 +7,7 @@
 - PR #1 merged. Check 15 email and Tally form sent to Tara. Entity ATTG and ABN recorded (A-49); WTGTM confirmation and insurance on file (A-50).
 - A-51: reviewer accreditation added to the portal. **My Account** stores level, certificate number and expiry. Reviewers without current accreditation can't decide findings or issue finals. The final report shows the accreditation. 79 tests pass (commit `6eea3c0`).
 - Gate 3 becomes unconditional once Tara enters her details.
-- Report downloads added: report, annotated TMP and source TMP buttons, plus a ZIP of all three on the check page; a Download (ZIP) button in My Checks. Word uploads also get a commented .docx copy, with each finding as a Word comment.
+- Report downloads added: report, annotated TMP and source TMP buttons, plus a ZIP of all three on the check page; a Download (ZIP) button in My Checks. Word uploads also get a commented .docx copy. The annotated PDF now has a comment column beside each page.
 
 **In progress**
 - Waiting for Tara's check 15 (BC 016) feedback via Tally.
