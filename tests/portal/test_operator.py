@@ -206,13 +206,14 @@ def test_dashboard_stages_and_overdue_rules(op):
 
 def test_queue_newest_first(op):
     c, S = op
-    from datetime import timezone
+    from datetime import timedelta
+    now = dbm.utcnow()
     with S() as s:
-        for i, day in enumerate((3, 5, 4)):
-            s.add(dbm.Check(org_id=2, doc_ref=f"DOC-{day}", filename="x.pdf", status=dbm.CheckStatus.failed,
-                            created_at=datetime(2026, 11, day, 9, 0, tzinfo=timezone.utc)))
+        for hours_ago in (3, 1, 2):
+            s.add(dbm.Check(org_id=2, doc_ref=f"DOC-{5 - hours_ago + 2}", filename="x.pdf", status=dbm.CheckStatus.failed,
+                            created_at=now - timedelta(hours=hours_ago)))
         s.commit()
-        order = [r["check"].doc_ref for r in operator.queue(s, include_done_days=3650)]
-    assert order == ["DOC-5", "DOC-4", "DOC-3"]
+        order = [r["check"].doc_ref for r in operator.queue(s)]
+    assert order == ["DOC-6", "DOC-5", "DOC-4"]          # 1 h, 2 h, 3 h ago
     page = c.get("/admin/queue").text
-    assert page.index("DOC-5") < page.index("DOC-4") < page.index("DOC-3")
+    assert page.index("DOC-6") < page.index("DOC-5") < page.index("DOC-4")
