@@ -58,6 +58,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
+| CR-01 | Managed service: Operator Console + 12:30 daily intake + Stripe/Xero billing (docs/requirements/CR-01_operator_console.md) | Approve phased: Phase 1 console now; Phase 2 intake after channel + data-handling decisions; Phase 3 billing at G5 | Next session |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
