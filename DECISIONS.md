@@ -59,6 +59,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
+| P-FC | WTGTM founding-customer offer: Professional at $1,195/month for 12 months (20% off), extras $249, for case study + testimonial + quarterly feedback | Approve | Before WTGTM offer is sent |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
