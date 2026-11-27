@@ -12,6 +12,7 @@
   <p class="downloads">
     <a class="btn small navy" href="/checks/{{ chk.id }}/report.pdf" download>Download report{{ kind }}</a>
     <a class="btn small navy" href="/checks/{{ chk.id }}/annotated.pdf" download>Download annotated TMP{{ kind }}</a>
+    {% if is_word(chk) %}<a class="btn small navy" href="/checks/{{ chk.id }}/comments.docx" download>Download Word with comments{{ kind }}</a>{% endif %}
     <a class="btn small navy" href="/checks/{{ chk.id }}/original" download>Download source TMP</a>
     <a class="btn small outline" href="/checks/{{ chk.id }}/download.zip" download>Download all (ZIP)</a>
   </p>

@@ -363,3 +363,79 @@ def annotate(original: Path, items: list[Item], out: Path, final: bool) -> Path:
     doc.save(out, garbage=3, deflate=True)
     doc.close()
     return out
+
+
+# ---------- Word comments on a copy of the original .docx (Owner 2026-11-27) ----------
+def _docx_paragraphs(doc):
+    """Every paragraph in the body, including those inside tables (headers/footers can't hold comments)."""
+    from docx.oxml.ns import qn
+    from docx.text.paragraph import Paragraph
+    for p in doc.element.body.iter(qn("w:p")):
+        yield Paragraph(p, doc._body)
+
+
+def _ws(s: str) -> str:
+    return re.sub(r"\s+", " ", s or "").strip()
+
+
+def _index_paragraphs(paragraphs):
+    """Per paragraph: (lower-cased whitespace-collapsed run text, [(start, end, run)]) — built once."""
+    index = []
+    for para in paragraphs:
+        text, spans, pos = "", [], 0
+        for r in para.runs:
+            if not r.text:
+                continue
+            t = re.sub(r"\s+", " ", r.text)
+            spans.append((pos, pos + len(t), r))
+            text += t
+            pos += len(t)
+        if spans:
+            index.append((text.lower(), spans))
+    return index
+
+
+def _find_runs(index, evidence: str):
+    """Runs of the first paragraph whose run text contains the evidence (whitespace-tolerant)."""
+    probes = [e for e in (_ws(evidence), _ws(evidence)[:60], _ws(evidence)[:30]) if len(e) >= 4]
+    for probe in dict.fromkeys(probes):
+        low = probe.lower()
+        for text, spans in index:
+            i = text.find(low)
+            if i >= 0:
+                j = i + len(low)
+                hit = [r for (a, b, r) in spans if a < j and b > i]
+                if hit:
+                    return hit
+    return None
+
+
+def annotate_docx(original: Path, items: list[Item], out: Path, final: bool) -> Path:
+    """Copy of the original Word TMP with each finding as a Word comment on the quoted text.
+    Comments only: the document's text and formatting are not changed."""
+    from docx import Document
+    doc = Document(str(original))
+    paragraphs = list(_docx_paragraphs(doc))
+    first = next((p for p in paragraphs if [r for r in p.runs if r.text]), None)
+    index = _index_paragraphs(paragraphs)
+    unplaced = []
+    for i in items:
+        text = f"{i.no} [{i.severity}] {i.issue}"
+        if i.action:
+            text += f"\nSuggested action: {i.action}"
+        if i.source:
+            text += f"\nSource: {i.source}"
+        runs = _find_runs(index, i.evidence) if i.evidence and not i.evidence.upper().startswith("VISUAL") else None
+        if runs:
+            doc.add_comment(runs, text=text, author="TMP Check", initials="TC")
+            i.annotated = i.annotated or "comment"
+        else:
+            unplaced.append(f"{i.no} (p{i.page})")
+    if first is not None:
+        head = ("TMP Check — FINAL. " if final else "TMP Check — DRAFT for reviewer. ") + \
+               "Findings are Word comments; the document text is unchanged. See the TMP Check report for full details."
+        if unplaced:
+            head += "\nNot linked to a passage (drawings, tables or page-level issues) — see report: " + ", ".join(unplaced)
+        doc.add_comment([r for r in first.runs if r.text], text=head, author="TMP Check", initials="TC")
+    doc.save(str(out))
+    return out

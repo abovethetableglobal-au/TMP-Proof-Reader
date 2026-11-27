@@ -520,6 +520,8 @@ def build_outputs(db: Session, chk: Check, folder: Path, final: bool) -> tuple[P
     folder.mkdir(parents=True, exist_ok=True)
     kind = "final" if final else "draft"
     annotated = outputs.annotate(to_pdf(Path(chk.storage_path)), items, folder / f"{kind}-annotated.pdf", final)
+    if Path(chk.storage_path).suffix.lower() == ".docx":          # Word TMPs also get a commented .docx copy
+        outputs.annotate_docx(Path(chk.storage_path), items, folder / f"{kind}-comments.docx", final)
     report = outputs.build_report(meta, items, rows, folder / f"{kind}-report.pdf")
     return report, annotated
 

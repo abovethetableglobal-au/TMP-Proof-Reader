@@ -380,25 +380,37 @@ def _disposition(kind: str, filename: str) -> str:
     return f'{kind}; filename="{ascii_name}"; filename*=UTF-8\'\'{q(filename)}'
 
 
-def _output_files(db: Session, chk: Check) -> tuple[bytes, bytes, str]:
-    """(report PDF, annotated PDF, 'final' | 'DRAFT') — finals are the stored files; drafts are built on request."""
+def _output_files(db: Session, chk: Check) -> tuple[bytes, bytes, str, bytes | None]:
+    """(report PDF, annotated PDF, 'final' | 'DRAFT', commented .docx or None) — finals are the stored files;
+    drafts are built on request. The commented .docx exists only for Word uploads."""
     if chk.status == CheckStatus.final_issued:
         paths = processing.final_paths(chk)
         if not all(p.exists() for p in paths):
             raise HTTPException(404, "Final file not found")
-        return paths[0].read_bytes(), paths[1].read_bytes(), "final"
+        docx = paths[0].parent / "final-comments.docx"
+        if is_word(chk) and not docx.exists():          # finals issued before this feature: build once, keep
+            processing.build_outputs(db, chk, paths[0].parent, final=True)
+        return paths[0].read_bytes(), paths[1].read_bytes(), "final", docx.read_bytes() if docx.exists() else None
     if chk.status != CheckStatus.draft_review:
         raise HTTPException(409, "No report until the check has finished")
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
         paths = processing.build_outputs(db, chk, Path(tmp), final=False)
-        return paths[0].read_bytes(), paths[1].read_bytes(), "DRAFT"
+        docx = Path(tmp) / "draft-comments.docx"
+        return paths[0].read_bytes(), paths[1].read_bytes(), "DRAFT", docx.read_bytes() if docx.exists() else None
+
+
+def is_word(chk: Check) -> bool:
+    return Path(chk.filename or "").suffix.lower() == ".docx"
+
+
+templates.env.globals["is_word"] = is_word
 
 
 def _output(db: Session, ctx: Ctx, check_id: int, which: int, inline: bool) -> Response:
     chk = get_check(db, ctx, check_id)
     log(db, ctx, ("view_" if inline else "download_") + ("report" if which == 0 else "annotated"), f"check:{chk.id}")
-    report, annotated, kind = _output_files(db, chk)
+    report, annotated, kind, _ = _output_files(db, chk)
     name = f"{chk.doc_ref} - TMP Check {'report' if which == 0 else 'annotated'} ({kind}).pdf"
     return Response(report if which == 0 else annotated, media_type="application/pdf",
                     headers={"Content-Disposition": _disposition("inline" if inline else "attachment", name)})
@@ -414,17 +426,33 @@ def annotated_pdf(check_id: int, view: int = 0, ctx: Ctx = Depends(current), db:
     return _output(db, ctx, check_id, 1, bool(view))
 
 
+@app.get("/checks/{check_id}/comments.docx")
+def comments_docx(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    """Word TMPs: a copy of the original .docx with each finding as a Word comment (Owner 2026-11-27)."""
+    chk = get_check(db, ctx, check_id)
+    if not is_word(chk):
+        raise HTTPException(404, "Word comments are available for Word (.docx) uploads only")
+    _, _, kind, docx = _output_files(db, chk)
+    if docx is None:
+        raise HTTPException(404, "Word copy not found")
+    log(db, ctx, "download_comments_docx", f"check:{chk.id}")
+    return Response(docx, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    headers={"Content-Disposition": _disposition("attachment", f"{chk.doc_ref} - TMP Check Word comments ({kind}).docx")})
+
+
 @app.get("/checks/{check_id}/download.zip")
 def download_all(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     """Report, annotated TMP and the source TMP together in one ZIP (Owner request 2026-11-27)."""
     import io
     import zipfile
     chk = get_check(db, ctx, check_id)
-    report, annotated, kind = _output_files(db, chk)
+    report, annotated, kind, docx = _output_files(db, chk)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr(f"{chk.doc_ref} - TMP Check report ({kind}).pdf", report)
         z.writestr(f"{chk.doc_ref} - TMP Check annotated ({kind}).pdf", annotated)
+        if docx:
+            z.writestr(f"{chk.doc_ref} - TMP Check Word comments ({kind}).docx", docx)
         if chk.storage_path and Path(chk.storage_path).exists():          # source TMP exactly as uploaded
             z.write(chk.storage_path, f"{chk.doc_ref} - source TMP{Path(chk.filename).suffix or '.pdf'}")
     log(db, ctx, "download_zip", f"check:{chk.id}")
