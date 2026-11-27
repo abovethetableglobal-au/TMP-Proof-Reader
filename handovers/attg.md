@@ -1,29 +1,25 @@
 # Handover — attg (TMP Check)
 
-**Date:** 2026-11-25
+**Date:** 2026-11-27
 **Goal:** Get TMP Check to G4/G5: a working portal plus a benchmarked engine, validated by Tara.
 
 **Done**
-- Stripe sandbox built and verified on your PC (A-46). Managed Payments off (A-47). Refunds: the admin records the credit adjustment (A-48). Live payments on hold until G5.
-- Check queue: one check at a time; uploads reserve credits.
-- Speed: BC 016 now takes about 8 min (was 36 min) and US$6 (was US$8.15), using the cache warm-up and parallel passes.
-- Consistency labels on findings. Check 15: 128 found in both runs, 51 in one run; all 12 Majors confirmed.
-- [PR #1](https://github.com/abovethetableglobal-au/TMP-Proof-Reader/pull/1) open on branch `claude/determined-curie-a43sdd`; 74 tests pass. Claude is watching it.
+- PR #1 merged. Check 15 email and Tally form sent to Tara. Entity ATTG and ABN recorded (A-49); WTGTM confirmation and insurance on file (A-50).
+- A-51: reviewer accreditation added to the portal. **My Account** stores level, certificate number and expiry. Reviewers without current accreditation can't decide findings or issue finals. The final report shows the accreditation. 79 tests pass (commit `6eea3c0`).
+- Gate 3 becomes unconditional once Tara enters her details.
 
 **In progress**
-- Email to Tara: `docs/comms/EMAIL_Tara_check15_BC016_DRAFT.md`. Attach the check 15 report (DRAFT 6) and the annotated TMP (DRAFT 5).
+- Waiting for Tara's check 15 (BC 016) feedback via Tally.
 
 **Next 3 steps**
-1. Review and merge PR #1.
-2. Publish the Tally form, add its link to the email, and send it to Tara.
-3. Re-run SU 025 on the new build; then rule on the BENCH-06 findings with WTGTM.
+1. On your PC: `git pull`, then restart the portal on port 8001. The new fields are added automatically.
+2. Tara opens My Account and enters her accreditation. Then tell Claude, so G3 can be marked accepted.
+3. Re-run SU 025 on the new build, then rule on the BENCH-06 findings with WTGTM.
 
 **Open questions**
-- Stripe account legal entity and ABN.
-- Insurance details for A-43.
-- G2: WTGTM transfer and confidentiality confirmation.
+- Should admins be blocked from issuing finals? At present only customer reviewers are blocked.
 - Before G6, the queue needs a proper job queue (currently in-process and SQLite).
 
-**PC run notes:** run the portal from the inner folder on port 8001. Set `ANTHROPIC_API_KEY` (the `sk-ant-api03-` secret, not the `apikey_` ID), `TMPCHECK_AI_PASSES=A,B,C,D` and the Stripe `sk_test_` key.
+**PC run notes:** run the portal from the inner folder on port 8001. Set `ANTHROPIC_API_KEY` (the `sk-ant-api03-` secret), `TMPCHECK_AI_PASSES=A,B,C,D` and the Stripe `sk_test_` key.
 
-**Previously:** 2026-11-25: Stripe Option A approved; BC 016 re-run in progress.
+**Previously:** 2026-11-25: Stripe sandbox verified; BC 016 sped up to about 8 min; PR #1 opened.
