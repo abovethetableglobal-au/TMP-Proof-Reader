@@ -11,7 +11,8 @@
       <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span></td>
       <td data-label="Findings">{{ r.findings }}</td>
       <td data-label="Time">{{ r.seconds|duration if r.seconds is not none else '—' }}</td>
-      <td data-label="Actions"><a class="btn small outline" href="/checks/{{ r.id }}">{{ 'View Report' if r.has_report else 'View' }}</a></td>
+      <td data-label="Actions"><span class="row-actions"><a class="btn small outline" href="/checks/{{ r.id }}">{{ 'View Report' if r.has_report else 'View' }}</a>
+        {% if r.has_report %}<a class="btn small navy" href="/checks/{{ r.id }}/download.zip" download title="Report and annotated TMP (ZIP)">Download</a>{% endif %}</span></td>
     </tr>
   {% endfor %}
   </tbody>

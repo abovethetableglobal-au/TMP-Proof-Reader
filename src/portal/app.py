@@ -5,6 +5,7 @@ Stage S2: sign-in, roles, CSRF and audit log. Still a local build: the app refus
 unless TMPCHECK_ENV=local, because hosting needs the G6 security and data-handling approvals.
 """
 import json
+import re
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -372,33 +373,61 @@ def export_findings(check_id: int, ctx: Ctx = Depends(current), db: Session = De
                         headers={"Content-Disposition": f'attachment; filename="check-{chk.id}-findings.json"'})
 
 
-def _output(db: Session, ctx: Ctx, check_id: int, which: int) -> Response:
-    chk = get_check(db, ctx, check_id)
-    log(db, ctx, "download_" + ("report" if which == 0 else "annotated"), f"check:{chk.id}")
-    label = f"{chk.doc_ref} - TMP Check {'report' if which == 0 else 'annotated'}"
+def _disposition(kind: str, filename: str) -> str:
+    """Content-Disposition with an ASCII fallback and a UTF-8 filename (RFC 6266)."""
+    from urllib.parse import quote as q
+    ascii_name = re.sub(r'[^A-Za-z0-9 ._()-]', "_", filename)
+    return f'{kind}; filename="{ascii_name}"; filename*=UTF-8\'\'{q(filename)}'
+
+
+def _output_files(db: Session, chk: Check) -> tuple[bytes, bytes, str]:
+    """(report PDF, annotated PDF, 'final' | 'DRAFT') — finals are the stored files; drafts are built on request."""
     if chk.status == CheckStatus.final_issued:
-        path = processing.final_paths(chk)[which]
-        if not path.exists():
+        paths = processing.final_paths(chk)
+        if not all(p.exists() for p in paths):
             raise HTTPException(404, "Final file not found")
-        return FileResponse(path, filename=f"{label} (final).pdf", media_type="application/pdf")
+        return paths[0].read_bytes(), paths[1].read_bytes(), "final"
     if chk.status != CheckStatus.draft_review:
         raise HTTPException(409, "No report until the check has finished")
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
         paths = processing.build_outputs(db, chk, Path(tmp), final=False)
-        data = paths[which].read_bytes()
-    return Response(data, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{label} (DRAFT).pdf"'})
+        return paths[0].read_bytes(), paths[1].read_bytes(), "DRAFT"
+
+
+def _output(db: Session, ctx: Ctx, check_id: int, which: int, inline: bool) -> Response:
+    chk = get_check(db, ctx, check_id)
+    log(db, ctx, ("view_" if inline else "download_") + ("report" if which == 0 else "annotated"), f"check:{chk.id}")
+    report, annotated, kind = _output_files(db, chk)
+    name = f"{chk.doc_ref} - TMP Check {'report' if which == 0 else 'annotated'} ({kind}).pdf"
+    return Response(report if which == 0 else annotated, media_type="application/pdf",
+                    headers={"Content-Disposition": _disposition("inline" if inline else "attachment", name)})
 
 
 @app.get("/checks/{check_id}/report.pdf")
-def report_pdf(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
-    return _output(db, ctx, check_id, 0)
+def report_pdf(check_id: int, view: int = 0, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    return _output(db, ctx, check_id, 0, bool(view))
 
 
 @app.get("/checks/{check_id}/annotated.pdf")
-def annotated_pdf(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
-    return _output(db, ctx, check_id, 1)
+def annotated_pdf(check_id: int, view: int = 0, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    return _output(db, ctx, check_id, 1, bool(view))
+
+
+@app.get("/checks/{check_id}/download.zip")
+def download_all(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    """Report and annotated TMP together in one ZIP (Owner request 2026-11-27)."""
+    import io
+    import zipfile
+    chk = get_check(db, ctx, check_id)
+    report, annotated, kind = _output_files(db, chk)
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr(f"{chk.doc_ref} - TMP Check report ({kind}).pdf", report)
+        z.writestr(f"{chk.doc_ref} - TMP Check annotated ({kind}).pdf", annotated)
+    log(db, ctx, "download_zip", f"check:{chk.id}")
+    return Response(buf.getvalue(), media_type="application/zip",
+                    headers={"Content-Disposition": _disposition("attachment", f"{chk.doc_ref} - TMP Check ({kind}).zip")})
 
 
 @app.get("/checks/{check_id}/original")

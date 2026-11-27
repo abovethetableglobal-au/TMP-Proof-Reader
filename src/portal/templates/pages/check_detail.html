@@ -9,10 +9,14 @@
     · <a href="/checks/{{ chk.id }}/original">Download original</a>
     {% if findings %}· <a href="/checks/{{ chk.id }}/findings.json">Export findings (JSON)</a>{% endif %}</p>
   {% if chk.status in (CheckStatus.draft_review, CheckStatus.final_issued) %}
+  {% set kind = '' if chk.status == CheckStatus.final_issued else ' (draft)' %}
   <p class="downloads">
-    <a class="btn small navy" href="/checks/{{ chk.id }}/report.pdf">Report PDF{{ '' if chk.status == CheckStatus.final_issued else ' (draft)' }}</a>
-    <a class="btn small outline" href="/checks/{{ chk.id }}/annotated.pdf">Annotated TMP{{ '' if chk.status == CheckStatus.final_issued else ' (draft)' }}</a>
+    <a class="btn small navy" href="/checks/{{ chk.id }}/report.pdf" download>Download report{{ kind }}</a>
+    <a class="btn small navy" href="/checks/{{ chk.id }}/annotated.pdf" download>Download annotated TMP{{ kind }}</a>
+    <a class="btn small outline" href="/checks/{{ chk.id }}/download.zip" download>Download both (ZIP)</a>
   </p>
+  <p class="view-links">View in a new tab: <a href="/checks/{{ chk.id }}/report.pdf?view=1" target="_blank" rel="noopener">report</a>
+    · <a href="/checks/{{ chk.id }}/annotated.pdf?view=1" target="_blank" rel="noopener">annotated TMP</a></p>
   {% endif %}
 </div>
 
