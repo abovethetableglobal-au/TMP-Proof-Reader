@@ -416,7 +416,7 @@ def annotated_pdf(check_id: int, view: int = 0, ctx: Ctx = Depends(current), db:
 
 @app.get("/checks/{check_id}/download.zip")
 def download_all(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
-    """Report and annotated TMP together in one ZIP (Owner request 2026-11-27)."""
+    """Report, annotated TMP and the source TMP together in one ZIP (Owner request 2026-11-27)."""
     import io
     import zipfile
     chk = get_check(db, ctx, check_id)
@@ -425,6 +425,8 @@ def download_all(check_id: int, ctx: Ctx = Depends(current), db: Session = Depen
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr(f"{chk.doc_ref} - TMP Check report ({kind}).pdf", report)
         z.writestr(f"{chk.doc_ref} - TMP Check annotated ({kind}).pdf", annotated)
+        if chk.storage_path and Path(chk.storage_path).exists():          # source TMP exactly as uploaded
+            z.write(chk.storage_path, f"{chk.doc_ref} - source TMP{Path(chk.filename).suffix or '.pdf'}")
     log(db, ctx, "download_zip", f"check:{chk.id}")
     return Response(buf.getvalue(), media_type="application/zip",
                     headers={"Content-Disposition": _disposition("attachment", f"{chk.doc_ref} - TMP Check ({kind}).zip")})

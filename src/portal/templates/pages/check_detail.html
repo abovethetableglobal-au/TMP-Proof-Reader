@@ -6,17 +6,19 @@
   <p class="crumb"><a href="/checks">My Checks</a> / {{ chk.doc_ref }}</p>
   <h1>{{ chk.doc_ref }} <span class="pill {{ tone }}">{{ status_label }}</span></h1>
   <p>{{ chk.filename }} · uploaded {{ chk.created_at|dmy }}{% if chk.pages %} · {{ chk.pages }} pages{% endif %}
-    · <a href="/checks/{{ chk.id }}/original">Download original</a>
     {% if findings %}· <a href="/checks/{{ chk.id }}/findings.json">Export findings (JSON)</a>{% endif %}</p>
   {% if chk.status in (CheckStatus.draft_review, CheckStatus.final_issued) %}
   {% set kind = '' if chk.status == CheckStatus.final_issued else ' (draft)' %}
   <p class="downloads">
     <a class="btn small navy" href="/checks/{{ chk.id }}/report.pdf" download>Download report{{ kind }}</a>
     <a class="btn small navy" href="/checks/{{ chk.id }}/annotated.pdf" download>Download annotated TMP{{ kind }}</a>
-    <a class="btn small outline" href="/checks/{{ chk.id }}/download.zip" download>Download both (ZIP)</a>
+    <a class="btn small navy" href="/checks/{{ chk.id }}/original" download>Download source TMP</a>
+    <a class="btn small outline" href="/checks/{{ chk.id }}/download.zip" download>Download all (ZIP)</a>
   </p>
   <p class="view-links">View in a new tab: <a href="/checks/{{ chk.id }}/report.pdf?view=1" target="_blank" rel="noopener">report</a>
     · <a href="/checks/{{ chk.id }}/annotated.pdf?view=1" target="_blank" rel="noopener">annotated TMP</a></p>
+  {% else %}
+  <p class="downloads"><a class="btn small outline" href="/checks/{{ chk.id }}/original" download>Download source TMP</a></p>
   {% endif %}
 </div>
 

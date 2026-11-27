@@ -28,7 +28,10 @@ def test_zip_contains_report_and_annotated(env):
     r = c.get(f"/checks/{cid}/download.zip")
     assert r.status_code == 200 and r.headers["content-type"] == "application/zip"
     names = zipfile.ZipFile(io.BytesIO(r.content)).namelist()
-    assert sorted(names) == ["SAMPLE-TMP-01 - TMP Check annotated (DRAFT).pdf", "SAMPLE-TMP-01 - TMP Check report (DRAFT).pdf"]
+    assert sorted(names) == ["SAMPLE-TMP-01 - TMP Check annotated (DRAFT).pdf", "SAMPLE-TMP-01 - TMP Check report (DRAFT).pdf",
+                             "SAMPLE-TMP-01 - source TMP.pdf"]
+    from tests.portal.test_workflow import SAMPLE
+    assert zipfile.ZipFile(io.BytesIO(r.content)).read("SAMPLE-TMP-01 - source TMP.pdf") == SAMPLE.read_bytes()
 
 
 def test_final_zip_uses_stored_final_files(env):
@@ -40,14 +43,14 @@ def test_final_zip_uses_stored_final_files(env):
         s.commit()
     c.post(f"/checks/{cid}/final")
     names = zipfile.ZipFile(io.BytesIO(c.get(f"/checks/{cid}/download.zip").content)).namelist()
-    assert all("(final)" in n for n in names) and len(names) == 2
+    assert len(names) == 3 and sum("(final)" in n for n in names) == 2
 
 
 def test_download_buttons_shown(env):
     c, S = env
     cid = _draft(c, S)
     page = c.get(f"/checks/{cid}").text
-    assert "Download report" in page and "Download both (ZIP)" in page and "?view=1" in page
+    assert "Download report" in page and "Download source TMP" in page and "Download all (ZIP)" in page and "?view=1" in page
     assert f"/checks/{cid}/download.zip" in c.get("/checks").text
 
 
