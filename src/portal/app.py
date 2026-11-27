@@ -560,7 +560,8 @@ def admin_queue(request: Request, ctx: Ctx = Depends(operator_view), db: Session
     t = settings()["turnaround"]
     return render(request, "pages/admin_queue.html", "op_queue", ctx, rows=rows,
                   customers=[c for c in operator.customers(db) if (c["org"].status or "active") == "active"],
-                  error=request.query_params.get("error"),
+                  error=request.query_params.get("error"), ok=request.query_params.get("ok"),
+                  failed_n=sum(r["stage"] == "failed" for r in rows),
                   open_n=sum(r["open"] for r in rows), overdue_n=sum(r["overdue"] for r in rows),
                   next_batch=operator.due_at(utcnow()), cutoff=t["cutoff"], return_by=t["return_by"],
                   holidays_set=bool(t.get("holidays")))
@@ -650,6 +651,14 @@ def admin_credits(org_id: int, action: str = Form(...), qty: int = Form(...), re
     log(db, ctx, f"credits_{action}", f"org:{org.id}", f"{qty} — {reason}")
     db.commit()
     return _back(f"/admin/customers/{org.id}", msg=f"{qty} credit(s) {'added' if action == 'grant' else 'removed'}.")
+
+
+@app.post("/admin/queue/clear-failed")
+def admin_clear_failed(ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    removed = operator.clear_failed(db, processing.STORAGE)
+    log(db, ctx, "failed_checks_cleared", None, f"{len(removed)} removed: " + ",".join(map(str, removed))[:900])
+    db.commit()
+    return _back("/admin/queue", msg=f"{len(removed)} failed check(s) removed.")
 
 
 @app.post("/admin/queue/run")

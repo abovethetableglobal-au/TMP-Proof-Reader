@@ -217,3 +217,27 @@ def test_queue_newest_first(op):
     assert order == ["DOC-6", "DOC-5", "DOC-4"]          # 1 h, 2 h, 3 h ago
     page = c.get("/admin/queue").text
     assert page.index("DOC-6") < page.index("DOC-5") < page.index("DOC-4")
+
+
+def test_clear_failed_checks(op, tmp_path):
+    c, S = op
+    from src.portal import processing
+    add_credits(S, org=2, qty=1)
+    ok = c.post("/admin/queue/run", data={"org_id": 2},
+                files={"file": ("SAMPLE-TMP-01.pdf", SAMPLE.read_bytes(), "application/pdf")}, follow_redirects=False)
+    good_id = int(ok.headers["location"].split("/")[-1])
+    folder = processing.STORAGE / "2" / "999"
+    folder.mkdir(parents=True)
+    (folder / "original.pdf").write_bytes(b"%PDF-1.4")
+    with S() as s:
+        s.add(dbm.Check(id=999, org_id=2, doc_ref="BROKEN", filename="b.pdf", status=dbm.CheckStatus.failed,
+                        storage_path=str(folder / "original.pdf")))
+        s.commit()
+    assert "Clear 1 failed check" in c.get("/admin/queue").text
+    r = c.post("/admin/queue/clear-failed")
+    assert "1 failed check(s) removed" in r.text and "BROKEN" not in r.text
+    with S() as s:
+        assert s.get(dbm.Check, 999) is None and s.get(dbm.Check, good_id) is not None   # only failed ones go
+        assert services.credit_balance(s, 2).available == 0                               # credits untouched
+        assert s.query(dbm.AuditEvent).filter_by(action="failed_checks_cleared").count() == 1
+    assert not folder.exists()

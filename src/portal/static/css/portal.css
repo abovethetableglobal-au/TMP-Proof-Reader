@@ -362,3 +362,4 @@ tr.overdue td { background: #fff5f5; }
 .run-form select, .run-form input[type=file] { width: 100%; padding: 8px 10px; border: 1px solid #cfd6e0; border-radius: 6px; font: inherit; }
 @media (max-width: 760px) { .run-form { grid-template-columns: 1fr; } }
 .small { font-size: 13px; }
+.op-stats { align-items: center; } .op-clear { margin-left: auto; }

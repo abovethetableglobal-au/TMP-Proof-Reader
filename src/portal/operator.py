@@ -206,3 +206,28 @@ def queue(db: Session, include_done_days: int = 7, now: datetime | None = None) 
         })
     out.sort(key=lambda r: (r["received"], r["check"].id), reverse=True)   # Owner: most recent at the top
     return out
+
+
+# ---------- housekeeping ----------
+def clear_failed(db: Session, storage_root) -> list[int]:
+    """Delete failed checks (Owner 2026-11-27). Failed checks never use a credit, so no ledger row may
+    reference them; any check that is referenced is kept. Their uploaded files are deleted too."""
+    import shutil
+    from pathlib import Path
+    from .db import Finding
+    failed = db.execute(select(Check).where(Check.status == CheckStatus.failed)).scalars().all()
+    referenced = set(db.execute(select(CreditLedger.check_id).where(CreditLedger.check_id.is_not(None))).scalars())
+    root = Path(storage_root).resolve()
+    removed = []
+    for c in failed:
+        if c.id in referenced:
+            continue
+        if c.storage_path:
+            folder = Path(c.storage_path).resolve().parent
+            if folder.name == str(c.id) and root in folder.parents:   # only that check's own folder
+                shutil.rmtree(folder, ignore_errors=True)
+        db.query(Finding).filter(Finding.check_id == c.id).delete()
+        db.delete(c)
+        removed.append(c.id)
+    db.flush()
+    return removed
