@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-51 | **Gate 3 conditions replaced (Option A, resolves P-G3):** reviewer accreditation (highest level WTM/AWTM/RTM, certificate no., expiry) captured in the portal (My Account). Customer reviewers cannot decide findings or issue finals without current accreditation; the final report records the reviewer's accreditation. Owner's relayed rule review (2026-11-20) accepted as the review record. G3 becomes unconditional when Tara enters her details | Covers every customer reviewer under the self-approve model (A-15) | 2026-11-27 | Owner |
 | A-50 | **WTGTM transfer and confidentiality confirmed** (G2 dependency cleared). Insurance held (A-43 closed without further detail recorded, per Owner) | Owner | 2026-11-26 | Owner |
 | A-49 | **Stripe account entity:** business name ATTG, ABN 42 847 797 843 (account acct_1UfZfBGdViWULINo "TMP Proof Reader") | Owner | 2026-11-26 | Owner |
 | A-48 | **Refunds:** Stripe refunds never remove credits automatically. The webhook flags them; an admin records a negative ledger `adjustment` on the purchase lot (`python -m src.portal.admin adjust`), capped at unused credits, with name and reason. Live payments on hold (A-09) | Owner | 2026-11-25 | Owner |
@@ -57,7 +58,6 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| P-G3 | A-17 conditions **not met by 2026-11-27**: Tara's accreditation details (level, number, expiry) and completed rule review pack not on file. How to close? | Replace with product control: reviewer accreditation (level, cert no., expiry) captured at portal onboarding for every customer reviewer; Tara completes hers; accept Owner-relayed rule review (2026-11-20) as the review record | 2026-12-04 |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)

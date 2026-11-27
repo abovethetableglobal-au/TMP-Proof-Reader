@@ -1,6 +1,6 @@
 """Portal S1 tests: ledger derivation, empty states, no mock-up data, pricing, tenant scoping."""
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 
@@ -26,7 +26,8 @@ def db():
     a = dbm.Organisation(name="Org A"); b = dbm.Organisation(name="Org B")
     s.add_all([a, b]); s.flush()
     from tests.portal.conftest import PW_HASH
-    s.add_all([dbm.User(org_id=a.id, name="Alice Smith", email="a@x", role="customer_reviewer", password_hash=PW_HASH),
+    s.add_all([dbm.User(org_id=a.id, name="Alice Smith", email="a@x", role="customer_reviewer", password_hash=PW_HASH,
+                         accreditation_level="AWTM", accreditation_number="A-1234", accreditation_expiry=date(2099, 1, 1)),
                dbm.User(org_id=b.id, name="Bob", email="b@x", password_hash=PW_HASH)])
     s.commit()
     yield s

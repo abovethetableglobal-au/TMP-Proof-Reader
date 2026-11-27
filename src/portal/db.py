@@ -5,10 +5,10 @@ Every customer-owned table carries ``org_id``; all queries go through
 """
 import enum
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from sqlalchemy import (Enum, ForeignKey, Integer, String, Text,
-                        DateTime, Float, create_engine)
+                        Date, DateTime, Float, create_engine)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from .config import ROOT
@@ -66,6 +66,10 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(32), default="customer_user")   # customer_user | customer_reviewer | admin
     password_hash: Mapped[str | None] = mapped_column(String(300))
     active: Mapped[bool] = mapped_column(default=True)
+    # P-G3 (Owner 2026-11-27): reviewer's Main Roads WA accreditation, required before reviewing findings
+    accreditation_level: Mapped[str | None] = mapped_column(String(20))      # highest held: WTM | AWTM | RTM
+    accreditation_number: Mapped[str | None] = mapped_column(String(60))
+    accreditation_expiry: Mapped[date | None] = mapped_column(Date)
 
 
 class UserSession(Base):

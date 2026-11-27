@@ -10,7 +10,7 @@ import hmac
 import os
 import secrets
 import time
-from datetime import timedelta
+from datetime import date, timedelta
 
 from sqlalchemy.orm import Session
 
@@ -117,6 +117,28 @@ def csrf_ok(session_token: str | None, supplied: str | None) -> bool:
 
 def is_reviewer(user: User) -> bool:
     return user.role in REVIEWER_ROLES
+
+
+# P-G3: a customer reviewer must hold current Main Roads WA accreditation (WA Code §8; valid 3 years, §8.9).
+# WTM is the minimum level that may modify a TMP on site (§4.2.1); AWTM prepares TMPs; RTM endorses complex ones (§4.2.3).
+ACCREDITATION_LEVELS = ("WTM", "AWTM", "RTM")
+
+
+def accreditation_current(user: User, today: date | None = None) -> bool:
+    today = today or utcnow().date()
+    return bool(user.accreditation_level in ACCREDITATION_LEVELS and (user.accreditation_number or "").strip()
+                and user.accreditation_expiry and user.accreditation_expiry >= today)
+
+
+def needs_accreditation(user: User) -> bool:
+    """Customer reviewers must have current accreditation on file before deciding findings or issuing finals."""
+    return user.role == "customer_reviewer" and not accreditation_current(user)
+
+
+def accreditation_label(user: User) -> str:
+    if not accreditation_current(user):
+        return ""
+    return f"{user.accreditation_level} {user.accreditation_number.strip()}, valid to {user.accreditation_expiry:%d/%m/%Y}"
 
 
 def audit(db: Session, user: User | None, action: str, obj: str | None = None, detail: str | None = None,

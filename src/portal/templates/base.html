@@ -43,6 +43,7 @@
         <details class="user-menu">
           <summary><span class="avatar" aria-hidden="true">{{ (ctx.user.name.split()|map('first')|join|upper)[:2] }}</span><span class="user-name">{{ ctx.user.name }}</span>{{ icon("chevron-down", "ic sm") }}</summary>
           <div class="menu">
+            <a href="/account">My Account</a>
             <a href="/billing">Credits &amp; Billing</a>
             <a href="/help">Help &amp; Support</a>
             <span class="menu-note">{{ ctx.user.email }} · {{ 'Accredited reviewer' if ctx.reviewer else 'User' }}</span>

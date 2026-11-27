@@ -330,3 +330,11 @@ main > section.card { margin: 18px 22px 0 32px; }
 .login-card input { width: 100%; padding: 10px 12px; border: 1px solid #c4ccd8; border-radius: 6px; font: inherit; }
 .login-card .btn { width: 100%; margin-top: 18px; }
 .login-brand { display: flex; align-items: center; gap: 10px; color: var(--navy-800); font-weight: 800; font-size: 20px; }
+
+/* ---------- account / accreditation (P-G3) ---------- */
+.alert.ok { background: #e7f6ec; color: #116329; }
+.alert.warn { background: #fff4e5; color: #8a4b00; }
+.acc-form { display: grid; gap: 6px; max-width: 420px; }
+.acc-form label { font-weight: 600; font-size: 14px; margin-top: 8px; }
+.acc-form input, .acc-form select { padding: 9px 10px; border: 1px solid #cfd6e0; border-radius: 6px; font: inherit; }
+.acc-form button { justify-self: start; margin-top: 10px; }

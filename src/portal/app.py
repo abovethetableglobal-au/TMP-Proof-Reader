@@ -21,7 +21,7 @@ from urllib.parse import quote
 
 from . import auth, payments, processing, services
 from .config import RULES_DIR, money, price_label, settings
-from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db
+from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db, utcnow
 
 HERE = Path(__file__).parent
 
@@ -117,6 +117,9 @@ def reviewer_only(ctx: Ctx = Depends(checked)) -> Ctx:
     """A-15: only the organisation's accredited reviewer decides findings and issues finals."""
     if not ctx.reviewer:
         raise HTTPException(403, "Only your organisation's accredited reviewer can do this.")
+    if auth.needs_accreditation(ctx.user):
+        raise HTTPException(403, "Add your current Main Roads WA accreditation (level, certificate number and expiry) "
+                                 "on your Account page before reviewing findings.")
     return ctx
 
 
@@ -227,6 +230,41 @@ def load_rules() -> list[dict]:
     return rules
 
 
+@app.get("/account", response_class=HTMLResponse)
+def account(request: Request, ctx: Ctx = Depends(current), saved: str | None = None, error: str | None = None):
+    return render(request, "pages/account.html", "account", ctx, levels=auth.ACCREDITATION_LEVELS,
+                  current=auth.accreditation_current(ctx.user), saved=saved, error=error)
+
+
+@app.post("/account/accreditation")
+def save_accreditation(level: str = Form(...), number: str = Form(...), expiry: str = Form(...),
+                       ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
+    """P-G3: reviewer records their Main Roads WA accreditation. Changes are audit-logged."""
+    from datetime import date as _date
+    number = number.strip()
+    try:
+        exp = _date.fromisoformat(expiry)
+    except ValueError:
+        exp = None
+    error = None
+    if level not in auth.ACCREDITATION_LEVELS:
+        error = "Choose your accreditation level."
+    elif not number or len(number) > 60:
+        error = "Enter your certificate number."
+    elif exp is None:
+        error = "Enter the expiry date shown on your accreditation card."
+    elif exp < utcnow().date():
+        error = "That accreditation has expired. Please renew it before reviewing TMP Check reports."
+    if error:
+        return RedirectResponse(f"/account?error={quote(error)}", status_code=303)
+    user = db.get(User, ctx.user.id)
+    user.accreditation_level, user.accreditation_number, user.accreditation_expiry = level, number, exp
+    db.commit()
+    log(db, ctx, "accreditation_saved", f"user:{user.id}", f"{level} {number} exp {exp.isoformat()}")
+    db.commit()
+    return RedirectResponse("/account?saved=1", status_code=303)
+
+
 @app.get("/library", response_class=HTMLResponse)
 def library(request: Request, ctx: Ctx = Depends(current)):
     return render(request, "pages/library.html", "library", ctx, rules=load_rules())
@@ -306,7 +344,8 @@ def decide(check_id: int, finding_id: int, decision: str = Form(...), note: str 
 def final(check_id: int, ctx: Ctx = Depends(reviewer_only), db: Session = Depends(get_db)):
     chk = get_check(db, ctx, check_id)
     try:
-        processing.issue_final(db, chk, reviewer=ctx.user.name)
+        label = auth.accreditation_label(ctx.user)
+        processing.issue_final(db, chk, reviewer=f"{ctx.user.name} ({label})" if label else ctx.user.name)
     except processing.UploadError as e:
         return RedirectResponse(f"/checks/{chk.id}?error={e}", status_code=303)
     db.commit()

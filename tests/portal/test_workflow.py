@@ -1,6 +1,6 @@
 """Functional tests: upload → check → draft → reviewer decisions → final, with credit rules."""
 import os
-from datetime import timedelta
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -36,7 +36,8 @@ def env(tmp_path, monkeypatch):
     a = dbm.Organisation(name="Org A"); b = dbm.Organisation(name="Org B")
     s.add_all([a, b]); s.flush()
     from tests.portal.conftest import PW_HASH
-    s.add_all([dbm.User(org_id=a.id, name="Alice", email="a@x", role="customer_reviewer", password_hash=PW_HASH),
+    s.add_all([dbm.User(org_id=a.id, name="Alice", email="a@x", role="customer_reviewer", password_hash=PW_HASH,
+                         accreditation_level="AWTM", accreditation_number="A-1234", accreditation_expiry=date(2099, 1, 1)),
                dbm.User(org_id=b.id, name="Bob", email="b@x", password_hash=PW_HASH),
                dbm.User(org_id=a.id, name="Uma", email="u@x", role="customer_user", password_hash=PW_HASH)])
     s.commit()
@@ -288,12 +289,13 @@ def test_report_and_annotated_outputs(env):
     c.post(f"/checks/{cid}/final")
     with S() as s:
         chk = s.get(dbm.Check, cid)
-        assert chk.status == dbm.CheckStatus.final_issued and chk.reviewer_name == "Alice"
+        assert chk.status == dbm.CheckStatus.final_issued and chk.reviewer_name == "Alice (AWTM A-1234, valid to 01/01/2099)"
     fin = pymupdf.open(stream=c.get(f"/checks/{cid}/report.pdf").content, filetype="pdf")
     ftext = "".join(p.get_text() for p in fin)
     assert "FINAL" in ftext and "DRAFT" not in ftext and "Alice" in ftext
     flat = " ".join(ftext.split())
     assert "XXXX" not in flat and "1 was rejected" in flat                    # rejected finding left out
+    assert "AWTM A-1234" in flat                                              # P-G3: reviewer accreditation on final
     assert c.get(f"/checks/{cid}/annotated.pdf").status_code == 200
 
 

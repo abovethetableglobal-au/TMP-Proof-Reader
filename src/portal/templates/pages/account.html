@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}My Account{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>My Account</h1>
+</div>
+<section class="card panel">
+  <h2 class="pad">Your details</h2>
+  <p class="pad">{{ ctx.user.name }} · {{ ctx.user.email }} · {{ ctx.org.name }} · {{ 'Accredited reviewer' if ctx.reviewer else 'User' }}</p>
+</section>
+{% if ctx.user.role == "customer_reviewer" %}
+<section class="card panel" id="accreditation">
+  <h2 class="pad">Main Roads WA accreditation</h2>
+  {% if saved %}<div class="alert ok" role="status">Accreditation saved.</div>{% endif %}
+  {% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+  {% if current %}
+  <p class="pad">On file: <strong>{{ ctx.user.accreditation_level }} {{ ctx.user.accreditation_number }}</strong>, valid to {{ ctx.user.accreditation_expiry.strftime('%d/%m/%Y') }}. It is shown on every final report you issue.</p>
+  {% else %}
+  <div class="alert warn" role="alert">You need current accreditation on file before you can review findings or issue final reports.</div>
+  {% endif %}
+  <form class="pad acc-form" method="post" action="/account/accreditation">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <label for="level">Highest accreditation held</label>
+    <select id="level" name="level" required>
+      {% for l in levels %}<option value="{{ l }}" {% if ctx.user.accreditation_level == l %}selected{% endif %}>{{ l }}</option>{% endfor %}
+    </select>
+    <label for="number">Certificate number</label>
+    <input id="number" name="number" maxlength="60" required value="{{ ctx.user.accreditation_number or '' }}">
+    <label for="expiry">Expiry date</label>
+    <input id="expiry" name="expiry" type="date" required value="{{ ctx.user.accreditation_expiry.isoformat() if ctx.user.accreditation_expiry else '' }}">
+    <p class="muted">Main Roads accreditations are valid for three years. Your details may be checked against the accreditation register on the Main Roads WA website.</p>
+    <button class="btn navy" type="submit">Save accreditation</button>
+  </form>
+</section>
+{% endif %}
+{% endblock %}
