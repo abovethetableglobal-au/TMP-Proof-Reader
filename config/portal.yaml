@@ -68,3 +68,13 @@ branding:
   headline_line2: "Fast. Thorough. Evidence-based."   # A-22
   footer_left: "Secure. Confidential. Australian Owned."
   footer_right: "Smarter TMP Checking for a Safer Tomorrow"
+
+# A-52 managed service — daily intake cut-off and turnaround (Owner 2026-11-27).
+# Received by the cut-off on a business day -> processed in that day's batch and returned the same day.
+# Received after the cut-off or on a non-business day -> next business day's batch, returned that day.
+turnaround:
+  timezone: Australia/Perth
+  cutoff: "12:30"
+  return_by: "17:00"         # assumption: "same day" = by 5 pm AWST (Owner to confirm)
+  business_days: [0, 1, 2, 3, 4]   # Monday-Friday
+  holidays: []               # WA public holidays as YYYY-MM-DD — Owner to supply/confirm (not yet populated)

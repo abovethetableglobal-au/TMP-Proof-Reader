@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Customers</h1>
+  <p>Organisations you run checks for. Open a customer to manage their details, people, credits and checks.</p>
+</div>
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+<section class="card panel">
+  {% if rows %}
+  <div class="table-wrap">
+  <table class="checks">
+    <thead><tr><th scope="col">Customer</th><th scope="col">Status</th><th scope="col">Credits</th><th scope="col">Open checks</th><th scope="col">This month</th><th scope="col">All time</th><th scope="col">Reviewers</th><th scope="col"></th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td data-label="Customer"><a href="/admin/customers/{{ r.org.id }}">{{ r.org.name }}</a>{% if r.org.abn %}<br><span class="muted">ABN {{ r.org.abn }}</span>{% endif %}</td>
+        <td data-label="Status"><span class="pill {{ 'ok' if (r.org.status or 'active') == 'active' else 'neutral' }}">{{ (r.org.status or 'active')|capitalize }}</span></td>
+        <td data-label="Credits">{{ r.credits }}</td>
+        <td data-label="Open checks">{{ r.open }}</td>
+        <td data-label="This month">{{ r.month }}</td>
+        <td data-label="All time">{{ r.total }}</td>
+        <td data-label="Reviewers">{{ r.reviewers }}{% if not r.reviewers %} <span class="pill warn">None</span>{% endif %}</td>
+        <td><a class="btn small outline" href="/admin/customers/{{ r.org.id }}">Manage</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}<p class="pad muted">No customers yet. Add your first customer below.</p>{% endif %}
+</section>
+<section class="card panel">
+  <h2 class="pad">Add a customer</h2>
+  <form class="pad acc-form wide" method="post" action="/admin/customers">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <label for="name">Trading name</label><input id="name" name="name" required maxlength="200">
+    <label for="legal_name">Legal name</label><input id="legal_name" name="legal_name" maxlength="200">
+    <label for="abn">ABN</label><input id="abn" name="abn" inputmode="numeric" maxlength="14">
+    <label for="billing_contact">Billing contact</label><input id="billing_contact" name="billing_contact" maxlength="200">
+    <label for="billing_email">Billing email</label><input id="billing_email" name="billing_email" type="email" maxlength="320">
+    <label for="phone">Phone</label><input id="phone" name="phone" maxlength="40">
+    <label for="notes">Notes</label><textarea id="notes" name="notes" rows="3"></textarea>
+    <button class="btn navy" type="submit">Add customer</button>
+  </form>
+</section>
+{% endblock %}

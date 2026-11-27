@@ -13,6 +13,7 @@
 | A-08 | Human review of 100% of pilot reports | Handover §9, §13 | 2026-11-20 | Owner |
 | A-09 | No payment functionality before checking capability validated | Handover §16 | 2026-11-20 | Owner |
 | A-10 | Provisional limits: 1 package/check, ≤80 main pages, ≤10 drawing pages | Handover §10 (provisional) | 2026-11-20 | Owner |
+| A-52 | **CR-01 approved (phased):** TMP Check run as a managed service. Phase 1 Operator Console now (customers, credits, work queue, run checks on a customer's behalf); Phase 2 12:30 daily intake + return after intake-channel and data-handling decisions; Phase 3 Stripe/Xero billing + business metrics at G5. No in-house billing platform | docs/requirements/CR-01_operator_console.md | 2026-11-27 | Owner |
 | A-51 | **Gate 3 conditions replaced (Option A, resolves P-G3):** reviewer accreditation (highest level WTM/AWTM/RTM, certificate no., expiry) captured in the portal (My Account). Customer reviewers cannot decide findings or issue finals without current accreditation; the final report records the reviewer's accreditation. Owner's relayed rule review (2026-11-20) accepted as the review record. G3 becomes unconditional when Tara enters her details | Covers every customer reviewer under the self-approve model (A-15) | 2026-11-27 | Owner |
 | A-50 | **WTGTM transfer and confidentiality confirmed** (G2 dependency cleared). Insurance held (A-43 closed without further detail recorded, per Owner) | Owner | 2026-11-26 | Owner |
 | A-49 | **Stripe account entity:** business name ATTG, ABN 42 847 797 843 (account acct_1UfZfBGdViWULINo "TMP Proof Reader") | Owner | 2026-11-26 | Owner |
@@ -58,7 +59,6 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
-| CR-01 | Managed service: Operator Console + 12:30 daily intake + Stripe/Xero billing (docs/requirements/CR-01_operator_console.md) | Approve phased: Phase 1 console now; Phase 2 intake after channel + data-handling decisions; Phase 3 billing at G5 | Next session |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)

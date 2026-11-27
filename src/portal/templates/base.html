@@ -25,6 +25,14 @@
         <li><a href="{{ href }}" class="{{ 'active' if active == key }}" {% if active == key %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ label }}</span></a></li>
       {% endfor %}
       </ul>
+      {% if ctx.user.role == "admin" %}
+      <p class="nav-section">Operator</p>
+      <ul class="nav">
+      {% for key, label, href, ic in OPERATOR_NAV %}
+        <li><a href="{{ href }}" class="{{ 'active' if active == key }}" {% if active == key %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ label }}</span></a></li>
+      {% endfor %}
+      </ul>
+      {% endif %}
     </nav>
     <div class="side-promo">
       <img src="/static/img/hardhat.svg" alt="" width="64" height="56">

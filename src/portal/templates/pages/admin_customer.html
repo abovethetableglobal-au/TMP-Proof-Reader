@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ org.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <p class="crumb"><a href="/admin/customers">Customers</a> / {{ org.name }}</p>
+  <h1>{{ org.name }} <span class="pill {{ 'ok' if (org.status or 'active') == 'active' else 'neutral' }}">{{ (org.status or 'active')|capitalize }}</span></h1>
+  <p><strong>{{ credits.available }}</strong> credit(s) available{% if credits.next_expiry %} · {{ credits.expiring_qty }} expire {{ credits.next_expiry|dmy }}{% endif %}</p>
+</div>
+{% if ok %}<div class="alert ok" role="status">{{ ok }}</div>{% endif %}
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+
+<div class="op-grid">
+<section class="card panel">
+  <h2 class="pad">Run a check for this customer</h2>
+  <p class="pad muted">For a TMP received by email or Drive. Uses one of the customer's credits when the draft is delivered.</p>
+  <form class="pad acc-form" method="post" action="/admin/customers/{{ org.id }}/upload" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <label for="file">TMP (PDF or Word)</label><input id="file" name="file" type="file" accept=".pdf,.docx" required>
+    <button class="btn orange" type="submit" {% if credits.available < 1 %}disabled title="No credits"{% endif %}>Upload and run check</button>
+  </form>
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Credits</h2>
+  <form class="pad acc-form" method="post" action="/admin/customers/{{ org.id }}/credits">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <label for="action">Action</label>
+    <select id="action" name="action"><option value="grant">Add credits</option><option value="remove">Remove credits</option></select>
+    <label for="qty">Number of credits</label><input id="qty" name="qty" type="number" min="1" max="1000" value="1" required>
+    <label for="reason">Reason (recorded in the ledger)</label><input id="reason" name="reason" required maxlength="300" placeholder="e.g. Invoice INV-0012 paid, 10-pack">
+    <label for="payment_ref">Payment reference (optional)</label><input id="payment_ref" name="payment_ref" maxlength="200">
+    <button class="btn navy" type="submit">Save credit change</button>
+  </form>
+</section>
+</div>
+
+<section class="card panel">
+  <h2 class="pad">Checks</h2>
+  {% set rows = checks %}{% include "_checks_table.html" %}
+</section>
+
+<section class="card panel">
+  <h2 class="pad">People</h2>
+  <div class="table-wrap"><table class="checks">
+    <thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Accreditation</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+      <tr><td data-label="Name">{{ u.name }}</td><td data-label="Email">{{ u.email }}</td>
+        <td data-label="Role">{{ 'Accredited reviewer' if u.role == 'customer_reviewer' else 'User' }}</td>
+        <td data-label="Accreditation">{% if u.role == 'customer_reviewer' %}{{ accredited(u) or '' }}{% if not accredited(u) %}<span class="pill warn">Not on file</span>{% endif %}{% else %}—{% endif %}</td></tr>
+    {% else %}<tr><td colspan="4" class="muted">No people yet.</td></tr>{% endfor %}
+    </tbody></table></div>
+  <form class="pad acc-form" method="post" action="/admin/customers/{{ org.id }}/users">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <h3>Add a person</h3>
+    <label for="u_name">Name</label><input id="u_name" name="name" required maxlength="200">
+    <label for="u_email">Email</label><input id="u_email" name="email" type="email" required maxlength="320">
+    <label for="u_role">Role</label><select id="u_role" name="role"><option value="customer_reviewer">Accredited reviewer</option><option value="customer_user">User (upload and view)</option></select>
+    <label for="u_pw">Temporary password (10+ characters)</label><input id="u_pw" name="password" type="text" minlength="10" required autocomplete="off">
+    <button class="btn navy" type="submit">Add person</button>
+  </form>
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Customer details</h2>
+  <form class="pad acc-form wide" method="post" action="/admin/customers/{{ org.id }}">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <label for="legal_name">Legal name</label><input id="legal_name" name="legal_name" value="{{ org.legal_name or '' }}" maxlength="200">
+    <label for="abn">ABN</label><input id="abn" name="abn" value="{{ org.abn or '' }}" maxlength="14">
+    <label for="billing_contact">Billing contact</label><input id="billing_contact" name="billing_contact" value="{{ org.billing_contact or '' }}" maxlength="200">
+    <label for="billing_email">Billing email</label><input id="billing_email" name="billing_email" type="email" value="{{ org.billing_email or '' }}" maxlength="320">
+    <label for="phone">Phone</label><input id="phone" name="phone" value="{{ org.phone or '' }}" maxlength="40">
+    <label for="status">Status</label>
+    <select id="status" name="status">{% for s in ['active','paused','closed'] %}<option value="{{ s }}" {% if (org.status or 'active') == s %}selected{% endif %}>{{ s|capitalize }}</option>{% endfor %}</select>
+    <label for="notes">Notes</label><textarea id="notes" name="notes" rows="3">{{ org.notes or '' }}</textarea>
+    <button class="btn navy" type="submit">Save details</button>
+  </form>
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Credit ledger</h2>
+  <div class="table-wrap"><table class="checks">
+    <thead><tr><th scope="col">Date</th><th scope="col">Type</th><th scope="col">Credits</th><th scope="col">Reference</th><th scope="col">Reason</th></tr></thead>
+    <tbody>
+    {% for h in history %}
+      <tr><td data-label="Date">{{ h.date|dmy }}</td><td data-label="Type">{{ h.type }}</td><td data-label="Credits">{{ '+' if h.qty > 0 }}{{ h.qty }}</td><td data-label="Reference">{{ h.ref }}</td><td data-label="Reason">{{ h.reason }}</td></tr>
+    {% else %}<tr><td colspan="5" class="muted">No credit history.</td></tr>{% endfor %}
+    </tbody></table></div>
+</section>
+{% endblock %}

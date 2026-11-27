@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session
 
 from urllib.parse import quote
 
-from . import auth, payments, processing, services
+from . import auth, operator, payments, processing, services
 from .config import RULES_DIR, money, price_label, settings
 from .db import Check, CheckStatus, Finding, Organisation, SessionLocal, User, init_db, utcnow
 
@@ -281,6 +281,8 @@ def help_page(request: Request, ctx: Ctx = Depends(current)):
 def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
     """Tenant-scoped lookup: another organisation's check is indistinguishable from a missing one."""
     chk = db.get(Check, check_id)
+    if chk is not None and is_operator(ctx):          # A-52: the operator runs checks for every customer
+        return chk
     if chk is None or chk.org_id != ctx.org.id:
         if chk is not None:
             log(db, ctx, "denied_other_org", f"check:{check_id}")
@@ -467,3 +469,155 @@ def original(check_id: int, ctx: Ctx = Depends(current), db: Session = Depends(g
     if not chk.storage_path:
         raise HTTPException(404)
     return FileResponse(chk.storage_path, filename=chk.filename)
+
+
+# ---------- A-52 Operator Console (managed service) ----------
+def is_operator(ctx: Ctx) -> bool:
+    return ctx.user.role == "admin"
+
+
+templates.env.globals["OPERATOR_NAV"] = [
+    ("op_queue", "Work Queue", "/admin/queue", "history"),
+    ("op_customers", "Customers", "/admin/customers", "building"),
+]
+
+
+def operator_view(ctx: Ctx = Depends(current)) -> Ctx:
+    if not is_operator(ctx):
+        raise HTTPException(404, "Not found")
+    return ctx
+
+
+def operator_post(ctx: Ctx = Depends(checked)) -> Ctx:
+    if not is_operator(ctx):
+        raise HTTPException(404, "Not found")
+    return ctx
+
+
+def _org(db: Session, org_id: int) -> Organisation:
+    org = db.get(Organisation, org_id)
+    if org is None or org.is_operator:
+        raise HTTPException(404, "Customer not found")
+    return org
+
+
+def _back(url: str, msg: str | None = None, error: str | None = None) -> RedirectResponse:
+    q = f"?ok={quote(msg)}" if msg else (f"?error={quote(error)}" if error else "")
+    return RedirectResponse(url + q, status_code=303)
+
+
+@app.get("/admin")
+def admin_home(ctx: Ctx = Depends(operator_view)):
+    return RedirectResponse("/admin/queue", status_code=303)
+
+
+@app.get("/admin/queue", response_class=HTMLResponse)
+def admin_queue(request: Request, ctx: Ctx = Depends(operator_view), db: Session = Depends(get_db)):
+    rows = operator.queue(db)
+    t = settings()["turnaround"]
+    return render(request, "pages/admin_queue.html", "op_queue", ctx, rows=rows,
+                  open_n=sum(r["open"] for r in rows), overdue_n=sum(r["overdue"] for r in rows),
+                  next_batch=operator.due_at(utcnow()), cutoff=t["cutoff"], return_by=t["return_by"],
+                  holidays_set=bool(t.get("holidays")))
+
+
+@app.get("/admin/customers", response_class=HTMLResponse)
+def admin_customers(request: Request, ctx: Ctx = Depends(operator_view), db: Session = Depends(get_db),
+                    error: str | None = None):
+    return render(request, "pages/admin_customers.html", "op_customers", ctx,
+                  rows=operator.customers(db), error=error)
+
+
+@app.post("/admin/customers")
+def admin_customer_create(name: str = Form(...), legal_name: str = Form(""), abn: str = Form(""),
+                          billing_contact: str = Form(""), billing_email: str = Form(""), phone: str = Form(""),
+                          notes: str = Form(""), ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    try:
+        org = operator.create_customer(db, name, legal_name=legal_name, abn=abn, billing_contact=billing_contact,
+                                       billing_email=billing_email, phone=phone, notes=notes)
+    except operator.OperatorError as e:
+        db.rollback()
+        return _back("/admin/customers", error=str(e))
+    db.commit()
+    log(db, ctx, "customer_created", f"org:{org.id}", org.name)
+    db.commit()
+    return _back(f"/admin/customers/{org.id}", msg="Customer created.")
+
+
+@app.get("/admin/customers/{org_id}", response_class=HTMLResponse)
+def admin_customer(org_id: int, request: Request, ctx: Ctx = Depends(operator_view), db: Session = Depends(get_db),
+                   ok: str | None = None, error: str | None = None):
+    org = _org(db, org_id)
+    users = db.query(User).filter_by(org_id=org.id).order_by(User.name).all()
+    return render(request, "pages/admin_customer.html", "op_customers", ctx, org=org, users=users,
+                  credits=services.credit_balance(db, org.id), history=services.ledger_history(db, org.id),
+                  checks=services.recent_checks(db, org.id, limit=50), accredited=auth.accreditation_label,
+                  ok=ok, error=error)
+
+
+@app.post("/admin/customers/{org_id}")
+def admin_customer_update(org_id: int, legal_name: str = Form(""), abn: str = Form(""), billing_contact: str = Form(""),
+                          billing_email: str = Form(""), phone: str = Form(""), notes: str = Form(""),
+                          status: str = Form("active"), ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    org = _org(db, org_id)
+    try:
+        operator.update_customer(org, legal_name=legal_name, abn=abn, billing_contact=billing_contact,
+                                 billing_email=billing_email, phone=phone, notes=notes, status=status)
+    except operator.OperatorError as e:
+        db.rollback()
+        return _back(f"/admin/customers/{org.id}", error=str(e))
+    db.commit()
+    log(db, ctx, "customer_updated", f"org:{org.id}")
+    db.commit()
+    return _back(f"/admin/customers/{org.id}", msg="Details saved.")
+
+
+@app.post("/admin/customers/{org_id}/users")
+def admin_add_user(org_id: int, name: str = Form(...), email: str = Form(...), role: str = Form(...),
+                   password: str = Form(...), ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    org = _org(db, org_id)
+    try:
+        u = operator.add_user(db, org, name, email, role, password)
+    except operator.OperatorError as e:
+        db.rollback()
+        return _back(f"/admin/customers/{org.id}", error=str(e))
+    db.commit()
+    log(db, ctx, "user_created", f"user:{u.id}", f"{u.email} {u.role} org:{org.id}")
+    db.commit()
+    return _back(f"/admin/customers/{org.id}", msg=f"{u.name} added. Give them their temporary password securely.")
+
+
+@app.post("/admin/customers/{org_id}/credits")
+def admin_credits(org_id: int, action: str = Form(...), qty: int = Form(...), reason: str = Form(""),
+                  payment_ref: str = Form(""), ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    org = _org(db, org_id)
+    try:
+        if action == "grant":
+            operator.grant_credits(db, org, qty, ctx.user.name, reason, payment_ref)
+        elif action == "remove":
+            operator.remove_credits(db, org, qty, ctx.user.name, reason)
+        else:
+            raise operator.OperatorError("Unknown action.")
+    except operator.OperatorError as e:
+        db.rollback()
+        return _back(f"/admin/customers/{org.id}", error=str(e))
+    db.commit()
+    log(db, ctx, f"credits_{action}", f"org:{org.id}", f"{qty} — {reason}")
+    db.commit()
+    return _back(f"/admin/customers/{org.id}", msg=f"{qty} credit(s) {'added' if action == 'grant' else 'removed'}.")
+
+
+@app.post("/admin/customers/{org_id}/upload")
+async def admin_upload(org_id: int, background: BackgroundTasks, file: UploadFile = File(...),
+                       ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    """Run a check on a customer's behalf (TMP received by email/Drive). Uses the customer's credits."""
+    org = _org(db, org_id)
+    data = await file.read(settings()["upload"]["max_bytes"] + 1)
+    try:
+        chk = processing.create_check(db, org.id, file.filename or "upload", data)
+    except processing.UploadError as e:
+        return _back(f"/admin/customers/{org.id}", error=str(e))
+    log(db, ctx, "operator_upload", f"check:{chk.id}", f"{chk.filename} for org:{org.id}")
+    db.commit()
+    background.add_task(processing.run_check, chk.id)
+    return _back(f"/checks/{chk.id}")

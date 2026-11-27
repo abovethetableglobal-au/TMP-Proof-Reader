@@ -4,6 +4,7 @@ No credits or checks are seeded: the dashboard must show genuine empty states, n
 figures (brief §4). Local build only (A-21).
 
     python -m src.portal.devseed --org "Name" --user "Name" --email you@example.com --role customer_reviewer
+    python -m src.portal.devseed --org "TMP Check" --user "Your name" --email you@example.com --role admin   # operator (A-52)
     (you are prompted for the password; or pass --password)
 
 Roles: customer_user (upload, view) · customer_reviewer (also decides findings, issues finals) · admin
@@ -34,6 +35,10 @@ def main() -> None:
         user = db.query(User).filter_by(email=email).first()
         if user:
             user.name, user.role, user.password_hash = a.user, a.role, pw_hash
+            org = db.get(Organisation, user.org_id)
+            if a.role == "admin" and not org.is_operator:   # never turn a customer's organisation into the operator
+                print(f"Warning: {email} belongs to customer '{org.name}'. Create the operator account with a "
+                      "different email and --org \"TMP Check\".")
             db.commit()
             print(f"Updated user {email} ({a.role}).")
             return
@@ -42,6 +47,8 @@ def main() -> None:
             org = Organisation(name=a.org)
             db.add(org)
             db.flush()
+        if a.role == "admin":
+            org.is_operator = True                      # A-52: excluded from the customer list
         db.add(User(org_id=org.id, name=a.user, email=email, role=a.role, password_hash=pw_hash))
         db.commit()
         print(f"Created user {email} ({a.role}) in '{org.name}'. Sign in at http://localhost:8000/login")

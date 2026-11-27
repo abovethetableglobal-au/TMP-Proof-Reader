@@ -9,15 +9,18 @@
 - Gate 3 becomes unconditional once Tara enters her details.
 - Report downloads added: report, annotated TMP and source TMP buttons, plus a ZIP of all three on the check page; a Download (ZIP) button in My Checks. Word uploads also get a commented .docx copy. The annotated PDF now has a comment column beside each page.
 
+- A-52 (CR-01) approved: managed service. **Phase 1 Operator Console** built: Work Queue, Customers, credits, run checks for customers (100 tests).
+
 **In progress**
 - Waiting for Tara's check 15 (BC 016) feedback via Tally.
 
 **Next 3 steps**
-1. On your PC: `git pull`, then restart the portal on port 8001. The new fields are added automatically.
+1. On your PC: `git pull`, restart the portal, then create your operator account: `python -m src.portal.devseed --org "TMP Check" --user "Pablo" --email <new email> --role admin`.
 2. Tara opens My Account and enters her accreditation. Then tell Claude, so G3 can be marked accepted.
 3. Re-run SU 025 on the new build, then rule on the BENCH-06 findings with WTGTM.
 
 **Open questions**
+- CR-01 Phase 2: intake channel (Drive folder per customer, or a mailbox); WA public holiday dates; is 'same day' by 5 pm?
 - Should admins be blocked from issuing finals? At present only customer reviewers are blocked.
 - Before G6, the queue needs a proper job queue (currently in-process and SQLite).
 

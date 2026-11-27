@@ -342,3 +342,14 @@ main > section.card { margin: 18px 22px 0 32px; }
 /* ---------- downloads (Owner 2026-11-27) ---------- */
 .view-links { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
 .row-actions { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+
+/* ---------- Operator Console (A-52) ---------- */
+.nav-section { margin: 18px 22px 6px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #94a3b8; }
+.op-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin: 18px 22px 0 32px; }
+.op-grid > section.card { margin: 0; }
+.op-stats { display: flex; gap: 24px; padding: 14px 22px 4px; font-size: 15px; }
+.op-stats .bad strong { color: var(--red); }
+tr.overdue td { background: #fff5f5; }
+.acc-form.wide { max-width: 560px; }
+.acc-form textarea { padding: 9px 10px; border: 1px solid #cfd6e0; border-radius: 6px; font: inherit; }
+.acc-form h3 { margin: 6px 0 0; font-size: 15px; }

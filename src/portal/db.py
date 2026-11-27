@@ -55,6 +55,16 @@ class Organisation(Base):
         Enum(SubscriptionStatus), default=SubscriptionStatus.none)
     subscription_started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64))   # A-46, test mode only before G5
+    # A-52 Operator Console: customer record
+    legal_name: Mapped[str | None] = mapped_column(String(200))
+    abn: Mapped[str | None] = mapped_column(String(20))
+    billing_contact: Mapped[str | None] = mapped_column(String(200))
+    billing_email: Mapped[str | None] = mapped_column(String(320))
+    phone: Mapped[str | None] = mapped_column(String(40))
+    notes: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str | None] = mapped_column(String(20), default="active")   # active | paused | closed
+    is_operator: Mapped[bool | None] = mapped_column(default=False)             # the TMP Check business itself
+    created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
 class User(Base):
