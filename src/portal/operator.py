@@ -204,5 +204,5 @@ def queue(db: Session, include_done_days: int = 7, now: datetime | None = None) 
             "findings": services.findings_summary(counts.get(c.id, Counter()), c.status),
             "cost": c.ai_cost_usd or "",
         })
-    out.sort(key=lambda r: (not r["open"], r["due"]))
+    out.sort(key=lambda r: (r["received"], r["check"].id), reverse=True)   # Owner: most recent at the top
     return out

@@ -202,3 +202,17 @@ def test_dashboard_stages_and_overdue_rules(op):
     completed = page.split('id="completed"')[1].split("</section>")[0]
     assert "FAILED-NEW" not in completed and "FAILED-NEW" in page.split('id="failed"')[1]
     assert "portal.css?v=" in page
+
+
+def test_queue_newest_first(op):
+    c, S = op
+    from datetime import timezone
+    with S() as s:
+        for i, day in enumerate((3, 5, 4)):
+            s.add(dbm.Check(org_id=2, doc_ref=f"DOC-{day}", filename="x.pdf", status=dbm.CheckStatus.failed,
+                            created_at=datetime(2026, 11, day, 9, 0, tzinfo=timezone.utc)))
+        s.commit()
+        order = [r["check"].doc_ref for r in operator.queue(s, include_done_days=3650)]
+    assert order == ["DOC-5", "DOC-4", "DOC-3"]
+    page = c.get("/admin/queue").text
+    assert page.index("DOC-5") < page.index("DOC-4") < page.index("DOC-3")

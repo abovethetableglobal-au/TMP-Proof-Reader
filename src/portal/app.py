@@ -175,7 +175,7 @@ def dashboard(request: Request, ctx: Ctx = Depends(current), db: Session = Depen
         by = lambda st: [r for r in rows if r["stage"] == st]
         return render(request, "pages/admin_dashboard.html", "op_dashboard", ctx,
                       in_process=by("in_process"), with_reviewer=by("with_reviewer"),
-                      completed=list(reversed(by("completed")))[:15], failed=list(reversed(by("failed")))[:10],
+                      completed=by("completed")[:15], failed=by("failed")[:10],
                       customers=operator.customers(db, now), overdue=sum(r["overdue"] for r in rows))
     return render(request, "pages/dashboard.html", "dashboard", ctx, d=services.dashboard(db, ctx.org))
 
