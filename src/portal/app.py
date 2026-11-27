@@ -482,9 +482,21 @@ templates.env.globals["OPERATOR_NAV"] = [
 ]
 
 
-def operator_view(ctx: Ctx = Depends(current)) -> Ctx:
+class NotOperator(Exception):
+    pass
+
+
+@app.exception_handler(NotOperator)
+def _not_operator(request: Request, exc: NotOperator):
+    """Signed in, but with a customer account: explain how to switch instead of a bare 404."""
+    ctx = request.state.ctx
+    return templates.TemplateResponse(request, "pages/not_operator.html", {"active": "", "ctx": ctx}, status_code=403)
+
+
+def operator_view(request: Request, ctx: Ctx = Depends(current)) -> Ctx:
     if not is_operator(ctx):
-        raise HTTPException(404, "Not found")
+        request.state.ctx = ctx
+        raise NotOperator()
     return ctx
 
 

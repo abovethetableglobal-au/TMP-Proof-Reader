@@ -46,8 +46,10 @@ def test_holiday_skipped(monkeypatch):
 # ---------- access ----------
 def test_customers_cannot_see_operator_pages(env):
     c, S = env                                      # signed in as a customer reviewer
-    assert c.get("/admin/queue").status_code == 404
-    assert c.get("/admin/customers").status_code == 404
+    for url in ("/admin/queue", "/admin/customers"):
+        r = c.get(url)
+        assert r.status_code == 403 and "Operator sign-in needed" in r.text and "Sign out and sign in as operator" in r.text
+        assert "Work Queue</span>" not in r.text                  # operator menu still hidden
     assert c.post("/admin/customers", data={"name": "X"}).status_code == 404
 
 

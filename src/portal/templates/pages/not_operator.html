@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Operator sign-in needed{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Operator sign-in needed</h1>
+</div>
+<section class="card panel">
+  <p class="pad">You're signed in as <strong>{{ ctx.user.name }}</strong> ({{ ctx.user.email }}) for <strong>{{ ctx.org.name }}</strong>, which is a customer account.
+  The Work Queue and Customers pages are only available to the TMP Check operator account.</p>
+  <form class="pad" method="post" action="/logout"><input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <button class="btn navy" type="submit">Sign out and sign in as operator</button></form>
+</section>
+{% endblock %}
