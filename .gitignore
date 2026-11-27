@@ -12,3 +12,6 @@ test-library/public/*.pdf
 compliance/sources/raw/
 test-library/seeded/*.docx
 test-library/seeded/*.pdf
+
+# Sales and commercial working papers stay local, not on GitHub (Owner 2026-11-27)
+docs/commercial/
