@@ -360,3 +360,4 @@ A-46: Stripe Option A approved (sandbox build now, live after G5). Next session 
 2026-11-25 — Draft email to Tara for check 15 (BC 016): docs/comms/EMAIL_Tara_check15_BC016_DRAFT.md — Ready for user review; Owner sends. Supersedes check 19 draft.
 2026-11-26 — Owner: check 15 review email sent to Tara (Tally form published). WTGTM transfer/confidentiality confirmed (A-50). Stripe entity ATTG, ABN 42 847 797 843 (A-49). Insurance held. PR #1 merge approved by Owner.
 2026-11-26 — Open: Owner queries A-17 condition (Tara's accreditation details) — onboarding should capture reviewer accreditation; clarification pending.
+2026-11-27 — Scheduled check: A-17 conditions due today — NOT met (no accreditation details or completed review pack on file). G3 remains conditional. Owner reminded; decision raised as P-G3. Rules stay limited to test/historical documents (no live use before G6 regardless).

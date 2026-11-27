@@ -57,6 +57,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
+| P-G3 | A-17 conditions **not met by 2026-11-27**: Tara's accreditation details (level, number, expiry) and completed rule review pack not on file. How to close? | Replace with product control: reviewer accreditation (level, cert no., expiry) captured at portal onboarding for every customer reviewer; Tara completes hers; accept Owner-relayed rule review (2026-11-20) as the review record | 2026-12-04 |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
 ## Provisional assumptions (AI-PM, non-material)
