@@ -21,4 +21,5 @@
 | Browser: "This site can't be reached" | The black window isn't running or has stopped — double-click `start_portal.bat` and read any error |
 | "address already in use" | An old portal window is still open — close it, then start again |
 | Signed in but no Operator menu | You're signed in as a customer — top-right menu → Sign out → sign in with the operator email |
+| "Local build only (hosting needs G6 approvals)" | Run `$env:TMPCHECK_ENV="local"` in the same PowerShell window, then start again (`start_portal.bat` does this for you) |
 | Any other error | Copy the last 15 lines of the black window to Claude |

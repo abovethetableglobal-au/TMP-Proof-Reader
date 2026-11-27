@@ -22,6 +22,8 @@ if "%ANTHROPIC_API_KEY%"=="" (
   if "%TMPCHECK_AI_PASSES%"=="" set TMPCHECK_AI_PASSES=A,B,C,D
 )
 
+rem Local build only until hosting is approved (Gate 6).
+set TMPCHECK_ENV=local
 echo [3/3] Starting the portal at http://localhost:8000 ...
 start "" cmd /c "timeout /t 5 >nul & start http://localhost:8000/login"
 python -m uvicorn src.portal.app:app --port 8000
