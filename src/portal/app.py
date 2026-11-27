@@ -172,12 +172,11 @@ def dashboard(request: Request, ctx: Ctx = Depends(current), db: Session = Depen
     if is_operator(ctx):      # A-52: operator overview — customers, in process, recently completed
         rows = operator.queue(db)
         now = utcnow()
+        by = lambda st: [r for r in rows if r["stage"] == st]
         return render(request, "pages/admin_dashboard.html", "op_dashboard", ctx,
-                      in_process=[r for r in rows if r["open"]],
-                      completed=[r for r in reversed(rows) if not r["open"]][:15],
-                      customers=operator.customers(db, now),
-                      due_today=sum(1 for r in rows if r["open"] and r["due"].date() == operator.due_at(now).date()),
-                      overdue=sum(r["overdue"] for r in rows))
+                      in_process=by("in_process"), with_reviewer=by("with_reviewer"),
+                      completed=list(reversed(by("completed")))[:15], failed=list(reversed(by("failed")))[:10],
+                      customers=operator.customers(db, now), overdue=sum(r["overdue"] for r in rows))
     return render(request, "pages/dashboard.html", "dashboard", ctx, d=services.dashboard(db, ctx.org))
 
 
@@ -496,6 +495,15 @@ def is_operator(ctx: Ctx) -> bool:
     return ctx.user.role == "admin"
 
 
+def _asset_version() -> str:
+    """Changes whenever the stylesheet changes, so browsers fetch the new one after an update."""
+    try:
+        return str(int((HERE / "static" / "css" / "portal.css").stat().st_mtime))
+    except OSError:
+        return "0"
+
+
+templates.env.globals["asset_v"] = _asset_version
 templates.env.globals["OPERATOR_NAV"] = [          # replaces the customer menu for operator accounts
     ("op_queue", "Work Queue", "/admin/queue", "history"),
     ("op_dashboard", "Dashboard", "/", "home"),   # operator overview

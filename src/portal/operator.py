@@ -17,7 +17,8 @@ from .auth import hash_password
 from .config import settings
 from .db import Check, CheckStatus, CreditLedger, LedgerType, Organisation, User, utcnow
 
-OPEN = (CheckStatus.uploaded, CheckStatus.processing, CheckStatus.draft_review)
+OURS = (CheckStatus.uploaded, CheckStatus.processing)          # TMP Check's work: counts toward the due time
+OPEN = (*OURS, CheckStatus.draft_review)                           # not finished (draft is with the customer's reviewer)
 
 
 class OperatorError(ValueError):
@@ -174,6 +175,11 @@ def remove_credits(db: Session, org: Organisation, qty: int, by: str, reason: st
 
 # ---------- work queue ----------
 def queue(db: Session, include_done_days: int = 7, now: datetime | None = None) -> list[dict]:
+    """Checks that are open, plus those that ended in the last `include_done_days` days.
+
+    The turnaround promise is met when the draft report is returned to the customer
+    (status draft_review), so only queued/processing checks can be overdue; 'late' means
+    the draft was returned after its due time."""
     now = now or utcnow()
     since = now - timedelta(days=include_done_days)
     rows = db.execute(select(Check, Organisation.name).join(Organisation, Organisation.id == Check.org_id)
@@ -185,12 +191,16 @@ def queue(db: Session, include_done_days: int = 7, now: datetime | None = None) 
         received = services._aware(c.created_at)
         due = due_at(received)
         label, tone = services.STATUS_LABELS[c.status]
-        done = services._aware(c.final_issued_at)
+        returned = services._aware(c.processing_finished_at) if c.status in (CheckStatus.draft_review,
+                                                                                CheckStatus.final_issued) else None
+        stage = ("in_process" if c.status in OURS else "with_reviewer" if c.status == CheckStatus.draft_review
+                 else "completed" if c.status == CheckStatus.final_issued else "failed")
         out.append({
             "check": c, "customer": org_name, "received": received, "due": due, "status": label, "tone": tone,
-            "open": c.status in OPEN,
-            "overdue": c.status in OPEN and now > due,
-            "late": bool(done and done > due),
+            "stage": stage, "open": c.status in OPEN,
+            "overdue": c.status in OURS and now > due,
+            "late": bool(returned and returned > due),
+            "returned": returned,
             "findings": services.findings_summary(counts.get(c.id, Counter()), c.status),
             "cost": c.ai_cost_usd or "",
         })

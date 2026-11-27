@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-head">
   <h1>Work Queue</h1>
-  <p>All customers. Cut-off {{ cutoff }} AWST on business days; checks received by the cut-off are due back by {{ return_by }} the same day, later ones in the next business day's batch.
+  <p>All customers. Cut-off {{ cutoff }} AWST on business days; the draft report for a TMP received by the cut-off is due back by {{ return_by }} the same day; later ones go in the next business day's batch. Drafts with the customer's reviewer are not counted as overdue.
   Anything received now is due <strong>{{ next_batch.strftime('%a %d %b %Y, %H:%M') }}</strong>.</p>
   {% if not holidays_set %}<div class="alert warn">WA public holidays are not set yet (config <code>turnaround.holidays</code>), so due times treat every Monday–Friday as a business day.</div>{% endif %}
 </div>
@@ -33,7 +33,7 @@
     <tbody>
     {% for r in rows %}
       <tr class="{{ 'overdue' if r.overdue }}">
-        <td data-label="Due">{{ r.due.strftime('%a %d %b %H:%M') }}{% if r.overdue %} <span class="pill error">Overdue</span>{% elif r.late %} <span class="pill warn">Late</span>{% endif %}</td>
+        <td data-label="Due">{{ r.due.strftime('%a %d %b %H:%M') }}{% if r.overdue %} <span class="pill error">Overdue</span>{% elif r.late %} <span class="pill warn">Returned late</span>{% endif %}</td>
         <td data-label="Customer">{{ r.customer }}</td>
         <td data-label="Document">{{ r.check.doc_ref }}</td>
         <td data-label="Received">{{ r.received|dmy }}</td>

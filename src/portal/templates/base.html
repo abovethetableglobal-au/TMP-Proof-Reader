@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ ctx.csrf }}">
 <title>{% block title %}Dashboard{% endblock %} · {{ cfg().branding.product }}</title>
 <link rel="icon" href="/static/img/logo-mark.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/static/css/portal.css">
+<link rel="stylesheet" href="/static/css/portal.css?v={{ asset_v() }}">
 <script src="/static/js/portal.js" defer></script>
 </head>
 <body>

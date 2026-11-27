@@ -140,7 +140,7 @@ def test_operator_new_check_goes_to_customers(op):
 def test_operator_menu_and_dashboard(op):
     c, S = op
     page = c.get("/").text
-    for text in ("Documents in process", "Recently completed", "Customers", "Org A", "Org B"):
+    for text in ("In process", "With customer reviewer", "Recently completed", "Customers", "Org A", "Org B"):
         assert text in page
     nav = page.split("<nav>")[1].split("</nav>")[0]
     assert nav.index("Work Queue") < nav.index("Dashboard") < nav.index("Customers")
@@ -179,3 +179,26 @@ def test_operator_lands_on_work_queue(op):
     c.cookies.clear()
     r = c.post("/login", data={"email": "op@x", "password": "correct-horse-battery", "next": "/"}, follow_redirects=False)
     assert r.headers["location"] == "/admin/queue"
+
+
+def test_dashboard_stages_and_overdue_rules(op):
+    """Drafts with the customer's reviewer are not overdue; failed checks are not 'completed'."""
+    c, S = op
+    from datetime import timezone
+    utc = lambda d: d.astimezone(timezone.utc)                     # stored as UTC, like real records
+    old = utc(datetime(2026, 1, 5, 9, 0, tzinfo=PERTH))
+    with S() as s:
+        s.add_all([dbm.Check(org_id=2, doc_ref="DRAFT-OLD", filename="a.pdf", status=dbm.CheckStatus.draft_review,
+                             created_at=old, processing_finished_at=utc(datetime(2026, 1, 6, 9, 0, tzinfo=PERTH))),
+                   dbm.Check(org_id=2, doc_ref="QUEUED-OLD", filename="b.pdf", status=dbm.CheckStatus.uploaded, created_at=old),
+                   dbm.Check(org_id=2, doc_ref="FAILED-NEW", filename="c.pdf", status=dbm.CheckStatus.failed,
+                             failure_reason="AI key rejected")])
+        s.commit()
+        rows = {r["check"].doc_ref: r for r in operator.queue(s)}
+    assert rows["QUEUED-OLD"]["overdue"] and rows["QUEUED-OLD"]["stage"] == "in_process"
+    assert not rows["DRAFT-OLD"]["overdue"] and rows["DRAFT-OLD"]["late"] and rows["DRAFT-OLD"]["stage"] == "with_reviewer"
+    assert rows["FAILED-NEW"]["stage"] == "failed"
+    page = c.get("/").text
+    completed = page.split('id="completed"')[1].split("</section>")[0]
+    assert "FAILED-NEW" not in completed and "FAILED-NEW" in page.split('id="failed"')[1]
+    assert "portal.css?v=" in page
