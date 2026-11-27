@@ -172,6 +172,8 @@ def dashboard(request: Request, ctx: Ctx = Depends(current), db: Session = Depen
 
 @app.get("/checks/new", response_class=HTMLResponse)
 def new_check(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    if is_operator(ctx):      # A-52: operators run checks under the customer, not their own account
+        return _back("/admin/customers", error="Choose the customer, then use 'Run a check for this customer'.")
     return render(request, "pages/new_check.html", "new_check", ctx,
                   credits=services.credit_balance(db, ctx.org.id))
 
@@ -293,6 +295,9 @@ def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
 @app.post("/checks/upload")
 async def upload(background: BackgroundTasks, file: UploadFile = File(...),
                  ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
+    if is_operator(ctx):
+        return JSONResponse({"error": "Operators run checks from Customers → the customer → 'Run a check for this customer'."},
+                            status_code=400)
     data = await file.read(settings()["upload"]["max_bytes"] + 1)
     try:
         chk = processing.create_check(db, ctx.org.id, file.filename or "upload", data)

@@ -124,3 +124,11 @@ def test_queue_flags_overdue(op):
         s.commit()
     q = c.get("/admin/queue").text
     assert "OLD-TMP" in q and "Overdue" in q
+
+
+def test_operator_new_check_goes_to_customers(op):
+    c, S = op
+    r = c.get("/checks/new", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"].startswith("/admin/customers")
+    r = c.post("/checks/upload", files={"file": ("x.pdf", SAMPLE.read_bytes(), "application/pdf")})
+    assert r.status_code == 400 and "Run a check for this customer" in r.json()["error"]
