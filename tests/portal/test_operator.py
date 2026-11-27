@@ -129,6 +129,53 @@ def test_queue_flags_overdue(op):
 def test_operator_new_check_goes_to_customers(op):
     c, S = op
     r = c.get("/checks/new", follow_redirects=False)
-    assert r.status_code == 303 and r.headers["location"].startswith("/admin/customers")
+    assert r.status_code == 303 and r.headers["location"] == "/admin/queue#run"
     r = c.post("/checks/upload", files={"file": ("x.pdf", SAMPLE.read_bytes(), "application/pdf")})
-    assert r.status_code == 400 and "Run a check for this customer" in r.json()["error"]
+    assert r.status_code == 400 and "Work Queue" in r.json()["error"]
+    for url, dest in (("/billing", "/admin/customers"), ("/checks", "/admin/queue")):
+        r = c.get(url, follow_redirects=False)
+        assert r.status_code == 303 and r.headers["location"] == dest
+
+
+def test_operator_menu_and_dashboard(op):
+    c, S = op
+    page = c.get("/").text
+    for text in ("Documents in process", "Recently completed", "Customers", "Org A", "Org B"):
+        assert text in page
+    nav = page.split("<nav>")[1].split("</nav>")[0]
+    assert nav.index("Work Queue") < nav.index("Dashboard") < nav.index("Customers")
+    assert "Credits &amp; Billing" not in nav and "New Check" not in nav and "My Checks" not in nav
+
+
+def test_run_from_queue_uses_chosen_customers_credits(op):
+    c, S = op
+    add_credits(S, org=2, qty=2)
+    q = c.get("/admin/queue").text
+    assert "Org B — 2 credits" in q and "Org A — 0 credits (none left)" in q
+    r = c.post("/admin/queue/run", data={"org_id": 2},
+               files={"file": ("SAMPLE-TMP-01.pdf", SAMPLE.read_bytes(), "application/pdf")}, follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"].startswith("/checks/")
+    with S() as s:
+        assert services.credit_balance(s, 2).available == 1        # customer charged
+        op_org = s.query(dbm.Organisation).filter_by(is_operator=True).one()
+        assert s.query(dbm.CreditLedger).filter_by(org_id=op_org.id).count() == 0   # operator never holds credits
+    r = c.post("/admin/queue/run", data={"org_id": 1},
+               files={"file": ("SAMPLE-TMP-01.pdf", SAMPLE.read_bytes(), "application/pdf")})
+    assert "Org A:" in r.text                                       # no credits -> refused with the customer named
+
+
+def test_paused_customer_cannot_be_run(op):
+    c, S = op
+    add_credits(S, org=2, qty=1)
+    with S() as s:
+        s.get(dbm.Organisation, 2).status = "paused"; s.commit()
+    r = c.post("/admin/queue/run", data={"org_id": 2},
+               files={"file": ("SAMPLE-TMP-01.pdf", SAMPLE.read_bytes(), "application/pdf")})
+    assert "is paused" in r.text
+
+
+def test_operator_lands_on_work_queue(op):
+    c, S = op
+    c.cookies.clear()
+    r = c.post("/login", data={"email": "op@x", "password": "correct-horse-battery", "next": "/"}, follow_redirects=False)
+    assert r.headers["location"] == "/admin/queue"

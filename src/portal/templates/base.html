@@ -21,18 +21,10 @@
     </div>
     <nav>
       <ul class="nav">
-      {% for key, label, href, ic in NAV %}
+      {% for key, label, href, ic in (OPERATOR_NAV if ctx.user.role == "admin" else NAV) %}
         <li><a href="{{ href }}" class="{{ 'active' if active == key }}" {% if active == key %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ label }}</span></a></li>
       {% endfor %}
       </ul>
-      {% if ctx.user.role == "admin" %}
-      <p class="nav-section">Operator</p>
-      <ul class="nav">
-      {% for key, label, href, ic in OPERATOR_NAV %}
-        <li><a href="{{ href }}" class="{{ 'active' if active == key }}" {% if active == key %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ label }}</span></a></li>
-      {% endfor %}
-      </ul>
-      {% endif %}
     </nav>
     <div class="side-promo">
       <img src="/static/img/hardhat.svg" alt="" width="64" height="56">
@@ -52,7 +44,7 @@
           <summary><span class="avatar" aria-hidden="true">{{ (ctx.user.name.split()|map('first')|join|upper)[:2] }}</span><span class="user-name">{{ ctx.user.name }}</span>{{ icon("chevron-down", "ic sm") }}</summary>
           <div class="menu">
             <a href="/account">My Account</a>
-            <a href="/billing">Credits &amp; Billing</a>
+            {% if ctx.user.role != "admin" %}<a href="/billing">Credits &amp; Billing</a>{% endif %}
             <a href="/help">Help &amp; Support</a>
             <span class="menu-note">{{ ctx.user.email }} · {{ 'Accredited reviewer' if ctx.reviewer else 'User' }}</span>
             <form method="post" action="/logout"><input type="hidden" name="csrf_token" value="{{ ctx.csrf }}"><button class="menu-btn" type="submit">Sign out</button></form>

@@ -7,6 +7,23 @@
   Anything received now is due <strong>{{ next_batch.strftime('%a %d %b %Y, %H:%M') }}</strong>.</p>
   {% if not holidays_set %}<div class="alert warn">WA public holidays are not set yet (config <code>turnaround.holidays</code>), so due times treat every Monday–Friday as a business day.</div>{% endif %}
 </div>
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+<section class="card panel" id="run">
+  <h2 class="pad">Run a check</h2>
+  {% if customers %}
+  <form class="pad run-form" method="post" action="/admin/queue/run" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ ctx.csrf }}">
+    <div><label for="org_id">Customer (their credits are used)</label>
+      <select id="org_id" name="org_id" required>
+        <option value="">Choose a customer…</option>
+        {% for c in customers %}<option value="{{ c.org.id }}" {% if c.credits < 1 %}disabled{% endif %}>{{ c.org.name }} — {{ c.credits }} credit{{ '' if c.credits == 1 else 's' }}{{ ' (none left)' if c.credits < 1 }}</option>{% endfor %}
+      </select></div>
+    <div><label for="file">TMP (PDF or Word)</label><input id="file" name="file" type="file" accept=".pdf,.docx" required></div>
+    <button class="btn orange" type="submit">Upload and run</button>
+  </form>
+  <p class="pad muted small">Customers with no credits can't be chosen — add credits on their customer page first.</p>
+  {% else %}<p class="pad muted">No active customers yet. <a href="/admin/customers">Add a customer</a> first.</p>{% endif %}
+</section>
 <section class="card panel">
   <div class="op-stats"><span><strong>{{ open_n }}</strong> open</span><span class="{{ 'bad' if overdue_n }}"><strong>{{ overdue_n }}</strong> overdue</span></div>
   {% if rows %}

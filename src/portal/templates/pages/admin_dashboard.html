@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Dashboard</h1>
+  <p>All customers at a glance. Run new checks from the <a href="/admin/queue#run">Work Queue</a>.</p>
+</div>
+<section class="card panel">
+  <div class="op-tiles">
+    <a class="op-tile" href="/admin/customers"><strong>{{ customers|length }}</strong><span>Customers</span></a>
+    <a class="op-tile" href="/admin/queue"><strong>{{ in_process|length }}</strong><span>In process</span></a>
+    <a class="op-tile" href="/admin/queue"><strong>{{ due_today }}</strong><span>Due in the current batch</span></a>
+    <a class="op-tile {{ 'bad' if overdue }}" href="/admin/queue"><strong>{{ overdue }}</strong><span>Overdue</span></a>
+    <div class="op-tile"><strong>{{ completed|length }}</strong><span>Completed (last 7 days)</span></div>
+  </div>
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Documents in process</h2>
+  {% if in_process %}
+  <div class="table-wrap"><table class="checks">
+    <thead><tr><th scope="col">Due</th><th scope="col">Customer</th><th scope="col">Document</th><th scope="col">Status</th><th scope="col"></th></tr></thead>
+    <tbody>{% for r in in_process %}
+      <tr class="{{ 'overdue' if r.overdue }}"><td data-label="Due">{{ r.due.strftime('%a %d %b %H:%M') }}{% if r.overdue %} <span class="pill error">Overdue</span>{% endif %}</td>
+        <td data-label="Customer">{{ r.customer }}</td><td data-label="Document">{{ r.check.doc_ref }}</td>
+        <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span></td>
+        <td><a class="btn small outline" href="/checks/{{ r.check.id }}">Open</a></td></tr>
+    {% endfor %}</tbody></table></div>
+  {% else %}<p class="pad muted">Nothing in process.</p>{% endif %}
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Recently completed</h2>
+  {% if completed %}
+  <div class="table-wrap"><table class="checks">
+    <thead><tr><th scope="col">Customer</th><th scope="col">Document</th><th scope="col">Status</th><th scope="col">Findings</th><th scope="col"></th></tr></thead>
+    <tbody>{% for r in completed %}
+      <tr><td data-label="Customer">{{ r.customer }}</td><td data-label="Document">{{ r.check.doc_ref }}</td>
+        <td data-label="Status"><span class="pill {{ r.tone }}">{{ r.status }}</span>{% if r.late %} <span class="pill warn">Late</span>{% endif %}</td>
+        <td data-label="Findings">{{ r.findings }}</td>
+        <td><span class="row-actions"><a class="btn small outline" href="/checks/{{ r.check.id }}">Open</a>
+          {% if r.check.status.value in ('draft_review', 'final_issued') %}<a class="btn small navy" href="/checks/{{ r.check.id }}/download.zip" download>Download</a>{% endif %}</span></td></tr>
+    {% endfor %}</tbody></table></div>
+  {% else %}<p class="pad muted">Nothing completed in the last 7 days.</p>{% endif %}
+</section>
+
+<section class="card panel">
+  <h2 class="pad">Customers</h2>
+  {% if customers %}
+  <div class="table-wrap"><table class="checks">
+    <thead><tr><th scope="col">Customer</th><th scope="col">Credits</th><th scope="col">In process</th><th scope="col">This month</th><th scope="col"></th></tr></thead>
+    <tbody>{% for c in customers %}
+      <tr><td data-label="Customer"><a href="/admin/customers/{{ c.org.id }}">{{ c.org.name }}</a></td>
+        <td data-label="Credits">{{ c.credits }}{% if c.credits < 1 %} <span class="pill warn">None</span>{% endif %}</td>
+        <td data-label="In process">{{ c.open }}</td><td data-label="This month">{{ c.month }}</td>
+        <td><a class="btn small outline" href="/admin/customers/{{ c.org.id }}">Manage</a></td></tr>
+    {% endfor %}</tbody></table></div>
+  {% else %}<p class="pad muted">No customers yet. <a href="/admin/customers">Add a customer</a>.</p>{% endif %}
+</section>
+{% endblock %}

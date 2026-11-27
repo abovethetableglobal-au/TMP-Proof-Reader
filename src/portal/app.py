@@ -146,6 +146,8 @@ def login(request: Request, email: str = Form(...), password: str = Form(...), n
     token = auth.start_session(db, user)
     auth.audit(db, user, "login", ip=ip)
     target = next if next.startswith("/") and not next.startswith("//") else "/"
+    if user.role == "admin" and target == "/":
+        target = "/admin/queue"                       # A-52: the Work Queue is the operator's home
     resp = RedirectResponse(target, status_code=303)
     resp.set_cookie(auth.COOKIE, token, httponly=True, samesite="lax", max_age=auth.SESSION_HOURS * 3600,
                     secure=os.environ.get("TMPCHECK_HTTPS") == "1")
@@ -167,25 +169,38 @@ def render(request: Request, name: str, active: str, ctx: Ctx, **kw) -> HTMLResp
 
 @app.get("/", response_class=HTMLResponse)
 def dashboard(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    if is_operator(ctx):      # A-52: operator overview — customers, in process, recently completed
+        rows = operator.queue(db)
+        now = utcnow()
+        return render(request, "pages/admin_dashboard.html", "op_dashboard", ctx,
+                      in_process=[r for r in rows if r["open"]],
+                      completed=[r for r in reversed(rows) if not r["open"]][:15],
+                      customers=operator.customers(db, now),
+                      due_today=sum(1 for r in rows if r["open"] and r["due"].date() == operator.due_at(now).date()),
+                      overdue=sum(r["overdue"] for r in rows))
     return render(request, "pages/dashboard.html", "dashboard", ctx, d=services.dashboard(db, ctx.org))
 
 
 @app.get("/checks/new", response_class=HTMLResponse)
 def new_check(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
     if is_operator(ctx):      # A-52: operators run checks under the customer, not their own account
-        return _back("/admin/customers", error="Choose the customer, then use 'Run a check for this customer'.")
+        return RedirectResponse("/admin/queue#run", status_code=303)
     return render(request, "pages/new_check.html", "new_check", ctx,
                   credits=services.credit_balance(db, ctx.org.id))
 
 
 @app.get("/checks", response_class=HTMLResponse)
 def my_checks(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    if is_operator(ctx):
+        return RedirectResponse("/admin/queue", status_code=303)
     return render(request, "pages/my_checks.html", "my_checks", ctx,
                   rows=services.recent_checks(db, ctx.org.id, limit=200))
 
 
 @app.get("/billing", response_class=HTMLResponse)
 def billing(request: Request, ctx: Ctx = Depends(current), db: Session = Depends(get_db)):
+    if is_operator(ctx):      # the operator holds no credits; credits belong to each customer
+        return RedirectResponse("/admin/customers", status_code=303)
     products = [p for p in settings()["credit_products"] if p["offered"]]
     return render(request, "pages/billing.html", "billing", ctx,
                   credits=services.credit_balance(db, ctx.org.id), products=products,
@@ -296,7 +311,7 @@ def get_check(db: Session, ctx: Ctx, check_id: int) -> Check:
 async def upload(background: BackgroundTasks, file: UploadFile = File(...),
                  ctx: Ctx = Depends(checked), db: Session = Depends(get_db)):
     if is_operator(ctx):
-        return JSONResponse({"error": "Operators run checks from Customers → the customer → 'Run a check for this customer'."},
+        return JSONResponse({"error": "Operators run checks from the Work Queue: choose the customer, then upload."},
                             status_code=400)
     data = await file.read(settings()["upload"]["max_bytes"] + 1)
     try:
@@ -481,9 +496,12 @@ def is_operator(ctx: Ctx) -> bool:
     return ctx.user.role == "admin"
 
 
-templates.env.globals["OPERATOR_NAV"] = [
+templates.env.globals["OPERATOR_NAV"] = [          # replaces the customer menu for operator accounts
     ("op_queue", "Work Queue", "/admin/queue", "history"),
+    ("op_dashboard", "Dashboard", "/", "home"),   # operator overview
     ("op_customers", "Customers", "/admin/customers", "building"),
+    ("library", "Compliance Library", "/library", "book"),
+    ("help", "Help & Support", "/help", "help"),
 ]
 
 
@@ -533,6 +551,8 @@ def admin_queue(request: Request, ctx: Ctx = Depends(operator_view), db: Session
     rows = operator.queue(db)
     t = settings()["turnaround"]
     return render(request, "pages/admin_queue.html", "op_queue", ctx, rows=rows,
+                  customers=[c for c in operator.customers(db) if (c["org"].status or "active") == "active"],
+                  error=request.query_params.get("error"),
                   open_n=sum(r["open"] for r in rows), overdue_n=sum(r["overdue"] for r in rows),
                   next_batch=operator.due_at(utcnow()), cutoff=t["cutoff"], return_by=t["return_by"],
                   holidays_set=bool(t.get("holidays")))
@@ -624,16 +644,30 @@ def admin_credits(org_id: int, action: str = Form(...), qty: int = Form(...), re
     return _back(f"/admin/customers/{org.id}", msg=f"{qty} credit(s) {'added' if action == 'grant' else 'removed'}.")
 
 
+@app.post("/admin/queue/run")
+async def admin_queue_run(background: BackgroundTasks, org_id: int = Form(...), file: UploadFile = File(...),
+                          ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
+    """Work Queue: run a check for the chosen customer. The customer's credits are used, never the operator's."""
+    return await _run_for_customer(db, ctx, background, _org(db, org_id), file, "/admin/queue")
+
+
 @app.post("/admin/customers/{org_id}/upload")
 async def admin_upload(org_id: int, background: BackgroundTasks, file: UploadFile = File(...),
                        ctx: Ctx = Depends(operator_post), db: Session = Depends(get_db)):
     """Run a check on a customer's behalf (TMP received by email/Drive). Uses the customer's credits."""
     org = _org(db, org_id)
+    return await _run_for_customer(db, ctx, background, org, file, f"/admin/customers/{org.id}")
+
+
+async def _run_for_customer(db: Session, ctx: Ctx, background: BackgroundTasks, org: Organisation,
+                            file: UploadFile, back: str):
+    if (org.status or "active") != "active":
+        return _back(back, error=f"{org.name} is {org.status}. Reactivate the customer first.")
     data = await file.read(settings()["upload"]["max_bytes"] + 1)
     try:
         chk = processing.create_check(db, org.id, file.filename or "upload", data)
     except processing.UploadError as e:
-        return _back(f"/admin/customers/{org.id}", error=str(e))
+        return _back(back, error=f"{org.name}: {e}")
     log(db, ctx, "operator_upload", f"check:{chk.id}", f"{chk.filename} for org:{org.id}")
     db.commit()
     background.add_task(processing.run_check, chk.id)
