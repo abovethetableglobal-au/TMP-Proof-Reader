@@ -59,6 +59,7 @@
 ## Pending — Owner decision required
 | ID | Question | AI-PM recommendation | Needed by |
 |---|---|---|---|
+| P-AS | AS 1742.3:2019: (1) buy retail Web Reader $251.87 incl GST for rule verification; (2) send licensing enquiry for use inside TMP Check (docs/legal/AS1742.3_LICENCE_PLAN.md). Retail terms forbid copying/saving, so (2) is needed before product use | Approve both | Before AS 1742.3 rules |
 | P-FC | WTGTM founding-customer offer: Professional at $1,195/month for 12 months (20% off), extras $249, for case study + testimonial + quarterly feedback | Approve | Before WTGTM offer is sent |
 | P-21 | Copilot suggests targeting RTM reviewers and/or AI-generated complex TMPs. Change of scope? | No change now. TMP generation deferred by A-42 (trigger: 6 paying customers); RTM-reviewer targeting still open | Post-G6 |
 
