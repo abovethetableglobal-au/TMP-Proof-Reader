@@ -15,3 +15,6 @@ test-library/seeded/*.pdf
 
 # Sales and commercial working papers stay local, not on GitHub (Owner 2026-11-27)
 docs/commercial/
+
+# AS 1742.3 TEST rules - drafted from an unlicensed copy for internal testing only; never distribute (Owner 2026-11-28)
+compliance/rules_test/
