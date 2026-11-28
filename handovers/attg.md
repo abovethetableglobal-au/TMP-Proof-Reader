@@ -1,29 +1,25 @@
 # Handover — attg (TMP Check)
 
-**Date:** 2026-11-27
-**Goal:** Get TMP Check to G4/G5: a working portal plus a benchmarked engine, validated by Tara.
+**Date:** 2026-11-28
+**Goal:** Launch TMP Check as a managed service with paying WA customers.
 
 **Done**
-- PR #1 merged. Check 15 email and Tally form sent to Tara. Entity ATTG and ABN recorded (A-49); WTGTM confirmation and insurance on file (A-50).
-- A-51: reviewer accreditation added to the portal. **My Account** stores level, certificate number and expiry. Reviewers without current accreditation can't decide findings or issue finals. The final report shows the accreditation. 79 tests pass (commit `6eea3c0`).
-- Gate 3 becomes unconditional once Tara enters her details.
-- Report downloads added: report, annotated TMP and source TMP buttons, plus a ZIP of all three on the check page; a Download (ZIP) button in My Checks. Word uploads also get a commented .docx copy. The annotated PDF now has a comment column beside each page.
-
-- A-52 (CR-01) approved: managed service. **Phase 1 Operator Console** built: Work Queue, Customers, credits, run checks for customers (100 tests).
+- Operator Console (A-52): Work Queue as home, run checks for customers (their credits used), operator dashboard, newest first, clear failed checks, Windows start scripts. 108 tests pass.
+- Annotated PDF now has a comment column; Word uploads also get a copy with Word comments.
+- Valuation and growth plan written (kept local, not on GitHub, in `docs/commercial/`).
+- AS 1742.3 licence plan: `docs/legal/AS1742.3_LICENCE_PLAN.md`.
+- Test run: 14 AS 1742.3 rules drafted in our own words (`compliance/rules_test/`, TEST ONLY); SU 026 test gave 7 findings, 2 of them new.
 
 **In progress**
-- Waiting for Tara's check 15 (BC 016) feedback via Tally.
+- Outreach to 6 WA prospects drafted (`docs/commercial/OUTREACH_01_first_six.md`); nothing sent yet.
 
 **Next 3 steps**
-1. On your PC: `git pull`, restart the portal, then create your operator account: `python -m src.portal.devseed --org "TMP Check" --user "Pablo" --email <new email> --role admin`.
-2. Tara opens My Account and enters her accreditation. Then tell Claude, so G3 can be marked accepted.
-3. Re-run SU 025 on the new build, then rule on the BENCH-06 findings with WTGTM.
+1. On your PC: `git pull`, set a working `ANTHROPIC_API_KEY`, run the key test, then run SU 026 from the Work Queue.
+2. Approve and send the WTGTM founding offer and the 6 outreach emails.
+3. Buy the AS 1742.3 Web Reader, then send the licence request to Standards Australia.
 
 **Open questions**
-- CR-01 Phase 2: intake channel (Drive folder per customer, or a mailbox); WA public holiday dates; is 'same day' by 5 pm?
-- Should admins be blocked from issuing finals? At present only customer reviewers are blocked.
-- Before G6, the queue needs a proper job queue (currently in-process and SQLite).
+- P-FC: founding offer of $1,195 a month. P-AS: AS 1742.3 purchase and licence request. Free trial checks and Gmail drafts.
+- CR-01 Phase 2: intake channel; WA public holidays; is "same day" by 5 pm?
 
-**PC run notes:** run the portal from the inner folder on port 8001. Set `ANTHROPIC_API_KEY` (the `sk-ant-api03-` secret), `TMPCHECK_AI_PASSES=A,B,C,D` and the Stripe `sk_test_` key.
-
-**Previously:** 2026-11-25: Stripe sandbox verified; BC 016 sped up to about 8 min; PR #1 opened.
+**Previously:** 2026-11-27: reviewer accreditation and report downloads added; Operator Console Phase 1 built.
